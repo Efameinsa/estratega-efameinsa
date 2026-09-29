@@ -95,15 +95,17 @@ export default function PeiPage() {
             <div className="flex items-start gap-3 flex-wrap">
               <ArrowRight className="size-5 shrink-0 text-primary mt-0.5" />
               <div className="flex-1 text-sm">
-                <p className="font-medium mb-1">Has completado la formulacion estrategica.</p>
+                <p className="font-medium mb-1">Has completado la formulación estratégica.</p>
                 <p className="text-muted-foreground">
-                  Tu Plan Estrategico Integral esta listo para presentar al directorio. Para hacerlo realidad,
-                  el siguiente paso es la implementacion: definir objetivos anuales, politicas, estructura y recursos.
+                  Tu Plan Estratégico Integral está listo para presentar al directorio. Para hacerlo realidad,
+                  el siguiente paso es la implementación: definir objetivos anuales, políticas, estructura y recursos.
                 </p>
               </div>
-              <Button size="sm" disabled>
-                Continuar a M4 · Implementacion <Lock className="size-3.5 ml-1" />
-              </Button>
+              <Link href={`/cycles/${cycleId}/m4-deployment/ocp`}>
+                <Button size="sm">
+                  Continuar a M4 · Implementación <ArrowRight className="size-3.5 ml-1" />
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>
@@ -204,7 +206,7 @@ function Header({ data, cycleId, onPresent }: { data: PeiData; cycleId: string; 
             <FileText className="size-5" />
           </div>
           <div className="min-w-0">
-            <h1 className="text-xl font-semibold tracking-tight leading-tight">Plan Estrategico Integral</h1>
+            <h1 className="text-xl font-semibold tracking-tight leading-tight">Plan Estratégico Integral</h1>
             <p className="text-xs text-muted-foreground">
               {data.cycle?.orgName} · Ciclo {data.cycle?.yearStart}-{data.cycle?.yearEnd}
               {data.peiDoc?.lastExportedAt && <> · Ultima exportacion {new Date(data.peiDoc.lastExportedAt).toLocaleDateString("es-PE")}</>}
@@ -448,7 +450,7 @@ function DiagnosisSection({ data, cycleId: _cycleId }: { data: PeiData; cycleId:
         </CardHeader>
         <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
           <FodaPreview title="Fortalezas" items={data.m2.foda.fortalezas.slice(0, 5)} color="#4ade80" />
-          <FodaPreview title="Oportunidades" items={data.m2.foda.oportunidades.slice(0, 5)} color="#2563EB" />
+          <FodaPreview title="Oportunidades" items={data.m2.foda.oportunidades.slice(0, 5)} color="#60a5fa" />
           <FodaPreview title="Debilidades" items={data.m2.foda.debilidades.slice(0, 5)} color="#F43F5E" />
           <FodaPreview title="Amenazas" items={data.m2.foda.amenazas.slice(0, 5)} color="#F59E0B" />
         </CardContent>
@@ -484,12 +486,12 @@ function OlpsSection({ data, cycleId: _cycleId }: { data: PeiData; cycleId: stri
         {data.m3.olps.length === 0 ? (
           <p className="text-sm text-muted-foreground italic">Sin OLPs definidos.</p>
         ) : data.m3.olps.map((o) => (
-          <div key={o.id} className={`rounded-md border p-3 ${o.coverage === 0 ? "border-amber-300 bg-transparent" : ""}`}>
+          <div key={o.id} className={`rounded-md border p-3 ${o.coverage === 0 ? "border-amber-500/30 bg-transparent" : ""}`}>
             <div className="flex items-start gap-2 mb-1 flex-wrap">
               <Badge variant="outline" className="font-mono text-[10px] shrink-0">{o.olpCode}</Badge>
               {o.bscPerspective && <Badge variant="outline" className="text-[10px]">{o.bscPerspective}</Badge>}
               <span className="text-[10px] text-muted-foreground ml-auto">
-                Cobertura: <strong className={o.coverage === 0 ? "text-amber-700" : "text-foreground"}>{o.coverage} estrategia(s)</strong>
+                Cobertura: <strong className={o.coverage === 0 ? "text-amber-300" : "text-foreground"}>{o.coverage} estrategia(s)</strong>
               </span>
             </div>
             <p className="text-sm leading-snug">{o.description}</p>
@@ -500,7 +502,7 @@ function OlpsSection({ data, cycleId: _cycleId }: { data: PeiData; cycleId: stri
               {o.targetYear && ` · ${o.targetYear}`}
             </div>
             {o.coverage === 0 && (
-              <p className="text-[11px] text-amber-700 italic mt-1">⚠ OLP huerfano (sin estrategias)</p>
+              <p className="text-[11px] text-amber-300 italic mt-1">⚠ OLP huerfano (sin estrategias)</p>
             )}
           </div>
         ))}
@@ -550,15 +552,15 @@ function StrategiesSection({ data, cycleId: _cycleId }: { data: PeiData; cycleId
                     <td className="p-2 text-xs leading-snug">
                       {s.text}
                       <div className="flex gap-1 flex-wrap mt-1">
-                        {s.isEjemplar && <Badge variant="outline" className="text-[9px] bg-transparent text-emerald-700 border-emerald-200">🍃 Promueve valores</Badge>}
-                        {s.ethicsStatus === "aprobada_con_mitigantes" && <Badge variant="outline" className="text-[9px] bg-transparent text-amber-700 border-amber-200">🛡 Con mitigante</Badge>}
+                        {s.isEjemplar && <Badge variant="outline" className="text-[9px] bg-transparent text-emerald-300 border-emerald-500/30">🍃 Promueve valores</Badge>}
+                        {s.ethicsStatus === "aprobada_con_mitigantes" && <Badge variant="outline" className="text-[9px] bg-transparent text-amber-300 border-amber-500/30">🛡 Con mitigante</Badge>}
                       </div>
                     </td>
                     <td className="p-2 text-xs">
                       {def ? <Badge variant="outline" className="text-[10px]" style={{ color: GROUP_INFO[def.group].color, borderColor: GROUP_INFO[def.group].border }}>{def.label}</Badge> : <span className="text-muted-foreground italic">—</span>}
                     </td>
                     <td className="p-2 text-[10px]">
-                      {s.olpLinks.length === 0 ? <span className="text-amber-600">—</span> : s.olpLinks.map((l, i) => {
+                      {s.olpLinks.length === 0 ? <span className="text-amber-400">—</span> : s.olpLinks.map((l, i) => {
                         const olp = data.m3.olps.find((o) => o.id === l.olpId);
                         return olp ? <span key={l.id} className="inline-block font-mono px-1 py-0.5 rounded bg-primary/10 text-primary mr-0.5">{olp.olpCode}</span> : null;
                       })}
@@ -581,13 +583,13 @@ function MitigantsSection({ data }: { data: PeiData }) {
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <CardTitle className="text-base">Mitigantes eticos comprometidos ({data.m3.mitigants.length})</CardTitle>
-          <SourceBadge source="Auditoria Etica" />
+          <SourceBadge source="Auditoría Ética" />
         </div>
       </CardHeader>
       <CardContent className="space-y-2">
         {data.m3.mitigants.length === 0 ? (
           <div className="rounded-md border border-emerald-200/60 bg-transparent p-3 text-sm">
-            <Check className="inline size-4 mr-1 text-emerald-600" />
+            <Check className="inline size-4 mr-1 text-emerald-400" />
             Ninguna estrategia requirio mitigantes eticos. Tu portafolio paso los filtros sin observaciones.
           </div>
         ) : data.m3.mitigants.map((m, i) => (

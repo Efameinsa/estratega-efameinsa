@@ -17,15 +17,9 @@ const enforceAuth = t.middleware(async ({ ctx, next }) => {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "No autenticado" });
   }
 
-  // Siempre leer la org activa desde DB. El JWT puede tener una organizationId
-  // stale después de un cambio de organización, y eso provocaba FORBIDDEN
-  // falsos en cycle.getById → redirect a /dashboard desde el sidebar.
-  const user = await ctx.db.user.findUnique({
-    where: { id: ctx.userId },
-    select: { activeOrganizationId: true, organizationId: true },
-  });
-  const organizationId =
-    user?.activeOrganizationId ?? user?.organizationId ?? ctx.organizationId;
+  // Org activa desde la BD (el JWT puede estar desfasado tras cambiar de org),
+  // memoizada por petición en el contexto.
+  const organizationId = await ctx.getActiveOrgId();
 
   if (!organizationId) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "No tienes organización activa" });
@@ -133,12 +127,12 @@ export function permissionProcedure(permission: Permission) {
 export const cycleProcedure = protectedProcedure
   .input(z.object({ cycleId: z.string() }).passthrough())
   .use(async ({ ctx, input, next }) => {
-    const cycle = await ctx.db.strategicCycle.findUnique({
-      where: { id: (input as { cycleId: string }).cycleId },
-      select: { id: true, organizationId: true },
+    const cycle = await ctx.db.strategicCycle.findFirst({
+      where: { id: (input as { cycleId: string }).cycleId, organizationId: ctx.organizationId },
+      select: { id: true },
     });
 
-    if (!cycle || cycle.organizationId !== ctx.organizationId) {
+    if (!cycle) {
       throw new TRPCError({
         code: "FORBIDDEN",
         message: "No tienes acceso a este ciclo estratégico",
@@ -152,12 +146,12 @@ export const cycleProcedure = protectedProcedure
 export const projectProcedure = protectedProcedure
   .input(z.object({ projectId: z.string() }).passthrough())
   .use(async ({ ctx, input, next }) => {
-    const project = await ctx.db.project.findUnique({
-      where: { id: (input as { projectId: string }).projectId },
-      select: { id: true, orgId: true },
+    const project = await ctx.db.project.findFirst({
+      where: { id: (input as { projectId: string }).projectId, orgId: ctx.organizationId },
+      select: { id: true },
     });
 
-    if (!project || project.orgId !== ctx.organizationId) {
+    if (!project) {
       throw new TRPCError({
         code: "FORBIDDEN",
         message: "No tienes acceso a este proyecto",
@@ -166,3 +160,8 @@ export const projectProcedure = protectedProcedure
 
     return next({ ctx: { ...ctx, projectId: project.id } });
   });
+
+// Edición sobre un ciclo: rol editor + el ciclo debe ser de la organización.
+export const cycleEditorProcedure = cycleProcedure.use(
+  requireRole("ADMIN", "ALTA_DIRECCION", "GERENTE", "JEFE_PROYECTO", "ANALISTA")
+);

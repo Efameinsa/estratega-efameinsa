@@ -54,12 +54,12 @@ const AREA_STYLES: Record<string, {
   color: string; bg: string; border: string; badgeBg: string;
 }> = {
   A: { color: "text-primary dark:text-primary", bg: "bg-primary/100/10", border: "border-primary/150/20 hover:border-primary/150/40", badgeBg: "bg-primary/100" },
-  M: { color: "text-rose-600 dark:text-rose-400", bg: "bg-transparent0/10", border: "border-rose-500/20 hover:border-rose-500/40", badgeBg: "bg-transparent0" },
-  O: { color: "text-amber-600 dark:text-amber-400", bg: "bg-transparent0/10", border: "border-amber-500/20 hover:border-amber-500/40", badgeBg: "bg-transparent0" },
-  F: { color: "text-green-600 dark:text-green-400", bg: "bg-transparent0/10", border: "border-green-500/20 hover:border-green-500/40", badgeBg: "bg-transparent0" },
-  H: { color: "text-purple-600 dark:text-purple-400", bg: "bg-transparent0/10", border: "border-purple-500/20 hover:border-purple-500/40", badgeBg: "bg-transparent0" },
-  I: { color: "text-cyan-600 dark:text-cyan-400", bg: "bg-transparent0/10", border: "border-cyan-500/20 hover:border-cyan-500/40", badgeBg: "bg-transparent0" },
-  T: { color: "text-indigo-600 dark:text-indigo-400", bg: "bg-transparent0/10", border: "border-indigo-500/20 hover:border-indigo-500/40", badgeBg: "bg-transparent0" },
+  M: { color: "text-rose-400 dark:text-rose-400", bg: "bg-transparent0/10", border: "border-rose-500/20 hover:border-rose-500/40", badgeBg: "bg-transparent0" },
+  O: { color: "text-amber-400 dark:text-amber-400", bg: "bg-transparent0/10", border: "border-amber-500/20 hover:border-amber-500/40", badgeBg: "bg-transparent0" },
+  F: { color: "text-green-400 dark:text-green-400", bg: "bg-transparent0/10", border: "border-green-500/20 hover:border-green-500/40", badgeBg: "bg-transparent0" },
+  H: { color: "text-purple-400 dark:text-purple-400", bg: "bg-transparent0/10", border: "border-purple-500/20 hover:border-purple-500/40", badgeBg: "bg-transparent0" },
+  I: { color: "text-cyan-400 dark:text-cyan-400", bg: "bg-transparent0/10", border: "border-cyan-500/20 hover:border-cyan-500/40", badgeBg: "bg-transparent0" },
+  T: { color: "text-indigo-400 dark:text-indigo-400", bg: "bg-transparent0/10", border: "border-indigo-500/20 hover:border-indigo-500/40", badgeBg: "bg-transparent0" },
 };
 
 // ---------------------------------------------------------------------------
@@ -716,12 +716,12 @@ function SuggestionPanel({
       }}
     >
       <div className="flex items-start gap-3">
-        <div className="flex size-8 items-center justify-center rounded-full shrink-0" style={{ backgroundColor: "#7aa8e0" }}>
+        <div className="flex size-8 items-center justify-center rounded-full shrink-0" style={{ backgroundColor: "#a78bfa" }}>
           <Sparkles className="size-4 text-white" />
         </div>
         <div className="flex-1 min-w-0 space-y-2">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[12px] font-semibold uppercase tracking-wide" style={{ color: "#7aa8e0" }}>
+            <span className="text-[12px] font-semibold uppercase tracking-wide" style={{ color: "#a78bfa" }}>
               Sugerencia basada en tus indicadores
             </span>
             <span
@@ -750,7 +750,7 @@ function SuggestionPanel({
           <div className="flex items-center gap-2 pt-1">
             {applied ? (
               <>
-                <span className="inline-flex items-center gap-1 text-[12px] font-medium text-emerald-700">
+                <span className="inline-flex items-center gap-1 text-[12px] font-medium text-emerald-300">
                   <Check className="size-3.5" /> Sugerencia aplicada
                 </span>
                 <button
@@ -795,7 +795,7 @@ function EvidenceChip({
       onClick={onClick}
       className="inline-flex items-center gap-1 rounded-full border px-3 py-1 text-[13px] transition-all duration-150 cursor-pointer"
       style={{
-        borderColor: active ? "#7aa8e0" : "var(--color-border-tertiary)",
+        borderColor: active ? "#a78bfa" : "var(--color-border-tertiary)",
         backgroundColor: "transparent",
         color: active ? "#9ec2ec" : "var(--color-text-secondary)",
       }}
@@ -1076,7 +1076,7 @@ function VariableRow({
           {linkedRatioItems.length > 0 && (
             <div className="rounded-xl border bg-muted/20 p-4 space-y-3">
               <div className="flex items-start gap-2 flex-wrap">
-                <DollarSign className="size-4 text-green-600 dark:text-green-400 mt-0.5" />
+                <DollarSign className="size-4 text-green-400 dark:text-green-400 mt-0.5" />
                 <span className="text-[13px] font-medium">
                   Indicadores cuantitativos que respaldan esta evaluacion
                 </span>
@@ -1173,9 +1173,9 @@ function VariableRow({
             <div className="flex items-center gap-2 rounded-lg border px-4 py-2.5"
               style={{ borderColor: "var(--color-border-tertiary)" }}
             >
-              <TrendingUp className="size-4" style={{ color: "#7aa8e0" }} />
+              <TrendingUp className="size-4" style={{ color: "#a78bfa" }} />
               {pendingScore === 1 || pendingScore === 4 ? (
-                <span className="text-[12px] font-medium" style={{ color: "#7aa8e0" }}>
+                <span className="text-[12px] font-medium" style={{ color: "#a78bfa" }}>
                   Se incluye automaticamente en la MEFI
                 </span>
               ) : (
@@ -1190,7 +1190,7 @@ function VariableRow({
                     onClick={() => setPendingIncludeInMefi(!pendingIncludeInMefi)}
                     className="relative inline-flex h-5 w-9 items-center rounded-full transition-colors cursor-pointer"
                     style={{
-                      backgroundColor: pendingIncludeInMefi ? "#7aa8e0" : "var(--color-border-tertiary, #d1d5db)",
+                      backgroundColor: pendingIncludeInMefi ? "#a78bfa" : "var(--color-border-tertiary, rgba(167,139,250,0.14))",
                     }}
                   >
                     <span
@@ -1300,7 +1300,7 @@ function VariableRow({
               onClick={handleConfirm}
               className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-medium text-white transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               style={{
-                backgroundColor: pendingScore ? "#7aa8e0" : "#7aa8e0",
+                backgroundColor: pendingScore ? "#a78bfa" : "#a78bfa",
               }}
             >
               <Check className="size-3.5" />
@@ -1592,13 +1592,13 @@ function AreaEvaluationPanel({ areaKey }: { areaKey: string }) {
           )}
         </div>
         <div className="h-2 w-full overflow-hidden rounded-full"
-          style={{ backgroundColor: "var(--color-border-tertiary, #e5e7eb)" }}
+          style={{ backgroundColor: "var(--color-border-tertiary, rgba(167,139,250,0.14))" }}
         >
           <div
             className="h-full rounded-full transition-all duration-500"
             style={{
               width: `${progressPct}%`,
-              backgroundColor: progressPct === 100 ? "#34d399" : "#7aa8e0",
+              backgroundColor: progressPct === 100 ? "#34d399" : "#a78bfa",
             }}
           />
         </div>
@@ -1740,7 +1740,7 @@ function AreaFindingsPanel({
                         {hallazgoCorto}
                       </span>
                       <span className="flex items-center gap-1 shrink-0">
-                        {inMefi && <TrendingUp className="size-3" style={{ color: "#7aa8e0" }} />}
+                        {inMefi && <TrendingUp className="size-3" style={{ color: "#a78bfa" }} />}
                         {hasEvidence && <Paperclip className="size-3" style={{ color: "var(--color-text-tertiary)" }} />}
                       </span>
                     </div>
@@ -1780,7 +1780,7 @@ function AreaFindingsPanel({
                         {hallazgoCorto}
                       </span>
                       <span className="flex items-center gap-1 shrink-0">
-                        {inMefi && <TrendingUp className="size-3" style={{ color: "#7aa8e0" }} />}
+                        {inMefi && <TrendingUp className="size-3" style={{ color: "#a78bfa" }} />}
                         {hasEvidence && <Paperclip className="size-3" style={{ color: "var(--color-text-tertiary)" }} />}
                       </span>
                     </div>
@@ -1857,7 +1857,7 @@ function AreaCard({
               {evaluatedCount}/{totalCount} evaluadas
             </span>
             {progressPct === 100 && (
-              <span className="text-[11px] font-medium text-green-600 dark:text-green-400">
+              <span className="text-[11px] font-medium text-green-400 dark:text-green-400">
                 Completado
               </span>
             )}
@@ -1956,11 +1956,11 @@ function RatioRow({
     const pctAbs = Math.abs(deltaPct);
     const supera = item.higherIsBetter ? deltaPct > 0 : deltaPct < 0;
     if (supera && pctAbs >= 3) {
-      deltaColor = "text-emerald-600 dark:text-emerald-400";
+      deltaColor = "text-emerald-400 dark:text-emerald-400";
     } else if (!supera && pctAbs >= 15) {
-      deltaColor = "text-rose-600 dark:text-rose-400";
+      deltaColor = "text-rose-400 dark:text-rose-400";
     } else {
-      deltaColor = "text-amber-600 dark:text-amber-400";
+      deltaColor = "text-amber-400 dark:text-amber-400";
     }
     deltaLabel = `${deltaPct > 0 ? "+" : ""}${deltaPct.toFixed(1)}%`;
     autoScore = rateRatio(deltaPct, item.higherIsBetter);
@@ -2067,13 +2067,13 @@ function RatioRow({
             const cfg = RATING_CONFIG[s];
             const active = autoScore === s;
             const desc = getRatioDescription(item.key, s, item.higherIsBetter);
-            const baseTextColor = "var(--color-text-tertiary, #6b7280)";
+            const baseTextColor = "var(--color-text-tertiary, #9a91b8)";
             return (
               <div
                 key={s}
                 className="rounded-md border p-2.5 transition-all flex flex-col gap-1"
                 style={{
-                  borderColor: active ? cfg.border : "var(--color-border-tertiary, #e5e7eb)",
+                  borderColor: active ? cfg.border : "var(--color-border-tertiary, rgba(167,139,250,0.14))",
                   backgroundColor: active ? cfg.bg : "transparent",
                   borderWidth: active ? 2 : 1,
                   opacity: autoScore === null ? 0.55 : active ? 1 : 0.45,
@@ -2207,7 +2207,7 @@ function OtrosIndicadoresSection({
   return (
     <div className="rounded-lg border bg-card p-4 space-y-4">
       <div className="flex items-center gap-2 flex-wrap">
-        <DollarSign className="size-4 text-green-600 dark:text-green-400" />
+        <DollarSign className="size-4 text-green-400 dark:text-green-400" />
         <h3 className="text-[14px] font-medium">Otros indicadores cuantitativos</h3>
         <span className="text-[11px] text-muted-foreground italic">
           opcional — no estan ligados a una pregunta especifica
@@ -2430,10 +2430,10 @@ export default function AmofhitPage() {
       <div className="space-y-2">
         <div className="flex items-center gap-3">
           <div className="flex size-12 items-center justify-center rounded-2xl bg-transparent0/10">
-            <Factory className="size-6 text-teal-600 dark:text-teal-400" />
+            <Factory className="size-6 text-teal-400 dark:text-teal-400" />
           </div>
           <div>
-            <h1 className="text-2xl font-medium tracking-tight">Evaluacion AMOFHIT</h1>
+            <h1 className="text-2xl font-medium tracking-tight">Evaluación AMOFHIT</h1>
             <p className="text-sm text-muted-foreground">
               Evalua las 7 areas funcionales internas — metodologia D&apos;Alessio
             </p>

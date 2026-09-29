@@ -38,12 +38,12 @@ export default function LoginPage() {
 
   return (
     <div className="w-full max-w-[400px]">
-      <div className="bg-background border border-border/50 rounded-xl p-8 shadow-sm">
+      <div className="glass-strong rounded-2xl p-8">
         {/* Logo */}
         <div className="text-center mb-8">
-          <img src="/logo-isotipo-black.png" alt="Estratega" className="size-20 mx-auto mb-3" />
+          <img src="/logo-isotipo-white.png" alt="Estratega" className="size-20 mx-auto mb-3" />
           <h1 className="text-[32px] font-medium">Estratega</h1>
-          <p className="text-sm text-muted-foreground mt-1">Inicia sesion en tu cuenta</p>
+          <p className="text-sm text-muted-foreground mt-1">Inicia sesión en tu cuenta</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">

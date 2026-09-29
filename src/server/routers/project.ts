@@ -30,7 +30,6 @@ export const projectRouter = router({
           portfolio: true,
           program: true,
           members: { include: { user: { select: { id: true, name: true, email: true } } } },
-          sprints: { orderBy: { sortOrder: "asc" } },
           components: true,
           labels: true,
           versions: true,

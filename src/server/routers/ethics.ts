@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { router, protectedProcedure, editorProcedure } from "@/server/trpc/init";
+import { router, cycleProcedure, cycleEditorProcedure } from "@/server/trpc/init";
 import { db } from "@/server/db";
 import { computeAutoVerdict, generateMitigantSuggestion, type EthicsRating } from "@/lib/ethics-catalog";
 
@@ -12,7 +12,7 @@ export const ethicsAuditRouter = router({
   // getSetup: estrategias aprobadas en Rumelt + evaluaciones eticas
   // + valores corporativos (M1)
   // ───────────────────────────────────────────────────────────────────
-  getSetup: protectedProcedure
+  getSetup: cycleProcedure
     .input(z.object({ cycleId: z.string() }))
     .query(async ({ input }) => {
       const cycleId = input.cycleId;
@@ -71,7 +71,7 @@ export const ethicsAuditRouter = router({
   // ───────────────────────────────────────────────────────────────────
   // setPrinciple: marca rating de un principio y guarda justificacion
   // ───────────────────────────────────────────────────────────────────
-  setPrinciple: editorProcedure
+  setPrinciple: cycleEditorProcedure
     .input(z.object({
       cycleId: z.string(),
       consolidatedId: z.string(),
@@ -117,7 +117,7 @@ export const ethicsAuditRouter = router({
   // ───────────────────────────────────────────────────────────────────
   // saveMitigant: guarda un mitigante para una violacion
   // ───────────────────────────────────────────────────────────────────
-  saveMitigant: editorProcedure
+  saveMitigant: cycleEditorProcedure
     .input(z.object({
       cycleId: z.string(),
       consolidatedId: z.string(),
@@ -154,7 +154,7 @@ export const ethicsAuditRouter = router({
       return mitigant;
     }),
 
-  overrideVerdict: editorProcedure
+  overrideVerdict: cycleEditorProcedure
     .input(z.object({
       cycleId: z.string(),
       consolidatedId: z.string(),

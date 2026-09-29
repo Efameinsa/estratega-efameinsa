@@ -525,7 +525,7 @@ function VariableRow({
   let badgeColor: { color: string; bg: string; border: string };
   if (item.origin === "peyea") {
     badgeText = "Especifica de PEYEA";
-    badgeColor = { color: "#6b7280", bg: "rgba(107,114,128,0.08)", border: "rgba(107,114,128,0.3)" };
+    badgeColor = { color: "#9a91b8", bg: "rgba(107,114,128,0.08)", border: "rgba(107,114,128,0.3)" };
   } else if (isModified) {
     badgeText = "Modificada manualmente";
     badgeColor = { color: "#B45309", bg: "rgba(245,158,11,0.1)", border: "rgba(245,158,11,0.4)" };
@@ -537,7 +537,7 @@ function VariableRow({
     badgeColor = { color: "#B45309", bg: "rgba(245,158,11,0.08)", border: "rgba(245,158,11,0.3)" };
   } else {
     badgeText = "Pendiente";
-    badgeColor = { color: "#6b7280", bg: "transparent", border: "rgba(107,114,128,0.3)" };
+    badgeColor = { color: "#9a91b8", bg: "transparent", border: "rgba(107,114,128,0.3)" };
   }
 
   return (
@@ -547,7 +547,7 @@ function VariableRow({
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-sm font-medium">{item.name}</span>
             {isLinked && <LinkIcon className="size-3 text-primary" />}
-            {isModified && <Pencil className="size-3 text-amber-600" />}
+            {isModified && <Pencil className="size-3 text-amber-400" />}
           </div>
           {item.hint && (
             <div className="text-[11px] text-muted-foreground mt-0.5">{item.hint}</div>
@@ -654,8 +654,8 @@ function MiniMatrix({ vector }: { vector: ReturnType<typeof computeVector> }) {
       <rect x="0" y={half} width={half} height={half} fill={QUADRANT_INFO.defensivo.bg} />
       <rect x={half} y={half} width={half} height={half} fill={QUADRANT_INFO.competitivo.bg} />
       {/* ejes */}
-      <line x1="0" y1={half} x2={size} y2={half} stroke="#cbd5e1" strokeWidth="1" />
-      <line x1={half} y1="0" x2={half} y2={size} stroke="#cbd5e1" strokeWidth="1" />
+      <line x1="0" y1={half} x2={size} y2={half} stroke="rgba(167,139,250,0.14)" strokeWidth="1" />
+      <line x1={half} y1="0" x2={half} y2={size} stroke="rgba(167,139,250,0.14)" strokeWidth="1" />
       {/* vector */}
       <line x1={half} y1={half} x2={px} y2={py} stroke={info.color} strokeWidth="2.5" />
       <circle cx={px} cy={py} r="4" fill={info.color} />
@@ -695,18 +695,18 @@ function Paso2({
                     dataKey="x"
                     domain={[-12, 12]}
                     ticks={[-12, -8, -4, 0, 4, 8, 12]}
-                    tick={{ fontSize: 11, fill: "#6b7280" }}
+                    tick={{ fontSize: 11, fill: "#9a91b8" }}
                     tickLine={false}
-                    axisLine={{ stroke: "#e5e7eb" }}
+                    axisLine={{ stroke: "rgba(167,139,250,0.14)" }}
                   />
                   <YAxis
                     type="number"
                     dataKey="y"
                     domain={[-12, 12]}
                     ticks={[-12, -8, -4, 0, 4, 8, 12]}
-                    tick={{ fontSize: 11, fill: "#6b7280" }}
+                    tick={{ fontSize: 11, fill: "#9a91b8" }}
                     tickLine={false}
-                    axisLine={{ stroke: "#e5e7eb" }}
+                    axisLine={{ stroke: "rgba(167,139,250,0.14)" }}
                   />
                   <ZAxis range={[200, 200]} />
 
@@ -785,7 +785,7 @@ function Paso2({
 
         {showAlerts && (
           <div className="rounded-md border border-amber-200/60 bg-transparent dark:border-amber-900/30 dark:bg-transparent p-3 text-xs flex gap-2">
-            <AlertTriangle className="size-4 shrink-0 text-amber-600 mt-0.5" />
+            <AlertTriangle className="size-4 shrink-0 text-amber-400 mt-0.5" />
             <div>
               {vector.magnitude < 1.0 && (
                 <p>Tu vector esta cerca del centro. La postura recomendada es debil. Considera reforzar tu posicion antes de movimientos arriesgados.</p>

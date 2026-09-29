@@ -272,7 +272,7 @@ function Paso1({
                   className="w-16 rounded-md border bg-card px-2 py-0.5 text-xs"
                 />
                 <span>%</span>
-                <Badge variant="outline" className="text-[10px] bg-transparent text-emerald-700 border-emerald-200">
+                <Badge variant="outline" className="text-[10px] bg-transparent text-emerald-300 border-emerald-500/30">
                   Recomendado: 5%
                 </Badge>
               </label>
@@ -298,7 +298,7 @@ function Paso1({
         <Card style={{ borderColor: "rgba(22,163,74,0.4)" }}>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm flex items-center justify-between flex-wrap gap-1">
-              <span className="text-emerald-700 dark:text-emerald-400">Posicion competitiva</span>
+              <span className="text-emerald-300 dark:text-emerald-400">Posicion competitiva</span>
               <Badge variant="outline" className="text-[10px] font-normal">
                 {state.positionSource === "manual"
                   ? "Manual"
@@ -318,7 +318,7 @@ function Paso1({
                 value={state.position !== null ? state.position.toFixed(1) : ""}
                 onChange={(e) => update({ position: e.target.value === "" ? null : parseFloat(e.target.value), positionSource: "manual" })}
                 placeholder="—"
-                className="w-24 rounded-md border-2 border-input bg-muted/40 dark:bg-input/30 px-3 py-2 text-2xl font-bold text-emerald-700 dark:text-emerald-400 tabular-nums focus:outline-none focus:bg-background focus:ring-2 focus:ring-ring/30"
+                className="w-24 rounded-md border-2 border-input bg-muted/40 dark:bg-input/30 px-3 py-2 text-2xl font-bold text-emerald-300 dark:text-emerald-400 tabular-nums focus:outline-none focus:bg-background focus:ring-2 focus:ring-ring/30"
               />
               <span className="text-sm text-muted-foreground">/ 4.0</span>
             </div>
@@ -337,7 +337,7 @@ function Paso1({
                   onChange={(e) => update({ positionThreshold: parseFloat(e.target.value) || 2.5 })}
                   className="w-16 rounded-md border bg-card px-2 py-0.5 text-xs"
                 />
-                <Badge variant="outline" className="text-[10px] bg-transparent text-emerald-700 border-emerald-200">
+                <Badge variant="outline" className="text-[10px] bg-transparent text-emerald-300 border-emerald-500/30">
                   Recomendado: 2.5
                 </Badge>
               </label>
@@ -440,7 +440,7 @@ function Paso2({
 
         {nearCenter && (
           <div className="rounded-md border border-amber-200/60 bg-transparent dark:border-amber-900/30 dark:bg-transparent p-3 text-xs flex gap-2">
-            <AlertTriangle className="size-4 shrink-0 text-amber-600 mt-0.5" />
+            <AlertTriangle className="size-4 shrink-0 text-amber-400 mt-0.5" />
             <span>Tu posicion esta cerca del centro. Los resultados son sensibles a cambios pequeños. Considera revisar las variables.</span>
           </div>
         )}
@@ -487,14 +487,14 @@ function GeChart({ state, quadrant }: { state: GeState; quadrant: GeQuadrant }) 
         <ScatterChart margin={{ top: 30, right: 30, bottom: 36, left: 32 }}>
           <XAxis
             type="number" dataKey="x" domain={[1, 4]} ticks={[1, 2, 2.5, 3, 4]}
-            tick={{ fontSize: 11, fill: "#6b7280" }} tickLine={false} axisLine={{ stroke: "#e5e7eb" }}
-            label={{ value: "Posicion competitiva (debil ← → fuerte)", position: "insideBottom", offset: -14, style: { fontSize: 11, fill: "#6b7280", textAnchor: "middle" } }}
+            tick={{ fontSize: 11, fill: "#9a91b8" }} tickLine={false} axisLine={{ stroke: "rgba(167,139,250,0.14)" }}
+            label={{ value: "Posicion competitiva (debil ← → fuerte)", position: "insideBottom", offset: -14, style: { fontSize: 11, fill: "#9a91b8", textAnchor: "middle" } }}
           />
           <YAxis
             type="number" dataKey="y" domain={[0, yMax]}
             tickFormatter={(v) => `${v}%`}
-            tick={{ fontSize: 11, fill: "#6b7280" }} tickLine={false} axisLine={{ stroke: "#e5e7eb" }}
-            label={{ value: "Crecimiento del mercado (lento ↓ ↑ rapido)", angle: -90, position: "insideLeft", offset: 0, style: { fontSize: 11, fill: "#6b7280", textAnchor: "middle" } }}
+            tick={{ fontSize: 11, fill: "#9a91b8" }} tickLine={false} axisLine={{ stroke: "rgba(167,139,250,0.14)" }}
+            label={{ value: "Crecimiento del mercado (lento ↓ ↑ rapido)", angle: -90, position: "insideLeft", offset: 0, style: { fontSize: 11, fill: "#9a91b8", textAnchor: "middle" } }}
           />
           <ZAxis range={[400, 400]} />
 
@@ -612,7 +612,7 @@ function Paso3({
       {/* Alertas */}
       {alertas.map((a, i) => (
         <div key={i} className="rounded-md border border-amber-200/60 bg-transparent dark:border-amber-900/30 dark:bg-transparent p-3 text-sm flex gap-2">
-          <AlertTriangle className="size-4 shrink-0 text-amber-600 mt-0.5" />
+          <AlertTriangle className="size-4 shrink-0 text-amber-400 mt-0.5" />
           <span className="leading-relaxed">{a}</span>
         </div>
       ))}
@@ -662,7 +662,7 @@ function Paso3({
         </CardHeader>
         <CardContent className="space-y-1.5 text-sm">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-            <MatrixSummary label="FODA Cruzado" count={matrixCounts.foda} color="#2563EB" />
+            <MatrixSummary label="FODA Cruzado" count={matrixCounts.foda} color="#60a5fa" />
             <MatrixSummary label="PEYEA" count={matrixCounts.peyea} color="#8B5CF6" />
             <MatrixSummary label="IE" count={matrixCounts.ie} color="#4ade80" />
             <MatrixSummary label="GE (esta)" count={matrixCounts.ge} color={info.color} />

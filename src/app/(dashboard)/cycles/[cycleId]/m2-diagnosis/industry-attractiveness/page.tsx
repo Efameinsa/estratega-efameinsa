@@ -84,7 +84,7 @@ function CriterionCard({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <span className="flex size-6 items-center justify-center rounded-lg text-[10px] font-medium text-white"
-                style={{ backgroundColor: "#7aa8e0" }}
+                style={{ backgroundColor: "#a78bfa" }}
               >
                 {index + 1}
               </span>
@@ -148,14 +148,14 @@ function CriterionCard({
         {/* FCE */}
         {fce ? (
           <div className="flex items-start gap-2 rounded-lg border px-3 py-2.5 animate-in fade-in duration-300"
-            style={{ borderColor: "#7aa8e0", backgroundColor: "transparent" }}
+            style={{ borderColor: "#a78bfa", backgroundColor: "transparent" }}
           >
-            <Target className="size-3.5 shrink-0 mt-0.5" style={{ color: "#7aa8e0" }} />
+            <Target className="size-3.5 shrink-0 mt-0.5" style={{ color: "#a78bfa" }} />
             <div>
               <span className="text-[12px] font-medium" style={{ color: "#9ec2ec" }}>
                 FCE → {fce.nombre}
               </span>
-              <span className="text-[11px] block" style={{ color: "#7aa8e0" }}>
+              <span className="text-[11px] block" style={{ color: "#a78bfa" }}>
                 Peso sugerido: {adjustedWeight.toFixed(2)}
               </span>
             </div>
@@ -233,10 +233,10 @@ export default function IndustryAttractivenessPage() {
       {/* Hero */}
       <div className="flex items-center gap-3">
         <div className="flex size-12 items-center justify-center rounded-2xl" style={{ backgroundColor: "transparent" }}>
-          <TrendingUp className="size-6" style={{ color: "#7aa8e0" }} />
+          <TrendingUp className="size-6" style={{ color: "#a78bfa" }} />
         </div>
         <div>
-          <h1 className="text-2xl font-medium tracking-tight">Atractividad de la Industria</h1>
+          <h1 className="text-2xl font-medium tracking-tight">Atractividad de la industria</h1>
           <p className="text-sm text-muted-foreground">
             15 factores que miden que tan atractivo es el sector para competir
           </p>
@@ -248,7 +248,7 @@ export default function IndustryAttractivenessPage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
-              <BarChart3 className="size-4" style={{ color: "#7aa8e0" }} />
+              <BarChart3 className="size-4" style={{ color: "#a78bfa" }} />
               <span className="text-[13px] font-medium" style={{ color: "var(--color-text-secondary)" }}>
                 Puntaje total
               </span>
@@ -269,7 +269,7 @@ export default function IndustryAttractivenessPage() {
             </span>
             <Separator orientation="vertical" className="h-4" />
             <div className="flex items-center gap-1.5">
-              <Target className="size-3.5" style={{ color: "#7aa8e0" }} />
+              <Target className="size-3.5" style={{ color: "#a78bfa" }} />
               <span className="text-[12px] font-medium" style={{ color: "var(--color-text-secondary)" }}>
                 {fceCount} FCE
               </span>
@@ -277,7 +277,7 @@ export default function IndustryAttractivenessPage() {
           </div>
         </div>
         <div className="h-2.5 w-full overflow-hidden rounded-full"
-          style={{ backgroundColor: "var(--color-border-tertiary, #e5e7eb)" }}
+          style={{ backgroundColor: "var(--color-border-tertiary, rgba(167,139,250,0.14))" }}
         >
           <div
             className="h-full rounded-full transition-all duration-300"
@@ -300,10 +300,10 @@ export default function IndustryAttractivenessPage() {
       </div>
 
       {/* FCE Summary Panel */}
-      <div className="rounded-xl border p-4 space-y-3" style={{ borderColor: "#7aa8e0", backgroundColor: "transparent" }}>
+      <div className="rounded-xl border p-4 space-y-3" style={{ borderColor: "#a78bfa", backgroundColor: "transparent" }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Target className="size-4" style={{ color: "#7aa8e0" }} />
+            <Target className="size-4" style={{ color: "#a78bfa" }} />
             <span className="text-[13px] font-medium" style={{ color: "#9ec2ec" }}>
               Factores Clave de Exito generados
             </span>
@@ -327,7 +327,7 @@ export default function IndustryAttractivenessPage() {
                   <span className="text-[12px] font-medium block" style={{ color: "#9ec2ec" }}>
                     {item.fce.nombre}
                   </span>
-                  <span className="text-[10px]" style={{ color: "#7aa8e0" }}>
+                  <span className="text-[10px]" style={{ color: "#a78bfa" }}>
                     Desde: {item.criterioNombre} ({item.valor}) · Peso: {item.adjustedWeight.toFixed(2)}
                   </span>
                 </div>
@@ -345,7 +345,7 @@ export default function IndustryAttractivenessPage() {
       <div className="flex items-center gap-3">
         <button type="button" onClick={handleSave} disabled={attrUpsert.isPending}
           className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-medium text-white cursor-pointer disabled:opacity-50"
-          style={{ backgroundColor: "#7aa8e0" }}
+          style={{ backgroundColor: "#a78bfa" }}
         >
           <Save className="size-3.5" />
           Guardar evaluacion

@@ -14,8 +14,6 @@ import {
   User,
   Building2,
   Plug,
-  Bell,
-  Palette,
   GraduationCap,
   Copy,
   Trash2,
@@ -26,9 +24,7 @@ import {
 type SectionKey =
   | "account"
   | "workspace"
-  | "integrations"
-  | "notifications"
-  | "appearance";
+  | "integrations";
 
 interface Section {
   key: SectionKey;
@@ -40,8 +36,6 @@ const SECTIONS: Section[] = [
   { key: "account", label: "Cuenta y perfil", icon: User },
   { key: "workspace", label: "Workspace y equipo", icon: Building2 },
   { key: "integrations", label: "Integraciones", icon: Plug },
-  { key: "notifications", label: "Notificaciones", icon: Bell },
-  { key: "appearance", label: "Apariencia", icon: Palette },
 ];
 
 export default function SettingsPage() {
@@ -86,8 +80,6 @@ export default function SettingsPage() {
           {active === "account" && <AccountSection />}
           {active === "workspace" && <WorkspaceSection />}
           {active === "integrations" && <IntegrationsSection />}
-          {active === "notifications" && <NotificationsSection />}
-          {active === "appearance" && <AppearanceSection />}
         </div>
       </div>
     </div>
@@ -216,11 +208,11 @@ function IntegrationsSection() {
 
           {revealedToken && (
             <div className="space-y-2 rounded-md border border-amber-400 bg-transparent p-3">
-              <div className="flex items-center gap-2 text-xs font-semibold text-amber-900">
+              <div className="flex items-center gap-2 text-xs font-semibold text-amber-300">
                 <KeyRound className="size-4" /> Token recién creado · Cópialo ahora
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <code className="flex-1 break-all rounded bg-white px-3 py-2 font-mono text-xs">
+                <code className="flex-1 break-all rounded bg-muted px-3 py-2 font-mono text-xs">
                   {revealedToken.plaintext}
                 </code>
                 <Button
@@ -241,7 +233,7 @@ function IntegrationsSection() {
                   Listo
                 </Button>
               </div>
-              <p className="text-[10px] text-amber-800">
+              <p className="text-[10px] text-amber-300">
                 ⚠️ Este token no volverá a mostrarse. Si lo pierdes, deberás revocarlo y generar
                 uno nuevo.
               </p>
@@ -350,43 +342,6 @@ function IntegrationsSection() {
         </CardContent>
       </Card>
     </div>
-  );
-}
-
-// ────────────────────────────────────────────────────────────────────
-// Notificaciones
-// ────────────────────────────────────────────────────────────────────
-
-function NotificationsSection() {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-left text-base">Notificaciones</CardTitle>
-      </CardHeader>
-      <CardContent className="text-left text-sm text-muted-foreground">
-        Próximamente podrás configurar qué eventos te notifican por correo o en la
-        aplicación: nuevos comentarios, cambios de estado de OCPs, alertas estratégicas y
-        revisiones programadas.
-      </CardContent>
-    </Card>
-  );
-}
-
-// ────────────────────────────────────────────────────────────────────
-// Apariencia
-// ────────────────────────────────────────────────────────────────────
-
-function AppearanceSection() {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-left text-base">Apariencia</CardTitle>
-      </CardHeader>
-      <CardContent className="text-left text-sm text-muted-foreground">
-        Próximamente podrás personalizar el tema (claro/oscuro), densidad de información y
-        color principal de tu organización.
-      </CardContent>
-    </Card>
   );
 }
 

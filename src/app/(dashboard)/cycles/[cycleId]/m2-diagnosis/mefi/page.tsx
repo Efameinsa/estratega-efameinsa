@@ -63,7 +63,7 @@ interface MefiFactor {
 function MefiStatusBadge({ status }: { status: string }) {
   const config: Record<string, { label: string; bg: string; border: string; text: string }> = {
     en_construccion: { label: "En construccion", bg: "transparent", border: "#fbbf24", text: "#f0c283" },
-    lista_para_ajuste: { label: "Lista para ajuste", bg: "transparent", border: "#7aa8e0", text: "#9ec2ec" },
+    lista_para_ajuste: { label: "Lista para ajuste", bg: "transparent", border: "#a78bfa", text: "#9ec2ec" },
     finalizada: { label: "Finalizada", bg: "transparent", border: "#34d399", text: "#85c9a8" },
   };
   const c = config[status] ?? config.en_construccion;
@@ -120,7 +120,7 @@ function AddFactorForm({
   }
 
   return (
-    <Card className="border-2" style={{ borderColor: "#7aa8e0" }}>
+    <Card className="border-2" style={{ borderColor: "#a78bfa" }}>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-[14px]">Agregar factor manualmente</CardTitle>
@@ -284,7 +284,7 @@ export default function MefiPage() {
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="flex size-12 items-center justify-center rounded-2xl" style={{ backgroundColor: "transparent" }}>
-            <TrendingUp className="size-6" style={{ color: "#7aa8e0" }} />
+            <TrendingUp className="size-6" style={{ color: "#a78bfa" }} />
           </div>
           <div>
             <h1 className="text-2xl font-medium tracking-tight">Matriz MEFI</h1>
@@ -323,7 +323,7 @@ export default function MefiPage() {
             disabled={!isWeightValid || hasTooFew || factorCount > 20 || finalizeMutation.isPending}
             onClick={() => finalizeMutation.mutate({ cycleId })}
             className="gap-1.5 text-white"
-            style={{ backgroundColor: "#7aa8e0" }}
+            style={{ backgroundColor: "#a78bfa" }}
           >
             <Lock className="size-3.5" /> Finalizar MEFI
           </Button>
@@ -359,13 +359,13 @@ export default function MefiPage() {
             </div>
           </div>
           <div className="h-2 w-full overflow-hidden rounded-full"
-            style={{ backgroundColor: "var(--color-border-tertiary, #e5e7eb)" }}
+            style={{ backgroundColor: "var(--color-border-tertiary, rgba(167,139,250,0.14))" }}
           >
             <div
               className="h-full rounded-full transition-all duration-300"
               style={{
                 width: `${Math.min(totalWeight * 100, 100)}%`,
-                backgroundColor: isWeightValid ? "#34d399" : totalWeight > 1 ? "#fca5a5" : "#7aa8e0",
+                backgroundColor: isWeightValid ? "#34d399" : totalWeight > 1 ? "#fca5a5" : "#a78bfa",
               }}
             />
           </div>
@@ -442,7 +442,7 @@ export default function MefiPage() {
                       {f.area ? (
                         <span
                           className="inline-flex size-6 items-center justify-center rounded text-[10px] font-medium text-white"
-                          style={{ backgroundColor: "#7aa8e0" }}
+                          style={{ backgroundColor: "#a78bfa" }}
                         >
                           {f.area}
                         </span>
@@ -531,7 +531,7 @@ export default function MefiPage() {
                 </TableCell>
                 <TableCell className="text-[12px] text-muted-foreground">—</TableCell>
                 <TableCell className="text-right">
-                  <span className="text-[15px] font-medium" style={{ color: "#7aa8e0" }}>
+                  <span className="text-[15px] font-medium" style={{ color: "#a78bfa" }}>
                     {ppt.toFixed(2)}
                   </span>
                 </TableCell>

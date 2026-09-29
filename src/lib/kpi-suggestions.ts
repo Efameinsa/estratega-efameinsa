@@ -29,8 +29,8 @@ export const BSC_DIMENSIONS: BscDimensionDef[] = [
     description: "Indicadores financieros: ingresos, márgenes, rentabilidad, capital.",
     classicLabel: "Perspectiva Financiera (Kaplan-Norton)",
     icon: "Coins",
-    color: "#173404",
-    bg: "transparent",
+    color: "#4ade80",
+    bg: "rgba(74, 222, 128, 0.08)",
   },
   {
     key: "posicion_mercado",
@@ -40,8 +40,8 @@ export const BSC_DIMENSIONS: BscDimensionDef[] = [
     description: "Indicadores de cliente: participación, satisfacción, marca, fidelización.",
     classicLabel: "Perspectiva Cliente (Kaplan-Norton)",
     icon: "Target",
-    color: "#042C53",
-    bg: "transparent",
+    color: "#60a5fa",
+    bg: "rgba(96, 165, 250, 0.08)",
   },
   {
     key: "como_opera_empresa",
@@ -51,8 +51,8 @@ export const BSC_DIMENSIONS: BscDimensionDef[] = [
     description: "Indicadores de procesos: eficiencia, calidad, certificaciones, productividad.",
     classicLabel: "Perspectiva Procesos Internos (Kaplan-Norton)",
     icon: "Settings2",
-    color: "#412402",
-    bg: "#FAEEDA",
+    color: "#fbbf24",
+    bg: "rgba(251, 191, 36, 0.08)",
   },
   {
     key: "personas_cultura",
@@ -62,8 +62,8 @@ export const BSC_DIMENSIONS: BscDimensionDef[] = [
     description: "Indicadores de talento: clima, rotación, capacitación, aprendizaje.",
     classicLabel: "Perspectiva Aprendizaje y Crecimiento (Kaplan-Norton)",
     icon: "Users",
-    color: "#3C3489",
-    bg: "#EAE7F8",
+    color: "#a78bfa",
+    bg: "rgba(167, 139, 250, 0.08)",
   },
 ];
 
@@ -85,6 +85,11 @@ const OLP_BSC_TO_DIMENSION: Record<string, BscDimension> = {
   posicion_mercado: "posicion_mercado",
   como_opera_empresa: "como_opera_empresa",
   personas_cultura: "personas_cultura",
+  // Códigos que guarda M3 (Olp.bscPerspective)
+  fin: "resultados_economicos",
+  cli: "posicion_mercado",
+  int: "como_opera_empresa",
+  apr: "personas_cultura",
 };
 
 export function olpBscToDimension(olpBsc: string | null | undefined): BscDimension {

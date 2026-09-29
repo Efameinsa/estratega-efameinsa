@@ -54,14 +54,8 @@ import {
   formatMoneyShort,
   type ResourceCategory,
 } from "@/lib/resources-7m";
-import {
-  exportResourcesPdf,
-  exportResourcesExcel,
-  type ExportResourcesContext,
-  type ExportNeed,
-  type ExportManpowerProfile,
-  type ExportMoneySource,
-} from "@/lib/resources-export";
+import { exportResourcesPdf, exportResourcesExcel } from "@/lib/lazy-exports";
+import type { ExportResourcesContext, ExportNeed, ExportManpowerProfile, ExportMoneySource } from "@/lib/resources-export";
 
 type RouterOutputs = inferRouterOutputs<AppRouter>;
 type SetupData = RouterOutputs["resources"]["setup"];
@@ -289,8 +283,8 @@ function Step1({
         </CardContent>
       </Card>
 
-      <Card className="border-emerald-200 bg-transparent">
-        <CardContent className="py-4 text-left text-sm text-emerald-900">
+      <Card className="border-emerald-500/30 bg-transparent">
+        <CardContent className="py-4 text-left text-sm text-emerald-300">
           <strong>Necesidades pre-calculadas automáticamente.</strong> Origen:{" "}
           {setup.ocps.length} OCPs, {setup.structure?.nodes.length ?? 0} áreas en la
           estructura, {setup.strategies.length + setup.consolidated.length} estrategias.
@@ -401,7 +395,7 @@ function Step1({
                             </td>
                             <td className="px-2 py-2 text-[10px]">
                               {n.origin === "auto_detected" ? (
-                                <span className="text-emerald-600">⚡ Auto</span>
+                                <span className="text-emerald-400">⚡ Auto</span>
                               ) : (
                                 <span className="text-muted-foreground">Manual</span>
                               )}
@@ -428,7 +422,7 @@ function Step1({
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Las necesidades marcadas con <span className="text-emerald-600">⚡ Auto</span> vienen del
+        Las necesidades marcadas con <span className="text-emerald-400">⚡ Auto</span> vienen del
         análisis de tus OCPs y estrategias. Puedes editar montos, agregar necesidades manuales o
         eliminar las que no apliquen.
       </p>
@@ -695,8 +689,8 @@ function Step2({
 
       {/* Alertas */}
       {alerts.length > 0 && (
-        <Card className="border-amber-300 bg-transparent">
-          <CardContent className="space-y-1 py-3 text-xs text-amber-900">
+        <Card className="border-amber-500/30 bg-transparent">
+          <CardContent className="space-y-1 py-3 text-xs text-amber-300">
             {alerts.map((a, i) => (
               <div key={i} className="flex items-start gap-2">
                 <AlertTriangle className="mt-0.5 size-3.5 shrink-0" />
@@ -781,8 +775,8 @@ function MetricBlock({
         <div
           className={cn(
             "mt-1 text-xl font-semibold",
-            tone === "ok" && "text-emerald-700",
-            tone === "warn" && "text-amber-700",
+            tone === "ok" && "text-emerald-300",
+            tone === "warn" && "text-amber-300",
           )}
         >
           {value}
@@ -1306,10 +1300,10 @@ function Step3({
                     <td className="px-2 py-2 text-right">
                       {formatMoneyShort(total)}
                     </td>
-                    <td className="px-2 py-2 text-right text-emerald-700">
+                    <td className="px-2 py-2 text-right text-emerald-300">
                       {formatMoneyShort(secured)}
                     </td>
-                    <td className="px-2 py-2 text-right text-amber-700">
+                    <td className="px-2 py-2 text-right text-amber-300">
                       {formatMoneyShort(gap)}
                     </td>
                     <td className="px-2 py-2 text-center">
@@ -1329,10 +1323,10 @@ function Step3({
                 <td className="px-3 py-2">TOTAL</td>
                 <td className="px-2 py-2 text-right">{setup.needs.length}</td>
                 <td className="px-2 py-2 text-right">{formatMoneyShort(totalEstimated)}</td>
-                <td className="px-2 py-2 text-right text-emerald-700">
+                <td className="px-2 py-2 text-right text-emerald-300">
                   {formatMoneyShort(totalSecured)}
                 </td>
-                <td className="px-2 py-2 text-right text-amber-700">
+                <td className="px-2 py-2 text-right text-amber-300">
                   {formatMoneyShort(totalGap)}
                 </td>
                 <td />
@@ -1344,9 +1338,9 @@ function Step3({
 
       {/* Brechas críticas */}
       {criticalGaps.length > 0 && (
-        <Card className="border-rose-200 bg-transparent">
+        <Card className="border-rose-500/30 bg-transparent">
           <CardHeader>
-            <CardTitle className="text-left text-base text-rose-900">
+            <CardTitle className="text-left text-base text-rose-300">
               Brechas críticas ({criticalGaps.length})
             </CardTitle>
           </CardHeader>
@@ -1356,7 +1350,7 @@ function Step3({
               return (
                 <div
                   key={g.id}
-                  className="flex items-center justify-between rounded-md border border-rose-200 bg-white/60 px-3 py-2"
+                  className="flex items-center justify-between rounded-md border border-rose-500/30 bg-white/60 px-3 py-2"
                 >
                   <div className="flex items-center gap-2">
                     <Badge
@@ -1367,7 +1361,7 @@ function Step3({
                     </Badge>
                     <span>{g.description}</span>
                   </div>
-                  <span className="font-semibold text-rose-700">
+                  <span className="font-semibold text-rose-300">
                     Brecha: {formatMoneyShort(g.gap)} USD
                   </span>
                 </div>
@@ -1391,15 +1385,15 @@ function Step3({
         className={cn(
           "border-2",
           totalGap === 0 && setup.needs.length > 0
-            ? "border-emerald-300 bg-transparent"
-            : "border-amber-300 bg-transparent",
+            ? "border-emerald-500/30 bg-transparent"
+            : "border-amber-500/30 bg-transparent",
         )}
       >
         <CardContent className="flex items-start gap-3 py-4 text-left text-sm">
           {totalGap === 0 && setup.needs.length > 0 ? (
             <>
-              <CheckCircle2 className="mt-0.5 size-5 text-emerald-600" />
-              <span className="text-emerald-900">
+              <CheckCircle2 className="mt-0.5 size-5 text-emerald-400" />
+              <span className="text-emerald-300">
                 <strong>Plan de recursos completo.</strong> Todas las necesidades están
                 aseguradas. Listo para presentar al directorio e integrarse al Plan Estratégico
                 Integral.
@@ -1407,8 +1401,8 @@ function Step3({
             </>
           ) : (
             <>
-              <AlertTriangle className="mt-0.5 size-5 text-amber-600" />
-              <span className="text-amber-900">
+              <AlertTriangle className="mt-0.5 size-5 text-amber-400" />
+              <span className="text-amber-300">
                 <strong>Plan con brechas pendientes.</strong> Revisa las brechas críticas y
                 asegura financiamiento antes de cerrar M4.
               </span>

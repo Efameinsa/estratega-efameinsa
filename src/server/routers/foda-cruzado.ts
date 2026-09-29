@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { router, protectedProcedure, editorProcedure } from "@/server/trpc/init";
+import { router, editorProcedure, cycleProcedure, cycleEditorProcedure } from "@/server/trpc/init";
 import { db } from "@/server/db";
 
 const FactorTypeSchema = z.enum(["F", "O", "D", "A"]);
@@ -16,7 +16,7 @@ export const fodaCruzadoRouter = router({
   // ───────────────────────────────────────────────────────────────────
   // getSetup — devuelve FODA Consolidado + estrategias con origenes
   // ───────────────────────────────────────────────────────────────────
-  getSetup: protectedProcedure
+  getSetup: cycleProcedure
     .input(z.object({ cycleId: z.string() }))
     .query(async ({ input }) => {
       const cycleId = input.cycleId;
@@ -71,7 +71,7 @@ export const fodaCruzadoRouter = router({
   // ───────────────────────────────────────────────────────────────────
   // createWithOrigins — crea Strategy + StrategyOrigin de los factores
   // ───────────────────────────────────────────────────────────────────
-  createWithOrigins: editorProcedure
+  createWithOrigins: cycleEditorProcedure
     .input(
       z.object({
         cycleId: z.string(),

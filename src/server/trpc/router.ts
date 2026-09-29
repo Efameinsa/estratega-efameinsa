@@ -43,7 +43,6 @@ import { projectRouter } from "@/server/routers/project";
 import { projectConfigRouter } from "@/server/routers/project-config";
 import { issueRouter } from "@/server/routers/issue";
 import { pmRouter } from "@/server/routers/pm";
-import { sprintRouter } from "@/server/routers/sprint";
 import { invitationsRouter } from "@/server/routers/invitations";
 import { membersRouter } from "@/server/routers/members";
 import { onboardingRouter } from "@/server/routers/onboarding";
@@ -96,7 +95,6 @@ export const appRouter = router({
   projectConfig: projectConfigRouter,
   issue: issueRouter,
   pm: pmRouter,
-  sprint: sprintRouter,
   invitations: invitationsRouter,
   members: membersRouter,
   onboarding: onboardingRouter,

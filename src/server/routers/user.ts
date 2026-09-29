@@ -6,11 +6,7 @@ import { db } from "@/server/db";
 
 export const userRouter = router({
   list: authOnlyProcedure.query(async ({ ctx }) => {
-    const user = await db.user.findUnique({
-      where: { id: ctx.userId },
-      select: { activeOrganizationId: true, organizationId: true },
-    });
-    const orgId = user?.activeOrganizationId ?? user?.organizationId;
+    const orgId = await ctx.getActiveOrgId();
     if (!orgId) return [];
 
     return db.user.findMany({

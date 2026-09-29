@@ -76,7 +76,7 @@ export default function InvitePage() {
           {/* Org avatar */}
           <div
             className="w-16 h-16 rounded-xl flex items-center justify-center text-white text-2xl font-medium mx-auto mb-4"
-            style={{ background: invite.organization?.color ?? "#7aa8e0" }}
+            style={{ background: invite.organization?.color ?? "#a78bfa" }}
           >
             {invite.organization?.name?.slice(0, 2).toUpperCase()}
           </div>

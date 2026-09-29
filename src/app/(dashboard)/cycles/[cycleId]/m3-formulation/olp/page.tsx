@@ -48,7 +48,7 @@ interface OlpSetup {
 
 const DIMENSION_INFO: Record<Dimension, { label: string; question: string; icon: React.ElementType; color: string; bg: string; border: string; placeholder: string }> = {
   FIN: { label: "Resultados economicos", question: "¿Cuanto quieres facturar o ganar?", icon: Coins, color: "#4ade80", bg: "rgba(22,163,74,0.08)", border: "rgba(22,163,74,0.35)", placeholder: "Al 2030, alcanzar ingresos anuales de USD X millones." },
-  CLI: { label: "Posicion en el mercado", question: "¿Que cuota o reconocimiento quieres tener?", icon: Users, color: "#2563EB", bg: "rgba(37,99,235,0.08)", border: "rgba(37,99,235,0.35)", placeholder: "Al 2030, alcanzar el X% de cuota de mercado en [region o segmento]." },
+  CLI: { label: "Posicion en el mercado", question: "¿Que cuota o reconocimiento quieres tener?", icon: Users, color: "#60a5fa", bg: "rgba(37,99,235,0.08)", border: "rgba(37,99,235,0.35)", placeholder: "Al 2030, alcanzar el X% de cuota de mercado en [region o segmento]." },
   INT: { label: "Como opera la empresa", question: "¿Que procesos o certificaciones quieres lograr?", icon: Settings, color: "#F59E0B", bg: "rgba(245,158,11,0.08)", border: "rgba(245,158,11,0.35)", placeholder: "Al 2028, contar con X plantas certificadas en [norma]." },
   APR: { label: "Las personas y la cultura", question: "¿Que quieres construir en talento y cultura?", icon: GraduationCap, color: "#8B5CF6", bg: "rgba(139,92,246,0.08)", border: "rgba(139,92,246,0.35)", placeholder: "Al 2030, ser una de las X mejores empresas para trabajar en el sector." },
 };
@@ -86,7 +86,7 @@ export default function OlpPage() {
         </div>
         <div className="rounded-xl border border-amber-200/60 bg-transparent dark:border-amber-900/40 dark:bg-transparent p-5">
           <div className="flex gap-3">
-            <AlertTriangle className="size-5 shrink-0 text-amber-600 mt-0.5" />
+            <AlertTriangle className="size-5 shrink-0 text-amber-400 mt-0.5" />
             <div>
               <p className="font-medium mb-1">Antes de definir OLPs necesitas:</p>
               <ul className="text-sm text-muted-foreground mb-3 space-y-1 list-disc pl-4">
@@ -210,7 +210,7 @@ function Paso1({ setup, cycleId, onNext }: { setup: OlpSetup; cycleId: string; o
         </CardHeader>
         <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
           <FodaPreview title="Fortalezas" items={top3(setup.foda.fortalezas)} color="#4ade80" />
-          <FodaPreview title="Oportunidades" items={top3(setup.foda.oportunidades)} color="#2563EB" />
+          <FodaPreview title="Oportunidades" items={top3(setup.foda.oportunidades)} color="#60a5fa" />
           <FodaPreview title="Debilidades" items={top3(setup.foda.debilidades)} color="#F43F5E" />
           <FodaPreview title="Amenazas" items={top3(setup.foda.amenazas)} color="#F59E0B" />
         </CardContent>
@@ -325,13 +325,13 @@ function Paso2({ setup, cycleId, onBack, onNext }: { setup: OlpSetup; cycleId: s
 
         {totalOlps < 4 && totalOlps > 0 && (
           <div className="rounded-md border border-amber-200/60 bg-transparent p-3 text-xs flex gap-2">
-            <AlertTriangle className="size-4 shrink-0 text-amber-600 mt-0.5" />
+            <AlertTriangle className="size-4 shrink-0 text-amber-400 mt-0.5" />
             <span>Tienes {totalOlps} OLPs definidos. Lo recomendable son entre 4 y 7 para tener un conjunto balanceado.</span>
           </div>
         )}
         {allDimsCovered && (
           <div className="rounded-md border border-emerald-200/60 bg-transparent p-3 text-xs flex gap-2">
-            <Check className="size-4 shrink-0 text-emerald-600 mt-0.5" />
+            <Check className="size-4 shrink-0 text-emerald-400 mt-0.5" />
             <span>Tu conjunto de OLPs cubre las 4 dimensiones del negocio. Analisis balanceado.</span>
           </div>
         )}
@@ -463,7 +463,7 @@ function OlpCard({ olp, cycleId, onEdit }: { olp: OlpItem; cycleId: string; onEd
         </div>
       )}
       {observations.length > 0 && (
-        <div className="mt-2 text-[11px] text-amber-700 flex gap-1.5 items-start">
+        <div className="mt-2 text-[11px] text-amber-300 flex gap-1.5 items-start">
           <AlertTriangle className="size-3 mt-0.5 shrink-0" />
           <span>{observations.join(" · ")}</span>
         </div>
@@ -655,7 +655,7 @@ function OlpForm({
       )}
 
       {obs.length > 0 && (
-        <div className="rounded-md border border-amber-200/60 bg-transparent p-2 text-[11px] text-amber-700 flex gap-2 items-start">
+        <div className="rounded-md border border-amber-200/60 bg-transparent p-2 text-[11px] text-amber-300 flex gap-2 items-start">
           <AlertTriangle className="size-3 mt-0.5 shrink-0" />
           <span>{obs.join(" · ")}</span>
         </div>
@@ -731,7 +731,7 @@ function ContextSidebar({ setup, editingDescription }: { setup: OlpSetup; editin
         {openFoda && (
           <CardContent className="pt-0 grid grid-cols-2 gap-2 text-[11px]">
             <FodaPreview title="F" items={setup.foda.fortalezas.slice(0, 3)} color="#4ade80" />
-            <FodaPreview title="O" items={setup.foda.oportunidades.slice(0, 3)} color="#2563EB" />
+            <FodaPreview title="O" items={setup.foda.oportunidades.slice(0, 3)} color="#60a5fa" />
             <FodaPreview title="D" items={setup.foda.debilidades.slice(0, 3)} color="#F43F5E" />
             <FodaPreview title="A" items={setup.foda.amenazas.slice(0, 3)} color="#F59E0B" />
           </CardContent>
@@ -864,7 +864,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: OlpSetup; cycleId: string; o
 
       {isOk ? (
         <div className="rounded-md border border-emerald-200/60 bg-transparent p-3 text-sm">
-          <Check className="inline size-4 mr-1 text-emerald-600" />
+          <Check className="inline size-4 mr-1 text-emerald-400" />
           <strong>Tu conjunto de OLPs esta completo:</strong>
           <ul className="text-xs text-muted-foreground mt-1 space-y-0.5 pl-4">
             <li className="list-disc">{total} OLPs en total (recomendado 4-7)</li>
@@ -875,7 +875,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: OlpSetup; cycleId: string; o
         </div>
       ) : (
         <div className="rounded-md border border-amber-200/60 bg-transparent p-3 text-sm">
-          <AlertTriangle className="inline size-4 mr-1 text-amber-600" />
+          <AlertTriangle className="inline size-4 mr-1 text-amber-400" />
           <strong>Tu conjunto de OLPs tiene observaciones:</strong>
           <ul className="text-xs text-muted-foreground mt-1 space-y-0.5 pl-4">
             {observations.map((o, i) => <li key={i} className="list-disc">{o}</li>)}
@@ -890,7 +890,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: OlpSetup; cycleId: string; o
             <div className="text-sm">
               <p className="font-medium mb-1">¿Que sigue?</p>
               <p className="text-muted-foreground">
-                En el proximo modulo (<strong>Matriz de Decision</strong>) veras como tus estrategias se conectan
+                En el proximo modulo (<strong>Matriz de Decisión</strong>) veras como tus estrategias se conectan
                 formalmente con cada OLP para identificar cuales aportan mas a tus objetivos.
               </p>
             </div>

@@ -1,10 +1,10 @@
 import { z } from "zod";
-import { router, protectedProcedure, editorProcedure } from "@/server/trpc/init";
+import { router, cycleProcedure, cycleEditorProcedure } from "@/server/trpc/init";
 import { db } from "@/server/db";
 
 export const peiRouter = router({
   // getDocument: agregador que lee TODO el ciclo (M1, M2, M3) y lo entrega consolidado
-  getDocument: protectedProcedure
+  getDocument: cycleProcedure
     .input(z.object({ cycleId: z.string() }))
     .query(async ({ input }) => {
       const cycleId = input.cycleId;
@@ -152,7 +152,7 @@ export const peiRouter = router({
       };
     }),
 
-  updateSummary: editorProcedure
+  updateSummary: cycleEditorProcedure
     .input(z.object({ cycleId: z.string(), customSummary: z.string().nullable() }))
     .mutation(async ({ input }) => {
       return db.peiDocument.upsert({
@@ -162,7 +162,7 @@ export const peiRouter = router({
       });
     }),
 
-  markExported: editorProcedure
+  markExported: cycleEditorProcedure
     .input(z.object({ cycleId: z.string() }))
     .mutation(async ({ input }) => {
       return db.peiDocument.upsert({

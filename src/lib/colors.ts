@@ -5,7 +5,7 @@ export const SEMAFORO = {
   verde: { color: "#4ade80", bg: "transparent", label: "Verde" },
   ambar: { color: "#fbbf24", bg: "transparent", label: "Ámbar" },
   rojo: { color: "#f87171", bg: "transparent", label: "Rojo" },
-  sin_dato: { color: "#a8a29e", bg: "transparent", label: "Sin dato" },
+  sin_dato: { color: "#8d83a8", bg: "transparent", label: "Sin dato" },
 } as const;
 
 export const URGENCY = {

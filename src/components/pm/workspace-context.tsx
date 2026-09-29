@@ -156,8 +156,12 @@ export function WorkspaceProvider({
       refresh();
     },
     onSettled: (_d, _e, vars) => {
-      refresh();
+      // La lista ya se actualizó de forma optimista; solo se refresca lo que depende del cambio.
+      utils.pm.tasks.invalidate({ projectId });
       utils.pm.taskDetail.invalidate({ id: vars.id });
+      if (vars.statusId !== undefined || vars.assigneeId !== undefined || vars.dueDate !== undefined || vars.estimateHours !== undefined) {
+        utils.pm.summary.invalidate({ projectId });
+      }
       if (vars.assigneeId) utils.pm.workspace.invalidate({ projectId });
     },
   });

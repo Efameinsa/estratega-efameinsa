@@ -52,10 +52,10 @@ export const BLOCK_INFO: Record<EthicsBlock, { label: string; question: string; 
 };
 
 export const VERDICT_INFO: Record<EthicsVerdict, { label: string; color: string; bg: string; border: string; icon: string }> = {
-  aprobada:                  { label: "Aprobada",                color: "#16A34A", bg: "rgba(22,163,74,0.10)",  border: "rgba(22,163,74,0.40)",  icon: "✓" },
+  aprobada:                  { label: "Aprobada",                color: "#4ade80", bg: "rgba(22,163,74,0.10)",  border: "rgba(22,163,74,0.40)",  icon: "✓" },
   aprobada_con_mitigantes:   { label: "Con mitigantes",          color: "#F59E0B", bg: "rgba(245,158,11,0.10)", border: "rgba(245,158,11,0.40)", icon: "🛡" },
   requiere_mitigacion:       { label: "Requiere mitigacion",     color: "#F59E0B", bg: "rgba(245,158,11,0.10)", border: "rgba(245,158,11,0.40)", icon: "!" },
-  rechazada:                 { label: "Rechazada",               color: "#DC2626", bg: "rgba(220,38,38,0.10)",  border: "rgba(220,38,38,0.40)",  icon: "✗" },
+  rechazada:                 { label: "Rechazada",               color: "#f87171", bg: "rgba(220,38,38,0.10)",  border: "rgba(220,38,38,0.40)",  icon: "✗" },
 };
 
 export function principlesByBlock(block: EthicsBlock): PrincipleDef[] {

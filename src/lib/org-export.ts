@@ -46,7 +46,7 @@ function downloadBlob(blob: Blob, filename: string) {
 
 export async function exportCanvasPng(element: HTMLElement, name: string) {
   const dataUrl = await toPng(element, {
-    backgroundColor: "#ffffff",
+    backgroundColor: "rgba(167, 139, 250, 0.08)",
     pixelRatio: 2,
     filter: (node) => {
       // Excluir controles, minimap, panel y nodos colapsados
@@ -71,7 +71,7 @@ export async function exportCanvasPng(element: HTMLElement, name: string) {
 
 export async function exportCanvasSvg(element: HTMLElement, name: string) {
   const dataUrl = await toSvg(element, {
-    backgroundColor: "#ffffff",
+    backgroundColor: "rgba(167, 139, 250, 0.08)",
     filter: (node) => {
       const cls = (node as HTMLElement).className ?? "";
       if (typeof cls === "string") {
@@ -210,7 +210,7 @@ export async function exportOrgPdf(ctx: ExportOrgContext, canvasElement: HTMLEle
   if (canvasElement) {
     try {
       const png = await toPng(canvasElement, {
-        backgroundColor: "#ffffff",
+        backgroundColor: "rgba(167, 139, 250, 0.08)",
         pixelRatio: 2,
         filter: (node) => {
           const cls = (node as HTMLElement).className ?? "";

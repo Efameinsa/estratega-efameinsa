@@ -226,37 +226,37 @@ export const PESTEC_VARIABLES: PestecVariableData[] = [
   {
     key: "politico", letra: "P", nombre: "Politico",
     descripcion: "Fuerzas politicas, gubernamentales y legales que afectan al sector",
-    color: "#185FA5", colorLight: "transparent", icono: "landmark",
+    color: "#60a5fa", colorLight: "transparent", icono: "landmark",
     subVariables: P_VARS,
   },
   {
     key: "economico", letra: "E", nombre: "Economico",
     descripcion: "Variables macroeconomicas, financieras y de mercado",
-    color: "#059669", colorLight: "transparent", icono: "trending-up",
+    color: "#34d399", colorLight: "transparent", icono: "trending-up",
     subVariables: E_VARS,
   },
   {
     key: "social", letra: "S", nombre: "Social",
     descripcion: "Factores demograficos, culturales y de estilo de vida",
-    color: "#D97706", colorLight: "transparent", icono: "users",
+    color: "#fbbf24", colorLight: "transparent", icono: "users",
     subVariables: S_VARS,
   },
   {
     key: "tecnologico", letra: "T", nombre: "Tecnologico",
     descripcion: "Innovacion, digitalizacion e infraestructura tecnologica",
-    color: "#7C3AED", colorLight: "transparent", icono: "cpu",
+    color: "#a78bfa", colorLight: "transparent", icono: "cpu",
     subVariables: T_VARS,
   },
   {
     key: "ecologico", letra: "Ec", nombre: "Ecologico",
     descripcion: "Medio ambiente, sostenibilidad y regulacion ambiental",
-    color: "#0D9488", colorLight: "transparent", icono: "leaf",
+    color: "#2dd4bf", colorLight: "transparent", icono: "leaf",
     subVariables: Ec_VARS,
   },
   {
     key: "competitivo", letra: "C", nombre: "Competitivo",
     descripcion: "Estructura competitiva del sector, fuerzas de Porter",
-    color: "#BE185D", colorLight: "transparent", icono: "swords",
+    color: "#f472b6", colorLight: "transparent", icono: "swords",
     subVariables: C_VARS,
   },
 ];

@@ -18,7 +18,7 @@ export const GE_QUADRANT_INFO: Record<
   I: {
     label: "Cuadrante I — Escenario ideal",
     subtitle: "Posicion fuerte + Mercado en crecimiento rapido",
-    color: "#16A34A",
+    color: "#4ade80",
     bg: "rgba(22,163,74,0.12)",
     border: "rgba(22,163,74,0.45)",
     description:
@@ -36,7 +36,7 @@ export const GE_QUADRANT_INFO: Record<
   III: {
     label: "Cuadrante III — Escenario critico",
     subtitle: "Posicion debil + Mercado lento",
-    color: "#DC2626",
+    color: "#f87171",
     bg: "rgba(220,38,38,0.12)",
     border: "rgba(220,38,38,0.45)",
     description:

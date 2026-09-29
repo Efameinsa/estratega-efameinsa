@@ -60,7 +60,7 @@ interface FodaSetup {
 const CROSS_INFO: Record<CrossType, { label: string; color: string; bg: string; border: string; subtitle: string; placeholder: string }> = {
   FO: { label: "Estrategias FO · Ofensivas", color: "#4ade80", bg: "rgba(22,163,74,0.06)", border: "rgba(22,163,74,0.35)", subtitle: "Usar fortalezas para aprovechar oportunidades", placeholder: "Ej. Aprovechar nuestra red logistica (F2) para entrar al canal moderno (O3)..." },
   FA: { label: "Estrategias FA · Defensivas", color: "#F59E0B", bg: "rgba(245,158,11,0.06)", border: "rgba(245,158,11,0.35)", subtitle: "Usar fortalezas para neutralizar amenazas", placeholder: "Ej. Usar nuestra solidez financiera (F1) para resistir la guerra de precios (A2)..." },
-  DO: { label: "Estrategias DO · Adaptativas", color: "#2563EB", bg: "rgba(37,99,235,0.06)", border: "rgba(37,99,235,0.35)", subtitle: "Superar debilidades aprovechando oportunidades", placeholder: "Ej. Tercerizar fabricacion (D1) aprovechando proveedores especializados emergentes (O2)..." },
+  DO: { label: "Estrategias DO · Adaptativas", color: "#60a5fa", bg: "rgba(37,99,235,0.06)", border: "rgba(37,99,235,0.35)", subtitle: "Superar debilidades aprovechando oportunidades", placeholder: "Ej. Tercerizar fabricacion (D1) aprovechando proveedores especializados emergentes (O2)..." },
   DA: { label: "Estrategias DA · Supervivencia", color: "#F43F5E", bg: "rgba(244,63,94,0.06)", border: "rgba(244,63,94,0.35)", subtitle: "Minimizar debilidades ante amenazas", placeholder: "Ej. Reducir SKU de baja rotacion (D3) ante caida de la demanda (A4)..." },
 };
 
@@ -108,7 +108,7 @@ export default function FodaCruzadoPage() {
         </div>
         <div className="rounded-xl border border-amber-200/60 bg-transparent dark:border-amber-900/40 dark:bg-transparent p-5">
           <div className="flex gap-3">
-            <AlertTriangle className="size-5 shrink-0 text-amber-600 mt-0.5" />
+            <AlertTriangle className="size-5 shrink-0 text-amber-400 mt-0.5" />
             <div>
               <p className="font-medium mb-1">FODA Consolidado vacio</p>
               <p className="text-sm text-muted-foreground mb-3">
@@ -224,7 +224,7 @@ function Paso1({ setup, onNext, cycleId }: { setup: FodaSetup; onNext: () => voi
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FodaListCard title="Fortalezas (F)" items={setup.fortalezas} color="#4ade80" />
-        <FodaListCard title="Oportunidades (O)" items={setup.oportunidades} color="#2563EB" />
+        <FodaListCard title="Oportunidades (O)" items={setup.oportunidades} color="#60a5fa" />
         <FodaListCard title="Debilidades (D)" items={setup.debilidades} color="#F43F5E" />
         <FodaListCard title="Amenazas (A)" items={setup.amenazas} color="#F59E0B" />
       </div>
@@ -801,7 +801,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: FodaSetup; cycleId: string; 
                       <td className="p-2 text-xs text-muted-foreground">{s.horizon ? HORIZON_LABEL[s.horizon] : "—"}</td>
                       <td className="p-2">{pInfo ? <Badge variant="outline" style={{ color: pInfo.color, borderColor: pInfo.border }}>{pInfo.label}</Badge> : <span className="text-xs text-muted-foreground">—</span>}</td>
                       <td className="p-2">
-                        <button onClick={() => setStatus.mutate({ id: s.id, status: isRet ? "descartada" : "retenida" })} className={`text-xs px-2 py-0.5 rounded ${isRet ? "bg-transparent text-emerald-700 hover:bg-transparent" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}>
+                        <button onClick={() => setStatus.mutate({ id: s.id, status: isRet ? "descartada" : "retenida" })} className={`text-xs px-2 py-0.5 rounded ${isRet ? "bg-transparent text-emerald-300 hover:bg-transparent" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}>
                           {isRet ? "Retenida" : "Descartada"}
                         </button>
                       </td>
@@ -830,7 +830,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: FodaSetup; cycleId: string; 
           )}
           {alertas.map((a, i) => (
             <div key={i} className="flex gap-2 items-start rounded-md border border-amber-200/60 bg-transparent dark:border-amber-900/30 dark:bg-transparent p-2.5">
-              <AlertTriangle className="size-4 shrink-0 text-amber-600 mt-0.5" />
+              <AlertTriangle className="size-4 shrink-0 text-amber-400 mt-0.5" />
               <span className="text-xs leading-relaxed">{a}</span>
             </div>
           ))}

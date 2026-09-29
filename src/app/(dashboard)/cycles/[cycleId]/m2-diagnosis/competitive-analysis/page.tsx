@@ -95,7 +95,7 @@ function CriterionCard({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <span className="flex size-6 items-center justify-center rounded-lg text-[10px] font-medium text-white"
-                style={{ backgroundColor: "#7aa8e0" }}
+                style={{ backgroundColor: "#a78bfa" }}
               >
                 {index + 1}
               </span>
@@ -131,7 +131,7 @@ function CriterionCard({
                   const v = parseFloat(e.target.value);
                   if (!isNaN(v) && v >= criterio.min && v <= criterio.max) onChange(v);
                 }}
-                className="w-24 rounded-lg border bg-transparent px-3 py-2 text-[14px] font-medium text-right outline-none focus:border-[#185FA5]"
+                className="w-24 rounded-lg border bg-transparent px-3 py-2 text-[14px] font-medium text-right outline-none focus:border-[#60a5fa]"
               />
               <span className="text-[14px] font-medium" style={{ color: "var(--color-text-secondary)" }}>%</span>
             </div>
@@ -141,9 +141,9 @@ function CriterionCard({
                 <button key={p.valor} type="button" onClick={() => onChange(p.valor)}
                   className="rounded-full border px-2.5 py-1 text-[11px] font-medium transition-all cursor-pointer"
                   style={{
-                    borderColor: value === p.valor ? "#7aa8e0" : "var(--color-border-tertiary)",
+                    borderColor: value === p.valor ? "#a78bfa" : "var(--color-border-tertiary)",
                     backgroundColor: value === p.valor ? "transparent" : "transparent",
-                    color: value === p.valor ? "#7aa8e0" : "var(--color-text-secondary)",
+                    color: value === p.valor ? "#a78bfa" : "var(--color-text-secondary)",
                   }}
                 >
                   {p.label}
@@ -196,14 +196,14 @@ function CriterionCard({
         {/* 4. FCE generated or "no FCE" */}
         {fce ? (
           <div className="flex items-start gap-2 rounded-lg border px-3 py-2.5 animate-in fade-in duration-300"
-            style={{ borderColor: "#7aa8e0", backgroundColor: "transparent" }}
+            style={{ borderColor: "#a78bfa", backgroundColor: "transparent" }}
           >
-            <Target className="size-3.5 shrink-0 mt-0.5" style={{ color: "#7aa8e0" }} />
+            <Target className="size-3.5 shrink-0 mt-0.5" style={{ color: "#a78bfa" }} />
             <div>
               <span className="text-[12px] font-medium" style={{ color: "#9ec2ec" }}>
                 FCE → {fce.nombre}
               </span>
-              <span className="text-[11px] block" style={{ color: "#7aa8e0" }}>
+              <span className="text-[11px] block" style={{ color: "#a78bfa" }}>
                 Peso sugerido: {adjustedWeight.toFixed(2)}
               </span>
             </div>
@@ -273,7 +273,7 @@ function QuestionnairePanel({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
-              <BarChart3 className="size-4" style={{ color: "#7aa8e0" }} />
+              <BarChart3 className="size-4" style={{ color: "#a78bfa" }} />
               <span className="text-[13px] font-medium" style={{ color: "var(--color-text-secondary)" }}>
                 Puntaje total
               </span>
@@ -294,7 +294,7 @@ function QuestionnairePanel({
             </span>
             <Separator orientation="vertical" className="h-4" />
             <div className="flex items-center gap-1.5">
-              <Target className="size-3.5" style={{ color: "#7aa8e0" }} />
+              <Target className="size-3.5" style={{ color: "#a78bfa" }} />
               <span className="text-[12px] font-medium" style={{ color: "var(--color-text-secondary)" }}>
                 {fceCount} FCE
               </span>
@@ -302,7 +302,7 @@ function QuestionnairePanel({
           </div>
         </div>
         <div className="h-2.5 w-full overflow-hidden rounded-full"
-          style={{ backgroundColor: "var(--color-border-tertiary, #e5e7eb)" }}
+          style={{ backgroundColor: "var(--color-border-tertiary, rgba(167,139,250,0.14))" }}
         >
           <div
             className="h-full rounded-full transition-all duration-300"
@@ -325,10 +325,10 @@ function QuestionnairePanel({
       </div>
 
       {/* FCE Summary Panel */}
-      <div className="rounded-xl border p-4 space-y-3" style={{ borderColor: "#7aa8e0", backgroundColor: "transparent" }}>
+      <div className="rounded-xl border p-4 space-y-3" style={{ borderColor: "#a78bfa", backgroundColor: "transparent" }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Target className="size-4" style={{ color: "#7aa8e0" }} />
+            <Target className="size-4" style={{ color: "#a78bfa" }} />
             <span className="text-[13px] font-medium" style={{ color: "#9ec2ec" }}>
               Factores Clave de Exito generados
             </span>
@@ -352,7 +352,7 @@ function QuestionnairePanel({
                   <span className="text-[12px] font-medium block" style={{ color: "#9ec2ec" }}>
                     {item.fce.nombre}
                   </span>
-                  <span className="text-[10px]" style={{ color: "#7aa8e0" }}>
+                  <span className="text-[10px]" style={{ color: "#a78bfa" }}>
                     Desde: {item.criterioNombre} ({item.valor}) · Peso: {item.adjustedWeight.toFixed(2)}
                   </span>
                 </div>
@@ -370,7 +370,7 @@ function QuestionnairePanel({
       <div className="flex items-center gap-3">
         <button type="button" onClick={onSave} disabled={saving}
           className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-medium text-white cursor-pointer disabled:opacity-50"
-          style={{ backgroundColor: "#7aa8e0" }}
+          style={{ backgroundColor: "#a78bfa" }}
         >
           <Save className="size-3.5" />
           Guardar evaluacion
@@ -425,10 +425,10 @@ export default function CompetitiveAnalysisPage() {
       {/* Hero */}
       <div className="flex items-center gap-3">
         <div className="flex size-12 items-center justify-center rounded-2xl" style={{ backgroundColor: "transparent" }}>
-          <BarChart3 className="size-6" style={{ color: "#7aa8e0" }} />
+          <BarChart3 className="size-6" style={{ color: "#a78bfa" }} />
         </div>
         <div>
-          <h1 className="text-2xl font-medium tracking-tight">Analisis Competitivo</h1>
+          <h1 className="text-2xl font-medium tracking-tight">Análisis Competitivo</h1>
           <p className="text-sm text-muted-foreground">
             10 criterios que evaluan la estructura competitiva del sector y generan FCE para el MPC
           </p>

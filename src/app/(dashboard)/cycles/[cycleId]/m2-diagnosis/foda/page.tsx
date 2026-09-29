@@ -36,9 +36,9 @@ function QuadrantCard({
 }) {
   const colorStyles: Record<string, { border: string; bg: string; badge: string }> = {
     green: {
-      border: "border-green-200 dark:border-green-900",
+      border: "border-green-500/30 dark:border-green-900",
       bg: "bg-transparent dark:bg-transparent",
-      badge: "bg-transparent text-green-800 dark:bg-transparent dark:text-green-200",
+      badge: "bg-transparent text-green-300 dark:bg-transparent dark:text-green-200",
     },
     blue: {
       border: "border-primary/25 dark:border-primary",
@@ -46,14 +46,14 @@ function QuadrantCard({
       badge: "bg-primary/15 text-primary dark:bg-primary/80 dark:text-primary/80",
     },
     yellow: {
-      border: "border-yellow-200 dark:border-yellow-900",
+      border: "border-yellow-500/30 dark:border-yellow-900",
       bg: "bg-transparent dark:bg-transparent",
-      badge: "bg-transparent text-yellow-800 dark:bg-transparent dark:text-yellow-200",
+      badge: "bg-transparent text-yellow-300 dark:bg-transparent dark:text-yellow-200",
     },
     red: {
-      border: "border-red-200 dark:border-red-900",
+      border: "border-red-500/30 dark:border-red-900",
       bg: "bg-transparent dark:bg-transparent",
-      badge: "bg-transparent text-red-800 dark:bg-transparent dark:text-red-200",
+      badge: "bg-transparent text-red-300 dark:bg-transparent dark:text-red-200",
     },
   };
 

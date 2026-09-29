@@ -182,7 +182,7 @@ export default function VisionPage() {
                   {v.timeHorizon != null && (
                     <Badge variant="secondary">
                       <Clock className="mr-1 h-3 w-3" />
-                      {v.timeHorizon} años
+                      Horizonte {v.timeHorizon}
                     </Badge>
                   )}
                 </CardTitle>

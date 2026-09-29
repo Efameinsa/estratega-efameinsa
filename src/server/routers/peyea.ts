@@ -99,8 +99,9 @@ export const peyeaRouter = router({
       try {
         if (porter?.data) porterData = JSON.parse(porter.data);
       } catch {}
+      // Porter se califica 1-5: se lleva linealmente a la escala PEYEA 1-6.
       const porterAvg = porter?.overallScore
-        ? score1to4to1to6(porter.overallScore)
+        ? Math.round(1 + ((porter.overallScore - 1) * 5) / 4)
         : null;
 
       let attractivenessData: PorterDataItem[] = [];
@@ -110,11 +111,13 @@ export const peyeaRouter = router({
       const attractivenessAvg =
         attractivenessData.length > 0
           ? attractivenessData.reduce(
-              (sum, item) => sum + (item.rating ?? item.intensity ?? 3),
+              // La atractividad guarda `score` en escala 1-10.
+              (sum, item) => sum + ((item as { score?: number }).score ?? item.rating ?? item.intensity ?? 5.5),
               0,
             ) / attractivenessData.length
           : null;
-      const attractivenessScore = attractivenessAvg !== null ? score1to4to1to6(attractivenessAvg) : null;
+      const attractivenessScore =
+        attractivenessAvg !== null ? Math.round(1 + ((attractivenessAvg - 1) * 5) / 9) : null;
 
       const pestecFactors = await db.pestecFactor.findMany({
         where: { cycleId, confirmed: true },

@@ -98,7 +98,14 @@ export function Board() {
         return i >= 0 ? { ...t, statusId: col, sortOrder: i } : t;
       }),
     );
-    move.mutate({ projectId, moves: items.map((id, i) => ({ id, statusId: col, sortOrder: i })) });
+    // Solo viajan las tarjetas que realmente cambiaron de columna u orden.
+    const changed = items
+      .map((id, i) => ({ id, statusId: col, sortOrder: i }))
+      .filter((m) => {
+        const t = byId.get(m.id);
+        return !t || t.statusId !== m.statusId || t.sortOrder !== m.sortOrder;
+      });
+    if (changed.length) move.mutate({ projectId, moves: changed });
     if (statusChanged && newStatus?.category === "DONE") toast.success("¡Tarea completada!");
   };
 
@@ -107,7 +114,7 @@ export function Board() {
   return (
     <div className="h-full overflow-x-auto overflow-y-hidden">
       <DndContext sensors={sensors} collisionDetection={closestCorners} onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd} onDragCancel={() => { setActiveId(null); setColumns(buildColumns()); }}>
-        <div className="flex h-full gap-4 px-6 py-4">
+        <div className="flex h-full w-max min-w-full gap-4 px-6 py-4 pr-10">
           {statuses.map((s) => (
             <Column key={s.id} status={s} ids={columns[s.id] ?? []} byId={byId} doneCol={s.category === "DONE"} />
           ))}

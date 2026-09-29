@@ -38,7 +38,7 @@ interface MefeFactor {
 function StatusBadge({ status }: { status: string }) {
   const cfg: Record<string, { label: string; bg: string; border: string; text: string }> = {
     en_construccion: { label: "En construccion", bg: "transparent", border: "#fbbf24", text: "#f0c283" },
-    lista_para_ajuste: { label: "Lista para ajuste", bg: "transparent", border: "#7aa8e0", text: "#9ec2ec" },
+    lista_para_ajuste: { label: "Lista para ajuste", bg: "transparent", border: "#a78bfa", text: "#9ec2ec" },
     finalizada: { label: "Finalizada", bg: "transparent", border: "#34d399", text: "#85c9a8" },
   };
   const c = cfg[status] ?? cfg.en_construccion;
@@ -60,7 +60,7 @@ function AddForm({ cycleId, onClose }: { cycleId: string; onClose: () => void })
   const [weight, setWeight] = useState("0.05"); const [rating, setRating] = useState("3");
 
   return (
-    <Card className="border-2" style={{ borderColor: "#7aa8e0" }}>
+    <Card className="border-2" style={{ borderColor: "#a78bfa" }}>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-[14px]">Agregar factor manualmente</CardTitle>
@@ -129,7 +129,7 @@ export default function MefePage() {
   // No auto-sync — user clicks "Sincronizar" explicitly to avoid overwriting adjusted weights
 
   const SOURCE_CFG: Record<string, { label: string; color: string; bg: string }> = {
-    pestec: { label: "PESTEC", color: "#7aa8e0", bg: "transparent" },
+    pestec: { label: "PESTEC", color: "#a78bfa", bg: "transparent" },
     porter: { label: "Porter", color: "#fbbf24", bg: "transparent" },
     manual: { label: "Manual", color: "#a8a29e", bg: "transparent" },
   };
@@ -166,7 +166,7 @@ export default function MefePage() {
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="flex size-12 items-center justify-center rounded-2xl" style={{ backgroundColor: "transparent" }}>
-            <Globe className="size-6" style={{ color: "#7aa8e0" }} />
+            <Globe className="size-6" style={{ color: "#a78bfa" }} />
           </div>
           <div>
             <h1 className="text-2xl font-medium tracking-tight">Matriz MEFE</h1>
@@ -178,9 +178,9 @@ export default function MefePage() {
 
       {/* Methodological note */}
       <div className="flex items-start gap-2 rounded-lg border p-3"
-        style={{ borderColor: "#7aa8e0", backgroundColor: "transparent" }}
+        style={{ borderColor: "#a78bfa", backgroundColor: "transparent" }}
       >
-        <Info className="size-4 shrink-0 mt-0.5" style={{ color: "#7aa8e0" }} />
+        <Info className="size-4 shrink-0 mt-0.5" style={{ color: "#a78bfa" }} />
         <p className="text-[12px]" style={{ color: "#9ec2ec" }}>
           <strong>Calificacion (1–4):</strong> mide como RESPONDE tu organizacion al factor externo, no la intensidad del factor.
           1 = respuesta deficiente, 2 = por debajo del promedio, 3 = por encima del promedio, 4 = respuesta superior.
@@ -206,7 +206,7 @@ export default function MefePage() {
             <Unlock className="size-3.5" /> Desbloquear
           </Button>
         ) : (
-          <Button size="sm" disabled={!canFinalize} onClick={() => finMut.mutate({ cycleId })} className="gap-1.5 text-white" style={{ backgroundColor: "#7aa8e0" }}>
+          <Button size="sm" disabled={!canFinalize} onClick={() => finMut.mutate({ cycleId })} className="gap-1.5 text-white" style={{ backgroundColor: "#a78bfa" }}>
             <Lock className="size-3.5" /> Finalizar MEFE
           </Button>
         )}
@@ -304,7 +304,7 @@ export default function MefePage() {
             </div>
 
             {/* Bar */}
-            <div className="h-2.5 w-full overflow-hidden rounded-full" style={{ backgroundColor: "var(--color-border-tertiary, #e5e7eb)" }}>
+            <div className="h-2.5 w-full overflow-hidden rounded-full" style={{ backgroundColor: "var(--color-border-tertiary, rgba(167,139,250,0.14))" }}>
               <div
                 className={`h-full rounded-full transition-all duration-500 ${isExceeded ? "animate-pulse" : ""}`}
                 style={{ width: `${Math.min(tw * 100, 100)}%`, backgroundColor: barColor }}
@@ -354,9 +354,9 @@ export default function MefePage() {
       )}
       {n > 0 && n < 10 && (
         <div className="flex items-start gap-2 rounded-lg border p-3"
-          style={{ borderColor: "#7aa8e0", backgroundColor: "transparent" }}
+          style={{ borderColor: "#a78bfa", backgroundColor: "transparent" }}
         >
-          <Info className="size-4 shrink-0 mt-0.5" style={{ color: "#7aa8e0" }} />
+          <Info className="size-4 shrink-0 mt-0.5" style={{ color: "#a78bfa" }} />
           <p className="text-[12px]" style={{ color: "#9ec2ec" }}>
             <strong>Factores insuficientes ({n}/10).</strong> D&apos;Alessio recomienda entre 10 y 20 factores para una MEFE completa.
             Sincroniza desde PESTEC y Porter o agrega factores manualmente.
@@ -378,9 +378,9 @@ export default function MefePage() {
       )}
       {n > 20 && (
         <div className="flex items-start gap-2 rounded-lg border p-3"
-          style={{ borderColor: "#7aa8e0", backgroundColor: "transparent" }}
+          style={{ borderColor: "#a78bfa", backgroundColor: "transparent" }}
         >
-          <Info className="size-4 shrink-0 mt-0.5" style={{ color: "#7aa8e0" }} />
+          <Info className="size-4 shrink-0 mt-0.5" style={{ color: "#a78bfa" }} />
           <p className="text-[12px]" style={{ color: "#9ec2ec" }}>
             <strong>Demasiados factores ({n}/20).</strong> D&apos;Alessio recomienda maximo 20 factores en la MEFE. Elimina los menos relevantes.
           </p>
@@ -403,7 +403,7 @@ export default function MefePage() {
           <div className="flex items-center gap-1.5">
             {([
               { key: "all" as const, label: "Todos", count: n },
-              { key: "pestec" as const, label: "PESTEC", count: bySource.pestec, color: "#7aa8e0", bg: "transparent" },
+              { key: "pestec" as const, label: "PESTEC", count: bySource.pestec, color: "#a78bfa", bg: "transparent" },
               { key: "porter" as const, label: "Porter", count: bySource.porter, color: "#fbbf24", bg: "transparent" },
               { key: "manual" as const, label: "Manual", count: bySource.manual, color: "#a8a29e", bg: "transparent" },
             ]).filter((t) => t.key === "all" || t.count > 0).map((t) => {
@@ -412,9 +412,9 @@ export default function MefePage() {
                 <button key={t.key} type="button" onClick={() => setSourceFilter(t.key)}
                   className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-[12px] font-medium transition-all cursor-pointer"
                   style={{
-                    borderColor: active ? (t.color ?? "#7aa8e0") : "var(--color-border-tertiary)",
+                    borderColor: active ? (t.color ?? "#a78bfa") : "var(--color-border-tertiary)",
                     backgroundColor: active ? (t.bg ?? "transparent") : "transparent",
-                    color: active ? (t.color ?? "#7aa8e0") : "var(--color-text-secondary)",
+                    color: active ? (t.color ?? "#a78bfa") : "var(--color-text-secondary)",
                   }}
                 >
                   {t.label}
@@ -483,7 +483,7 @@ export default function MefePage() {
                 return (
                   <TableRow key={f.id} style={{
                     borderLeftWidth: "3px",
-                    borderLeftColor: isO ? "#7aa8e0" : "#fca5a5",
+                    borderLeftColor: isO ? "#a78bfa" : "#fca5a5",
                     backgroundColor: "transparent",
                   }}>
                     {/* # */}
@@ -520,14 +520,14 @@ export default function MefePage() {
                     <TableCell>
                       {fin ? (
                         <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium"
-                          style={{ backgroundColor: "transparent", border: `1px solid ${isO ? "#7aa8e0" : "#fca5a5"}`, color: isO ? "#9ec2ec" : "#ee9c9c" }}>
+                          style={{ backgroundColor: "transparent", border: `1px solid ${isO ? "#a78bfa" : "#fca5a5"}`, color: isO ? "#9ec2ec" : "#ee9c9c" }}>
                           {isO ? "O" : "A"}
                         </span>
                       ) : (
                         <button type="button"
                           onClick={() => updateMut.mutate({ id: f.id, type: isO ? "A" : "O" })}
                           className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium cursor-pointer transition-colors"
-                          style={{ backgroundColor: "transparent", border: `1px solid ${isO ? "#7aa8e0" : "#fca5a5"}`, color: isO ? "#9ec2ec" : "#ee9c9c" }}
+                          style={{ backgroundColor: "transparent", border: `1px solid ${isO ? "#a78bfa" : "#fca5a5"}`, color: isO ? "#9ec2ec" : "#ee9c9c" }}
                           title={`Click para cambiar a ${isO ? "Amenaza" : "Oportunidad"}`}
                         >
                           {isO ? "O" : "A"}
@@ -616,7 +616,7 @@ export default function MefePage() {
                 <TableCell className="text-[12px] text-muted-foreground">—</TableCell>
                 <TableCell className="text-right">
                   {wv ? (
-                    <span className="text-[15px] font-medium" style={{ color: "#7aa8e0" }}>{ppt.toFixed(2)}</span>
+                    <span className="text-[15px] font-medium" style={{ color: "#a78bfa" }}>{ppt.toFixed(2)}</span>
                   ) : (
                     <span className="text-[11px]" style={{ color: "var(--color-text-tertiary)" }}>Ajusta pesos</span>
                   )}

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { router, protectedProcedure, editorProcedure } from "@/server/trpc/init";
+import { router, cycleProcedure, cycleEditorProcedure } from "@/server/trpc/init";
 import { db } from "@/server/db";
 import { compareStrategies } from "@/lib/strategy-similarity";
 
@@ -11,7 +11,7 @@ export const mcpeRouter = router({
   // ───────────────────────────────────────────────────────────────────
   // getSetup: factores FODA + estrategias retenidas + ratings actuales
   // ───────────────────────────────────────────────────────────────────
-  getSetup: protectedProcedure
+  getSetup: cycleProcedure
     .input(z.object({ cycleId: z.string() }))
     .query(async ({ input }) => {
       const cycleId = input.cycleId;
@@ -103,7 +103,7 @@ export const mcpeRouter = router({
   // ───────────────────────────────────────────────────────────────────
   // setRating: upsert de una calificacion individual
   // ───────────────────────────────────────────────────────────────────
-  setRating: editorProcedure
+  setRating: cycleEditorProcedure
     .input(z.object({
       cycleId: z.string(),
       factorId: z.string(),
@@ -147,7 +147,7 @@ export const mcpeRouter = router({
   // ───────────────────────────────────────────────────────────────────
   // setRatingsBulk: aplica multiples ratings a la vez (acepta sugerencias)
   // ───────────────────────────────────────────────────────────────────
-  setRatingsBulk: editorProcedure
+  setRatingsBulk: cycleEditorProcedure
     .input(z.object({
       cycleId: z.string(),
       ratings: z.array(z.object({
@@ -180,7 +180,7 @@ export const mcpeRouter = router({
   // suggestRatings: genera sugerencias para todas las celdas vacias
   // basadas en similitud factor-estrategia
   // ───────────────────────────────────────────────────────────────────
-  suggestRatings: protectedProcedure
+  suggestRatings: cycleProcedure
     .input(z.object({ cycleId: z.string() }))
     .query(async ({ input }) => {
       const cycleId = input.cycleId;
@@ -240,7 +240,7 @@ export const mcpeRouter = router({
   // ───────────────────────────────────────────────────────────────────
   // markComplete
   // ───────────────────────────────────────────────────────────────────
-  markComplete: editorProcedure
+  markComplete: cycleEditorProcedure
     .input(z.object({ cycleId: z.string() }))
     .mutation(async ({ input }) => {
       return db.mcpeAnalysis.update({

@@ -71,7 +71,7 @@ export const CRITERION_INFO: Record<
   consonancia: {
     label: "Consonancia",
     question: "¿Responde adecuadamente al entorno externo y sus tendencias? ¿Esta en sintonia con la industria, tecnologia, regulacion y sociedad?",
-    color: "#2563EB", bg: "rgba(37,99,235,0.08)", border: "rgba(37,99,235,0.4)",
+    color: "#60a5fa", bg: "rgba(37,99,235,0.08)", border: "rgba(37,99,235,0.4)",
     icon: "wind",
   },
   ventaja: {

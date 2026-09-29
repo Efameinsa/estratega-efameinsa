@@ -643,7 +643,7 @@ function PasoConfiguracion({
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
           <CardTitle className="text-base">Datos generales</CardTitle>
           {fase1Completa && (
-            <Badge variant="outline" className="bg-transparent text-emerald-700 border-emerald-200 dark:bg-transparent dark:text-emerald-400 dark:border-emerald-900">
+            <Badge variant="outline" className="bg-transparent text-emerald-300 border-emerald-500/30 dark:bg-transparent dark:text-emerald-400 dark:border-emerald-900">
               <Check className="size-3 mr-1" /> Completo
             </Badge>
           )}
@@ -819,7 +819,7 @@ function CorteCard({
         <div className="text-sm font-medium leading-snug">{titulo}</div>
         <Badge
           variant="outline"
-          className="bg-transparent text-emerald-700 border-emerald-200 shrink-0 dark:bg-transparent dark:text-emerald-400 dark:border-emerald-900"
+          className="bg-transparent text-emerald-300 border-emerald-500/30 shrink-0 dark:bg-transparent dark:text-emerald-400 dark:border-emerald-900"
         >
           Recomendado: {recomendado}
         </Badge>
@@ -1604,7 +1604,7 @@ function ResumenEjecutivo({
                 key={i}
                 className="flex gap-2 items-start text-sm rounded-md border border-amber-200/60 bg-transparent dark:border-amber-900/30 dark:bg-transparent p-3"
               >
-                <AlertCircle className="size-4 mt-0.5 shrink-0 text-amber-600" />
+                <AlertCircle className="size-4 mt-0.5 shrink-0 text-amber-400" />
                 <span className="leading-relaxed">{a}</span>
               </div>
             ))}
@@ -1685,14 +1685,14 @@ function BcgChart({
             domain={[minX, maxX]}
             ticks={xTicks}
             reversed
-            tick={{ fontSize: 11, fill: "#6b7280" }}
+            tick={{ fontSize: 11, fill: "#9a91b8" }}
             tickLine={false}
-            axisLine={{ stroke: "#e5e7eb" }}
+            axisLine={{ stroke: "rgba(167,139,250,0.14)" }}
             label={{
               value: "Participacion relativa de mercado",
               position: "insideBottom",
               offset: -14,
-              style: { fontSize: 11, fill: "#6b7280", textAnchor: "middle" },
+              style: { fontSize: 11, fill: "#9a91b8", textAnchor: "middle" },
             }}
           />
           <YAxis
@@ -1701,15 +1701,15 @@ function BcgChart({
             domain={[minY, maxY]}
             ticks={yTicks}
             tickFormatter={(v) => `${v}%`}
-            tick={{ fontSize: 11, fill: "#6b7280" }}
+            tick={{ fontSize: 11, fill: "#9a91b8" }}
             tickLine={false}
-            axisLine={{ stroke: "#e5e7eb" }}
+            axisLine={{ stroke: "rgba(167,139,250,0.14)" }}
             label={{
               value: "Tasa de crecimiento del mercado (%)",
               angle: -90,
               position: "insideLeft",
               offset: 0,
-              style: { fontSize: 11, fill: "#6b7280", textAnchor: "middle" },
+              style: { fontSize: 11, fill: "#9a91b8", textAnchor: "middle" },
             }}
           />
           <ZAxis type="number" dataKey="z" range={[400, 4500]} />
@@ -1755,8 +1755,8 @@ function BcgChart({
             }}
           />
 
-          <ReferenceLine x={cortoX} stroke="#cbd5e1" strokeDasharray="4 4" strokeWidth={1} />
-          <ReferenceLine y={cortoY} stroke="#cbd5e1" strokeDasharray="4 4" strokeWidth={1} />
+          <ReferenceLine x={cortoX} stroke="rgba(167,139,250,0.14)" strokeDasharray="4 4" strokeWidth={1} />
+          <ReferenceLine y={cortoY} stroke="rgba(167,139,250,0.14)" strokeDasharray="4 4" strokeWidth={1} />
 
           <RTooltip
             cursor={{ strokeDasharray: "3 3" }}

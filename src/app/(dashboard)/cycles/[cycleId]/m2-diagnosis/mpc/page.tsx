@@ -93,7 +93,7 @@ function Stepper({ current, onStep, canAdvance }: {
           <React.Fragment key={s.num}>
             {i > 0 && (
               <div className="h-px flex-1 mx-1" style={{
-                backgroundColor: isDone ? "#34d399" : "var(--color-border-tertiary, #d1d5db)",
+                backgroundColor: isDone ? "#34d399" : "var(--color-border-tertiary, rgba(167,139,250,0.14))",
               }} />
             )}
             <button
@@ -104,19 +104,19 @@ function Stepper({ current, onStep, canAdvance }: {
                 canGo ? "cursor-pointer" : "cursor-not-allowed opacity-50"
               }`}
               style={{
-                borderColor: isActive ? "#7aa8e0" : isDone ? "#34d399" : "var(--color-border-tertiary)",
+                borderColor: isActive ? "#a78bfa" : isDone ? "#34d399" : "var(--color-border-tertiary)",
                 backgroundColor: isActive ? "transparent" : isDone ? "transparent" : "transparent",
               }}
             >
               <span
                 className="flex size-7 items-center justify-center rounded-lg text-[11px] font-medium text-white"
-                style={{ backgroundColor: isActive ? "#7aa8e0" : isDone ? "#34d399" : "var(--color-text-tertiary)" }}
+                style={{ backgroundColor: isActive ? "#a78bfa" : isDone ? "#34d399" : "var(--color-text-tertiary)" }}
               >
                 {isDone ? <Check className="size-3.5" /> : s.num}
               </span>
               <div className="hidden sm:block">
                 <span className="text-[12px] font-medium block" style={{
-                  color: isActive ? "#7aa8e0" : isDone ? "#34d399" : "var(--color-text-secondary)",
+                  color: isActive ? "#a78bfa" : isDone ? "#34d399" : "var(--color-text-secondary)",
                 }}>
                   {s.label}
                 </span>
@@ -197,12 +197,12 @@ function Step1FCE({
         {selectedFactors.length >= 3 && (
           <button type="button"
             className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-[12px] font-medium transition-all cursor-pointer"
-            style={{ borderColor: "#7aa8e0", color: "#7aa8e0" }}
+            style={{ borderColor: "#a78bfa", color: "#a78bfa" }}
             onClick={() => toast.info("La evaluacion de FCE con IA estara disponible proximamente.")}
           >
             <span className="relative flex size-2">
-              <span className="absolute inline-flex size-full animate-ping rounded-full opacity-75" style={{ backgroundColor: "#7aa8e0" }} />
-              <span className="relative inline-flex size-2 rounded-full" style={{ backgroundColor: "#7aa8e0" }} />
+              <span className="absolute inline-flex size-full animate-ping rounded-full opacity-75" style={{ backgroundColor: "#a78bfa" }} />
+              <span className="relative inline-flex size-2 rounded-full" style={{ backgroundColor: "#a78bfa" }} />
             </span>
             Evaluar FCE con IA
           </button>
@@ -234,7 +234,7 @@ function Step1FCE({
                 </span>
               )}
             </div>
-            <div className="h-2 w-full overflow-hidden rounded-full" style={{ backgroundColor: "var(--color-border-tertiary, #e5e7eb)" }}>
+            <div className="h-2 w-full overflow-hidden rounded-full" style={{ backgroundColor: "var(--color-border-tertiary, rgba(167,139,250,0.14))" }}>
               <div className="h-full rounded-full transition-all duration-300"
                 style={{ width: `${Math.min(totalWeight * 100, 100)}%`, backgroundColor: barColor }} />
             </div>
@@ -250,7 +250,7 @@ function Step1FCE({
       {/* Factor list grouped by source */}
       {factors.length > 0 && (() => {
         const SOURCE_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-          competitivo: { label: "Competitivo", color: "#7aa8e0", bg: "transparent" },
+          competitivo: { label: "Competitivo", color: "#a78bfa", bg: "transparent" },
           atractividad: { label: "Atractividad", color: "#34d399", bg: "transparent" },
           porter: { label: "Porter", color: "#fbbf24", bg: "transparent" },
           manual: { label: "Manual", color: "#a8a29e", bg: "transparent" },
@@ -353,7 +353,7 @@ function Step1FCE({
         <button type="button" onClick={onNext}
           disabled={selectedFactors.length < 5 || selectedFactors.length > 12 || !isWeightValid}
           className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-medium text-white cursor-pointer disabled:opacity-40"
-          style={{ backgroundColor: "#7aa8e0" }}
+          style={{ backgroundColor: "#a78bfa" }}
         >
           Continuar → Competidores <ChevronRight className="size-3.5" />
         </button>
@@ -403,10 +403,10 @@ function Step2Competitors({
 
       {/* Own org — always first, not deletable */}
       {ownOrg ? (
-        <div className="rounded-xl border-2 px-4 py-3.5" style={{ borderColor: "#7aa8e0", backgroundColor: "transparent" }}>
+        <div className="rounded-xl border-2 px-4 py-3.5" style={{ borderColor: "#a78bfa", backgroundColor: "transparent" }}>
           <div className="flex items-center gap-3">
             <span className="flex size-9 items-center justify-center rounded-xl text-[12px] font-medium text-white"
-              style={{ backgroundColor: "#7aa8e0" }}
+              style={{ backgroundColor: "#a78bfa" }}
             >
               TU
             </span>
@@ -558,7 +558,7 @@ function Step2Competitors({
         <button type="button" onClick={onNext}
           disabled={competitors.length < 2 || !hasOwnOrg}
           className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-medium text-white cursor-pointer disabled:opacity-40"
-          style={{ backgroundColor: "#7aa8e0" }}
+          style={{ backgroundColor: "#a78bfa" }}
         >
           Siguiente: Calificaciones <ChevronRight className="size-3.5" />
         </button>
@@ -638,9 +638,9 @@ function Step3Ratings({
 
       {/* Progress */}
       <div className="flex items-center gap-3">
-        <div className="h-2 flex-1 overflow-hidden rounded-full" style={{ backgroundColor: "var(--color-border-tertiary, #e5e7eb)" }}>
+        <div className="h-2 flex-1 overflow-hidden rounded-full" style={{ backgroundColor: "var(--color-border-tertiary, rgba(167,139,250,0.14))" }}>
           <div className="h-full rounded-full transition-all duration-300"
-            style={{ width: `${totalCells > 0 ? (filledCells / totalCells) * 100 : 0}%`, backgroundColor: isComplete ? "#34d399" : "#7aa8e0" }} />
+            style={{ width: `${totalCells > 0 ? (filledCells / totalCells) * 100 : 0}%`, backgroundColor: isComplete ? "#34d399" : "#a78bfa" }} />
         </div>
         <span className="text-[12px] font-medium shrink-0" style={{ color: isComplete ? "#34d399" : "var(--color-text-tertiary)" }}>
           {filledCells}/{totalCells}
@@ -669,12 +669,12 @@ function Step3Ratings({
               </th>
               {sorted.map((c, ci) => (
                 <th key={c.id} colSpan={2} className="py-2 px-1 text-center font-medium"
-                  style={{ color: c.isOwnOrg ? "#7aa8e0" : "var(--color-text-secondary)" }}
+                  style={{ color: c.isOwnOrg ? "#a78bfa" : "var(--color-text-secondary)" }}
                 >
                   <div className="flex items-center justify-center gap-1">
                     {c.isOwnOrg ? (
                       <span className="inline-flex size-5 items-center justify-center rounded text-[9px] font-medium text-white"
-                        style={{ backgroundColor: "#7aa8e0" }}>TU</span>
+                        style={{ backgroundColor: "#a78bfa" }}>TU</span>
                     ) : (
                       <span className="inline-flex size-5 items-center justify-center rounded text-[9px] font-medium text-white"
                         style={{ backgroundColor: COMP_COLORS[ci - 1] ?? "#a8a29e" }}>C{ci}</span>
@@ -723,7 +723,7 @@ function Step3Ratings({
                                 style={{
                                   backgroundColor: selected ? rc.bg : "transparent",
                                   color: selected ? rc.text : "var(--color-text-tertiary)",
-                                  border: selected ? `1.5px solid ${rc.border}` : "1px solid var(--color-border-tertiary, #d1d5db)",
+                                  border: selected ? `1.5px solid ${rc.border}` : "1px solid var(--color-border-tertiary, rgba(167,139,250,0.14))",
                                 }}
                               >
                                 {r}
@@ -762,7 +762,7 @@ function Step3Ratings({
                 return (
                   <td key={c.id} colSpan={2} className="py-3 px-1 text-center">
                     <span className="text-[15px] font-medium" style={{
-                      color: isLeader ? "#34d399" : c.isOwnOrg ? "#7aa8e0" : "var(--color-text-primary)",
+                      color: isLeader ? "#34d399" : c.isOwnOrg ? "#a78bfa" : "var(--color-text-primary)",
                     }}>
                       {isLeader && "★ "}{total.toFixed(2)}
                     </span>
@@ -784,7 +784,7 @@ function Step3Ratings({
         <button type="button" onClick={onNext}
           disabled={!isComplete}
           className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-medium text-white cursor-pointer disabled:opacity-40"
-          style={{ backgroundColor: "#7aa8e0" }}
+          style={{ backgroundColor: "#a78bfa" }}
         >
           {isComplete ? "Ver resultado MPC →" : `Faltan ${missingCells} celdas por calificar`}
         </button>
@@ -860,13 +860,13 @@ function Step4Results({
             return (
               <div key={c.id} className="flex flex-col items-center gap-2 rounded-xl border p-4 text-center"
                 style={{
-                  borderColor: isFirst ? "#34d399" : isOwn ? "#7aa8e0" : "var(--color-border-tertiary)",
+                  borderColor: isFirst ? "#34d399" : isOwn ? "#a78bfa" : "var(--color-border-tertiary)",
                   borderWidth: isFirst || isOwn ? "2px" : "1px",
                   backgroundColor: isFirst ? "transparent" : isOwn ? "transparent" : "transparent",
                 }}
               >
                 {isFirst && <Award className="size-5" style={{ color: "#34d399" }} />}
-                <span className="text-2xl font-medium" style={{ color: isFirst ? "#34d399" : isOwn ? "#7aa8e0" : "var(--color-text-primary)" }}>
+                <span className="text-2xl font-medium" style={{ color: isFirst ? "#34d399" : isOwn ? "#a78bfa" : "var(--color-text-primary)" }}>
                   {(c.totalScore ?? 0).toFixed(2)}
                 </span>
                 <span className="text-[13px] font-medium">{c.name}</span>
@@ -875,7 +875,7 @@ function Step4Results({
                   {isFirst && " · ★ Lider"}
                 </span>
                 {isOwn && !isFirst && (
-                  <span className="text-[10px] font-medium" style={{ color: "#7aa8e0" }}>Tu organizacion</span>
+                  <span className="text-[10px] font-medium" style={{ color: "#a78bfa" }}>Tu organizacion</span>
                 )}
               </div>
             );
@@ -922,15 +922,15 @@ function Step4Results({
                   {/* Bars */}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] w-12 shrink-0 text-right" style={{ color: "#7aa8e0" }}>Tu org</span>
-                      <div className="flex-1 h-3 overflow-hidden rounded-full" style={{ backgroundColor: "var(--color-border-tertiary, #e5e7eb)" }}>
-                        <div className="h-full rounded-full transition-all" style={{ width: `${ownPct}%`, backgroundColor: "#7aa8e0" }} />
+                      <span className="text-[10px] w-12 shrink-0 text-right" style={{ color: "#a78bfa" }}>Tu org</span>
+                      <div className="flex-1 h-3 overflow-hidden rounded-full" style={{ backgroundColor: "var(--color-border-tertiary, rgba(167,139,250,0.14))" }}>
+                        <div className="h-full rounded-full transition-all" style={{ width: `${ownPct}%`, backgroundColor: "#a78bfa" }} />
                       </div>
-                      <span className="text-[10px] w-8 shrink-0" style={{ color: "#7aa8e0" }}>{b.ppOwn.toFixed(2)}</span>
+                      <span className="text-[10px] w-8 shrink-0" style={{ color: "#a78bfa" }}>{b.ppOwn.toFixed(2)}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="text-[10px] w-12 shrink-0 text-right truncate" style={{ color: "#fca5a5" }}>{bestRival.name.slice(0, 8)}</span>
-                      <div className="flex-1 h-3 overflow-hidden rounded-full" style={{ backgroundColor: "var(--color-border-tertiary, #e5e7eb)" }}>
+                      <div className="flex-1 h-3 overflow-hidden rounded-full" style={{ backgroundColor: "var(--color-border-tertiary, rgba(167,139,250,0.14))" }}>
                         <div className="h-full rounded-full transition-all" style={{ width: `${rivalPct}%`, backgroundColor: "transparent" }} />
                       </div>
                       <span className="text-[10px] w-8 shrink-0" style={{ color: "#fca5a5" }}>{b.ppRival.toFixed(2)}</span>
@@ -945,7 +945,7 @@ function Step4Results({
 
       {/* Narrative analysis */}
       {ownOrg && (
-        <div className="rounded-xl border p-5 space-y-3" style={{ borderColor: "#7aa8e0", backgroundColor: "transparent" }}>
+        <div className="rounded-xl border p-5 space-y-3" style={{ borderColor: "#a78bfa", backgroundColor: "transparent" }}>
           <p className="text-[10px] font-medium uppercase tracking-widest" style={{ color: "#9ec2ec" }}>
             Analisis estrategico generado automaticamente
           </p>
@@ -976,12 +976,12 @@ function Step4Results({
 
           <button type="button"
             className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-[12px] font-medium cursor-pointer"
-            style={{ borderColor: "#7aa8e0", color: "#7aa8e0" }}
+            style={{ borderColor: "#a78bfa", color: "#a78bfa" }}
             onClick={() => toast.info("La profundizacion con IA estara disponible proximamente.")}
           >
             <span className="relative flex size-2">
-              <span className="absolute inline-flex size-full animate-ping rounded-full opacity-75" style={{ backgroundColor: "#7aa8e0" }} />
-              <span className="relative inline-flex size-2 rounded-full" style={{ backgroundColor: "#7aa8e0" }} />
+              <span className="absolute inline-flex size-full animate-ping rounded-full opacity-75" style={{ backgroundColor: "#a78bfa" }} />
+              <span className="relative inline-flex size-2 rounded-full" style={{ backgroundColor: "#a78bfa" }} />
             </span>
             Profundizar con IA
           </button>
@@ -1032,7 +1032,7 @@ export default function MpcPage() {
       {/* Hero */}
       <div className="flex items-center gap-3">
         <div className="flex size-12 items-center justify-center rounded-2xl" style={{ backgroundColor: "transparent" }}>
-          <Target className="size-6" style={{ color: "#7aa8e0" }} />
+          <Target className="size-6" style={{ color: "#a78bfa" }} />
         </div>
         <div>
           <h1 className="text-2xl font-medium tracking-tight">Matriz de Perfil Competitivo</h1>

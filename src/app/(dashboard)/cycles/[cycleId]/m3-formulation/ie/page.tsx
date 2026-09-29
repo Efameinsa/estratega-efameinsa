@@ -55,7 +55,7 @@ export default function IePage() {
         </div>
         <div className="rounded-xl border border-amber-200/60 bg-transparent dark:border-amber-900/40 dark:bg-transparent p-5">
           <div className="flex gap-3">
-            <AlertTriangle className="size-5 shrink-0 text-amber-600 mt-0.5" />
+            <AlertTriangle className="size-5 shrink-0 text-amber-400 mt-0.5" />
             <div>
               <p className="font-medium mb-1">MEFI o MEFE incompletas</p>
               <p className="text-sm text-muted-foreground mb-3">
@@ -214,7 +214,7 @@ function Paso1({
           title="MEFE · Factores Externos"
           score={mefe.score}
           interpretation={interpretMefe(mefe.score)}
-          color="#2563EB"
+          color="#60a5fa"
           desglose={`${mefe.oportunidades} oportunidades · ${mefe.amenazas} amenazas · ${mefe.count} factores`}
           link={`/cycles/${cycleId}/m2-diagnosis/mefe`}
         />
@@ -359,7 +359,7 @@ function Paso2({
 
         {nearBorder && (
           <div className="rounded-md border border-amber-200/60 bg-transparent dark:border-amber-900/30 dark:bg-transparent p-3 text-xs flex gap-2">
-            <AlertTriangle className="size-4 shrink-0 text-amber-600 mt-0.5" />
+            <AlertTriangle className="size-4 shrink-0 text-amber-400 mt-0.5" />
             <span>Tu puntaje esta cerca de la frontera entre tramos. Considera revisar las calificaciones para confirmar la celda.</span>
           </div>
         )}
@@ -411,16 +411,16 @@ function IeChart({ mefiScore, mefeScore, cell }: { mefiScore: number; mefeScore:
             type="number" dataKey="x" domain={[1, 4]}
             ticks={[1, 2, 3, 4]}
             tickFormatter={(v) => v === 1 ? "1.0 Debil" : v === 2 ? "2.0" : v === 3 ? "3.0" : "4.0 Fuerte"}
-            tick={{ fontSize: 11, fill: "#6b7280" }} tickLine={false} axisLine={{ stroke: "#e5e7eb" }}
+            tick={{ fontSize: 11, fill: "#9a91b8" }} tickLine={false} axisLine={{ stroke: "rgba(167,139,250,0.14)" }}
             reversed
-            label={{ value: "MEFI (interno)", position: "insideBottom", offset: -14, style: { fontSize: 11, fill: "#6b7280", textAnchor: "middle" } }}
+            label={{ value: "MEFI (interno)", position: "insideBottom", offset: -14, style: { fontSize: 11, fill: "#9a91b8", textAnchor: "middle" } }}
           />
           <YAxis
             type="number" dataKey="y" domain={[1, 4]}
             ticks={[1, 2, 3, 4]}
             tickFormatter={(v) => v === 1 ? "1.0 Bajo" : v === 2 ? "2.0" : v === 3 ? "3.0" : "4.0 Alto"}
-            tick={{ fontSize: 11, fill: "#6b7280" }} tickLine={false} axisLine={{ stroke: "#e5e7eb" }}
-            label={{ value: "MEFE (externo)", angle: -90, position: "insideLeft", offset: 0, style: { fontSize: 11, fill: "#6b7280", textAnchor: "middle" } }}
+            tick={{ fontSize: 11, fill: "#9a91b8" }} tickLine={false} axisLine={{ stroke: "rgba(167,139,250,0.14)" }}
+            label={{ value: "MEFE (externo)", angle: -90, position: "insideLeft", offset: 0, style: { fontSize: 11, fill: "#9a91b8", textAnchor: "middle" } }}
           />
           <ZAxis range={[400, 400]} />
 
@@ -538,7 +538,7 @@ function Paso3({
       {/* Alertas */}
       {alertas.map((a, i) => (
         <div key={i} className="rounded-md border border-amber-200/60 bg-transparent dark:border-amber-900/30 dark:bg-transparent p-3 text-sm flex gap-2">
-          <Info className="size-4 shrink-0 text-amber-600 mt-0.5" />
+          <Info className="size-4 shrink-0 text-amber-400 mt-0.5" />
           <span className="leading-relaxed">{a}</span>
         </div>
       ))}

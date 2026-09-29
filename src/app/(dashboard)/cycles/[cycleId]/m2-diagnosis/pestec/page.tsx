@@ -57,7 +57,7 @@ const SOURCE_CHIPS = [
   "Prensa especializada",
   "Consultoria externa",
   "Base de datos estadistica",
-  "No tenemos fuente",
+  "No tenemos evidencia",
 ];
 
 // ---------------------------------------------------------------------------
@@ -150,7 +150,7 @@ function FactorCard({
   }, [factor.type, factor.rating, factor.impact, factor.evidenceChips, factor.evidenceNotes, factor.includeInMefe, factor.confirmed]);
 
   const isConfirmed = factor.confirmed;
-  const hasNoSource = chips.includes("No tenemos fuente");
+  const hasNoSource = chips.includes("No tenemos evidencia");
 
   // Peso from slider (slider 1-20 → peso 0.01-0.20)
   const pesoBase = sliderVal / 100;
@@ -160,16 +160,16 @@ function FactorCard({
   // Border color
   let borderColor = "var(--color-border-tertiary)";
   if (isConfirmed) {
-    borderColor = tipo === "O" ? "#7aa8e0" : "#fca5a5";
+    borderColor = tipo === "O" ? "#a78bfa" : "#fca5a5";
   }
 
   function handleToggleChip(chip: string) {
-    if (chip === "No tenemos fuente") {
+    if (chip === "No tenemos evidencia") {
       setChips(chips.includes(chip) ? [] : [chip]);
       setNotes("");
       return;
     }
-    const without = chips.filter((c) => c !== "No tenemos fuente");
+    const without = chips.filter((c) => c !== "No tenemos evidencia");
     setChips(without.includes(chip) ? without.filter((c) => c !== chip) : [...without, chip]);
   }
 
@@ -365,13 +365,13 @@ function FactorCard({
             <div className="flex items-center gap-2 rounded-lg border px-3 py-2"
               style={{ borderColor: "var(--color-border-tertiary)" }}
             >
-              <TrendingUp className="size-4" style={{ color: "#7aa8e0" }} />
+              <TrendingUp className="size-4" style={{ color: "#a78bfa" }} />
               <span className="flex-1 text-[12px] font-medium" style={{ color: "var(--color-text-secondary)" }}>
                 Incluir en MEFE
               </span>
               <button type="button" onClick={() => setIncludeInMefe(!includeInMefe)}
                 className="relative inline-flex h-5 w-9 items-center rounded-full transition-colors cursor-pointer"
-                style={{ backgroundColor: includeInMefe ? "#7aa8e0" : "var(--color-border-tertiary, #d1d5db)" }}
+                style={{ backgroundColor: includeInMefe ? "#a78bfa" : "var(--color-border-tertiary, rgba(167,139,250,0.14))" }}
               >
                 <span className="inline-block size-3.5 rounded-full bg-white transition-transform"
                   style={{ transform: includeInMefe ? "translateX(17px)" : "translateX(3px)" }}
@@ -420,7 +420,7 @@ function FactorCard({
           <div className="flex items-center gap-3 pt-1">
             <button type="button" disabled={!rating || !tipo} onClick={handleConfirm}
               className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-medium text-white transition-all disabled:opacity-40 cursor-pointer"
-              style={{ backgroundColor: "#7aa8e0" }}
+              style={{ backgroundColor: "#a78bfa" }}
             >
               <Check className="size-3.5" />
               {isConfirmed ? "Actualizar factor" : "Confirmar factor"}
@@ -514,7 +514,7 @@ function EnvironmentFindingsPanel({
             {/* Oportunidades */}
             <div className="space-y-2">
               <div className="flex items-center gap-1.5 mb-2">
-                <span className="size-2 rounded-full" style={{ backgroundColor: "#7aa8e0" }} />
+                <span className="size-2 rounded-full" style={{ backgroundColor: "#a78bfa" }} />
                 <span className="text-[13px] font-medium" style={{ color: "#9ec2ec" }}>
                   Oportunidades ({oportunidades.length})
                 </span>
@@ -528,7 +528,7 @@ function EnvironmentFindingsPanel({
                   const hasEvidence = (() => {
                     try {
                       const chips = JSON.parse(f.evidenceChips);
-                      return chips.length > 0 && !chips.includes("No tenemos fuente");
+                      return chips.length > 0 && !chips.includes("No tenemos evidencia");
                     } catch { return false; }
                   })();
                   return (
@@ -536,7 +536,7 @@ function EnvironmentFindingsPanel({
                       style={{ backgroundColor: "transparent" }}
                     >
                       <span className="flex size-5 shrink-0 items-center justify-center rounded text-[10px] font-medium text-white"
-                        style={{ backgroundColor: "#7aa8e0" }}
+                        style={{ backgroundColor: "#a78bfa" }}
                       >
                         {f.rating}
                       </span>
@@ -544,7 +544,7 @@ function EnvironmentFindingsPanel({
                         {f.description}
                       </span>
                       <span className="flex items-center gap-1 shrink-0">
-                        {f.includeInMefe && <TrendingUp className="size-3" style={{ color: "#7aa8e0" }} />}
+                        {f.includeInMefe && <TrendingUp className="size-3" style={{ color: "#a78bfa" }} />}
                         {hasEvidence && <Paperclip className="size-3" style={{ color: "var(--color-text-tertiary)" }} />}
                       </span>
                     </div>
@@ -570,7 +570,7 @@ function EnvironmentFindingsPanel({
                   const hasEvidence = (() => {
                     try {
                       const chips = JSON.parse(f.evidenceChips);
-                      return chips.length > 0 && !chips.includes("No tenemos fuente");
+                      return chips.length > 0 && !chips.includes("No tenemos evidencia");
                     } catch { return false; }
                   })();
                   return (
@@ -586,7 +586,7 @@ function EnvironmentFindingsPanel({
                         {f.description}
                       </span>
                       <span className="flex items-center gap-1 shrink-0">
-                        {f.includeInMefe && <TrendingUp className="size-3" style={{ color: "#7aa8e0" }} />}
+                        {f.includeInMefe && <TrendingUp className="size-3" style={{ color: "#a78bfa" }} />}
                         {hasEvidence && <Paperclip className="size-3" style={{ color: "var(--color-text-tertiary)" }} />}
                       </span>
                     </div>
@@ -934,10 +934,10 @@ export default function PestecPage() {
       {/* Hero */}
       <div className="flex items-center gap-3">
         <div className="flex size-12 items-center justify-center rounded-2xl" style={{ backgroundColor: "transparent" }}>
-          <Globe className="size-6" style={{ color: "#7aa8e0" }} />
+          <Globe className="size-6" style={{ color: "#a78bfa" }} />
         </div>
         <div>
-          <h1 className="text-2xl font-medium tracking-tight">Analisis PESTEC</h1>
+          <h1 className="text-2xl font-medium tracking-tight">Análisis PESTEC</h1>
           <p className="text-sm text-muted-foreground">
             Evaluacion del macroentorno — 6 variables de D&apos;Alessio
           </p>

@@ -36,7 +36,7 @@ interface McpeSetup {
 const TYPE_INFO: Record<FactorType, { label: string; color: string; bg: string; border: string }> = {
   F: { label: "Fortalezas", color: "#4ade80", bg: "rgba(22,163,74,0.08)", border: "rgba(22,163,74,0.35)" },
   D: { label: "Debilidades", color: "#F43F5E", bg: "rgba(244,63,94,0.08)", border: "rgba(244,63,94,0.35)" },
-  O: { label: "Oportunidades", color: "#2563EB", bg: "rgba(37,99,235,0.08)", border: "rgba(37,99,235,0.35)" },
+  O: { label: "Oportunidades", color: "#60a5fa", bg: "rgba(37,99,235,0.08)", border: "rgba(37,99,235,0.35)" },
   A: { label: "Amenazas", color: "#F59E0B", bg: "rgba(245,158,11,0.08)", border: "rgba(245,158,11,0.35)" },
 };
 
@@ -72,7 +72,7 @@ export default function McpePage() {
         </div>
         <div className="rounded-xl border border-amber-200/60 bg-transparent p-5">
           <div className="flex gap-3">
-            <AlertTriangle className="size-5 shrink-0 text-amber-600 mt-0.5" />
+            <AlertTriangle className="size-5 shrink-0 text-amber-400 mt-0.5" />
             <div>
               <p className="font-medium mb-1">Antes de usar la MCPE necesitas:</p>
               <ul className="text-sm text-muted-foreground mb-3 space-y-1 list-disc pl-4">
@@ -300,7 +300,7 @@ function Paso2({ setup, cycleId, onBack, onNext }: { setup: McpeSetup; cycleId: 
         <Card><CardContent className="p-3"><div className="text-xl font-bold">{setup.factors.all.length}</div><div className="text-[10px] text-muted-foreground">factores</div></CardContent></Card>
         <Card><CardContent className="p-3"><div className="text-xl font-bold">{setup.strategies.length}</div><div className="text-[10px] text-muted-foreground">estrategias</div></CardContent></Card>
         <Card><CardContent className="p-3"><div className="text-xl font-bold">{setup.totalCells - setup.ratedCells}</div><div className="text-[10px] text-muted-foreground">por calificar</div></CardContent></Card>
-        <Card><CardContent className="p-3"><div className="text-xl font-bold text-emerald-600">{setup.progress.toFixed(0)}%</div><div className="text-[10px] text-muted-foreground">progreso</div></CardContent></Card>
+        <Card><CardContent className="p-3"><div className="text-xl font-bold text-emerald-400">{setup.progress.toFixed(0)}%</div><div className="text-[10px] text-muted-foreground">progreso</div></CardContent></Card>
       </div>
 
       {/* Barra de acciones */}
@@ -396,7 +396,7 @@ function Paso2({ setup, cycleId, onBack, onNext }: { setup: McpeSetup; cycleId: 
                   const isLeader = total === Math.max(...Object.values(setup.ptaByStrategy));
                   return (
                     <td key={s.id} className="p-2 text-center">
-                      <div className={`font-bold tabular-nums text-base ${isLeader && total > 0 ? "text-emerald-700" : ""}`}>
+                      <div className={`font-bold tabular-nums text-base ${isLeader && total > 0 ? "text-emerald-300" : ""}`}>
                         {total.toFixed(2)}
                         {isLeader && total > 0 && <Trophy className="inline size-3.5 ml-1 text-amber-500" />}
                       </div>
@@ -462,7 +462,7 @@ function RatingCell({
         </select>
         <div className="text-center text-[9px]">
           {isSuggested && <span className="text-primary">✨ Sugerido</span>}
-          {!isSuggested && isPending && <span className="text-amber-600">Pendiente</span>}
+          {!isSuggested && isPending && <span className="text-amber-400">Pendiente</span>}
           {!isPending && !isSuggested && rating?.pta && (
             <span className="text-muted-foreground tabular-nums">PTA: {rating.pta.toFixed(2)}</span>
           )}
@@ -562,7 +562,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: McpeSetup; cycleId: string; 
                 <div className="flex-1 min-w-0 space-y-1.5">
                   <div className="flex items-center gap-2 flex-wrap">
                     <Badge variant="outline" className="font-mono text-[10px]">{s.eCode}</Badge>
-                    {lowAttract && <Badge variant="outline" className="text-[10px] bg-transparent text-amber-700 border-amber-300">Bajo atractivo</Badge>}
+                    {lowAttract && <Badge variant="outline" className="text-[10px] bg-transparent text-amber-300 border-amber-500/30">Bajo atractivo</Badge>}
                     <span className="text-xs text-muted-foreground ml-auto">Aparece en {s.totalAppearances} matrices · {s.olpLinks.length} OLP(s)</span>
                   </div>
                   <p className="text-sm leading-snug">{s.text}</p>
@@ -571,7 +571,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: McpeSetup; cycleId: string; 
                       className="absolute top-0 bottom-0 left-0 transition-all duration-700 rounded-full"
                       style={{
                         width: `${pct}%`,
-                        background: `linear-gradient(to right, #16A34A, #F59E0B)`,
+                        background: `linear-gradient(to right, #4ade80, #F59E0B)`,
                       }}
                     />
                   </div>
@@ -629,7 +629,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: McpeSetup; cycleId: string; 
                     <span className="font-bold">{i + 1}.</span>
                     <Badge variant="outline" className="font-mono text-[10px]">{s.eCode}</Badge>
                     <span className="tabular-nums">{s.ptaTotal.toFixed(2)}</span>
-                    {moved && <span className="text-[10px] text-amber-600">(antes #{originalIdx + 1})</span>}
+                    {moved && <span className="text-[10px] text-amber-400">(antes #{originalIdx + 1})</span>}
                   </li>
                 );
               })}

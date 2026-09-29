@@ -61,11 +61,8 @@ import {
   type ReviewType,
   type ReviewStatus,
 } from "@/lib/review-catalog";
-import {
-  exportReviewPdf,
-  exportReviewDocx,
-  type ExportReviewData,
-} from "@/lib/review-export";
+import { exportReviewPdf, exportReviewDocx } from "@/lib/lazy-exports";
+import type { ExportReviewData } from "@/lib/review-export";
 
 type RouterOutputs = inferRouterOutputs<AppRouter>;
 type SetupData = RouterOutputs["reviews"]["setup"];
@@ -271,8 +268,8 @@ function CalendarView({
 
       {/* Banners */}
       {nextReview && isSameDay(nextReview.scheduledAt, today) && (
-        <Card className="border-amber-300 bg-transparent">
-          <CardContent className="flex items-center justify-between gap-3 py-3 text-sm text-amber-900">
+        <Card className="border-amber-500/30 bg-transparent">
+          <CardContent className="flex items-center justify-between gap-3 py-3 text-sm text-amber-300">
             <div>
               <strong>Revisión programada para hoy:</strong> {nextReview.title}
             </div>
@@ -1190,7 +1187,7 @@ function ReviewRoom({
         <Card
           className={cn(
             "border-2",
-            review.actSigned ? "border-emerald-300 bg-transparent" : "border-amber-300 bg-transparent",
+            review.actSigned ? "border-emerald-500/30 bg-transparent" : "border-amber-500/30 bg-transparent",
           )}
         >
           <CardHeader>
@@ -1204,7 +1201,7 @@ function ReviewRoom({
                 <strong>Presidente</strong>
                 {review.presidentSignedAt && review.presidentSignedName ? (
                   <div className="text-xs">
-                    <CheckCircle2 className="mr-1 inline size-3.5 text-emerald-600" />
+                    <CheckCircle2 className="mr-1 inline size-3.5 text-emerald-400" />
                     Firmado por {review.presidentSignedName}
                     <div className="text-[10px] text-muted-foreground">
                       {new Date(review.presidentSignedAt).toLocaleString("es-PE")}
@@ -1220,7 +1217,7 @@ function ReviewRoom({
                 <strong>Secretario</strong>
                 {review.secretarySignedAt && review.secretarySignedName ? (
                   <div className="text-xs">
-                    <CheckCircle2 className="mr-1 inline size-3.5 text-emerald-600" />
+                    <CheckCircle2 className="mr-1 inline size-3.5 text-emerald-400" />
                     Firmado por {review.secretarySignedName}
                     <div className="text-[10px] text-muted-foreground">
                       {new Date(review.secretarySignedAt).toLocaleString("es-PE")}
@@ -1234,7 +1231,7 @@ function ReviewRoom({
               </div>
             </div>
             {review.actSigned && (
-              <p className="text-xs text-emerald-700">
+              <p className="text-xs text-emerald-300">
                 Acta inmutable. Para modificar se requiere acta complementaria.
               </p>
             )}

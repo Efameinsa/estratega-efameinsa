@@ -152,7 +152,7 @@ function Hero() {
           </Link>
           <Link
             href="/login"
-            className="glass inline-flex h-12 items-center rounded-xl px-6 text-base font-medium transition-all hover:bg-white/40"
+            className="glass inline-flex h-12 items-center rounded-xl px-6 text-base font-medium transition-all hover:bg-white/5"
           >
             Ingresar
           </Link>
@@ -180,7 +180,7 @@ function HeroPreview() {
   ];
   return (
     <div className="glass-strong rounded-3xl p-3 sm:p-5">
-      <div className="rounded-2xl bg-white/40 p-5 backdrop-blur-sm dark:bg-black/20">
+      <div className="rounded-2xl bg-white/5 p-5 backdrop-blur-sm dark:bg-black/20">
         <div className="mb-5 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="size-2.5 rounded-full bg-red-400/70" />
@@ -442,7 +442,7 @@ function Cta() {
               </Link>
               <Link
                 href="/login"
-                className="glass inline-flex h-12 items-center rounded-xl px-6 text-base font-medium transition-all hover:bg-white/40"
+                className="glass inline-flex h-12 items-center rounded-xl px-6 text-base font-medium transition-all hover:bg-white/5"
               >
                 Ya tengo cuenta
               </Link>

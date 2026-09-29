@@ -17,6 +17,8 @@ function getDatabaseUrl(): string {
   throw new Error("DATABASE_URL is not set");
 }
 
+const isLocal = (url: string) => /@(localhost|127\.0\.0\.1)[:/]/.test(url);
+
 function createPrismaClient(): PrismaClient {
   const url = getDatabaseUrl();
   // El adapter de Neon habla por WebSocket y solo sirve contra Neon. Cualquier
@@ -24,7 +26,14 @@ function createPrismaClient(): PrismaClient {
   const isNeon = /\.neon\.tech[:/]/.test(url);
   const adapter = isNeon
     ? new PrismaNeon({ connectionString: url })
-    : new PrismaPg({ connectionString: url });
+    : new PrismaPg({
+        connectionString: url,
+        // Serverless + pooler de Supabase: pocas conexiones por instancia y
+        // que se liberen rápido; sin esperas infinitas si el pool se llena.
+        max: isLocal(url) ? 10 : 4,
+        idleTimeoutMillis: 5_000,
+        connectionTimeoutMillis: 10_000,
+      });
   return new PrismaClient({
     adapter,
     log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],

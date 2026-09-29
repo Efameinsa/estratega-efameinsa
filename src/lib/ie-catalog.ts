@@ -22,7 +22,7 @@ export const REGION_INFO: Record<
 > = {
   crecer: {
     label: "Crecer y construir",
-    color: "#16A34A",
+    color: "#4ade80",
     bg: "rgba(22,163,74,0.10)",
     border: "rgba(22,163,74,0.40)",
     subtitle: "Estrategias intensivas e integrativas",
@@ -40,7 +40,7 @@ export const REGION_INFO: Record<
   },
   cosechar: {
     label: "Cosechar o desinvertir",
-    color: "#DC2626",
+    color: "#f87171",
     bg: "rgba(220,38,38,0.10)",
     border: "rgba(220,38,38,0.40)",
     subtitle: "Estrategias defensivas",

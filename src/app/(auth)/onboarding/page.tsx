@@ -17,7 +17,7 @@ import { Label } from "@/components/ui/label";
 
 type Step = "ORG" | "INVITE" | "CYCLE" | "DONE";
 
-const COLORS = ["#7aa8e0", "#34d399", "#7F77DD", "#D85A30", "#D4537E", "#BA7517"];
+const COLORS = ["#a78bfa", "#34d399", "#7F77DD", "#D85A30", "#D4537E", "#BA7517"];
 
 const STEP_META: { key: Step; label: string }[] = [
   { key: "ORG", label: "Organización" },
@@ -35,7 +35,7 @@ export default function OnboardingPage() {
     <Suspense
       fallback={
         <div className="w-full max-w-[440px]">
-          <div className="bg-background border border-border/50 rounded-xl p-8 shadow-sm flex justify-center">
+          <div className="glass-strong rounded-2xl p-8 flex justify-center">
             <Loader2 className="size-6 animate-spin text-muted-foreground" />
           </div>
         </div>
@@ -58,7 +58,7 @@ function OnboardingContent() {
   const [orgId, setOrgId] = useState("");
   const [orgName, setOrgName] = useState("");
   const [orgDesc, setOrgDesc] = useState("");
-  const [orgColor, setOrgColor] = useState("#7aa8e0");
+  const [orgColor, setOrgColor] = useState("#a78bfa");
 
   // Invite state
   const [inviteCode, setInviteCode] = useState("");
@@ -164,7 +164,7 @@ function OnboardingContent() {
   if (inviteToken) {
     return (
       <div className="w-full max-w-[440px]">
-        <div className="bg-background border border-border/50 rounded-xl p-8 shadow-sm text-center">
+        <div className="glass-strong rounded-2xl p-8 text-center">
           {acceptInvitation.isError ? (
             <>
               <div className="w-14 h-14 rounded-full bg-destructive/10 flex items-center justify-center mx-auto mb-4">
@@ -182,7 +182,7 @@ function OnboardingContent() {
             <>
               <Loader2
                 className="size-8 animate-spin mx-auto mb-4"
-                style={{ color: "#7aa8e0" }}
+                style={{ color: "#a78bfa" }}
               />
               <h2 className="text-lg font-medium mb-1">Procesando tu invitación...</h2>
               <p className="text-sm text-muted-foreground">Esto solo toma un momento</p>
@@ -200,7 +200,7 @@ function OnboardingContent() {
         {/* Header + Stepper */}
         <div className="px-8 pt-8 pb-0">
           <div className="flex items-center gap-3 mb-6">
-            <img src="/logo-isotipo-black.png" alt="Estratega" className="size-8" />
+            <img src="/logo-isotipo-white.png" alt="Estratega" className="size-8" />
             <span className="text-sm font-medium text-foreground">Estratega</span>
           </div>
 
@@ -225,7 +225,7 @@ function OnboardingContent() {
                       )}
                       style={
                         isDone || isActive
-                          ? { backgroundColor: "#7aa8e0" }
+                          ? { backgroundColor: "#a78bfa" }
                           : undefined
                       }
                     >
@@ -248,7 +248,7 @@ function OnboardingContent() {
                     <div
                       className={cn(
                         "flex-1 h-px mx-2",
-                        isDone ? "bg-[#185FA5]" : "bg-border"
+                        isDone ? "bg-[#60a5fa]" : "bg-border"
                       )}
                     />
                   )}
@@ -400,8 +400,8 @@ function OnboardingContent() {
                 className="rounded-lg px-3 py-2.5 text-[12px] mb-5"
                 style={{
                   backgroundColor: "transparent",
-                  color: "#7aa8e0",
-                  borderLeft: "3px solid #185FA5",
+                  color: "#a78bfa",
+                  borderLeft: "3px solid #60a5fa",
                 }}
               >
                 Comparte por WhatsApp, email o donde prefieras. Quien use el link
@@ -465,7 +465,7 @@ function OnboardingContent() {
                         className={cn(
                           "p-3 rounded-lg border text-left transition-all cursor-pointer",
                           duration === years
-                            ? "border-[#185FA5] bg-[#185FA5]/5"
+                            ? "border-[#60a5fa] bg-[#60a5fa]/5"
                             : "border-border hover:bg-muted/50"
                         )}
                       >
@@ -473,7 +473,7 @@ function OnboardingContent() {
                           className={cn(
                             "text-[14px] font-medium",
                             duration === years
-                              ? "text-[#185FA5]"
+                              ? "text-[#60a5fa]"
                               : "text-foreground"
                           )}
                         >
@@ -483,7 +483,7 @@ function OnboardingContent() {
                           className={cn(
                             "text-[11px] mt-0.5",
                             duration === years
-                              ? "text-[#185FA5]/70"
+                              ? "text-[#60a5fa]/70"
                               : "text-muted-foreground"
                           )}
                         >
@@ -549,7 +549,7 @@ function OnboardingContent() {
           {step === "DONE" && (
             <div className="text-center">
               <div className="w-14 h-14 rounded-full bg-transparent flex items-center justify-center mx-auto mb-4">
-                <Check className="w-7 h-7 text-emerald-600" />
+                <Check className="w-7 h-7 text-emerald-400" />
               </div>
               <h2 className="text-[18px] font-medium text-foreground mb-2">
                 ¡Todo listo!

@@ -3,100 +3,15 @@ import { TRPCError } from "@trpc/server";
 import { router, protectedProcedure, authOnlyProcedure, cycleProcedure } from "@/server/trpc/init";
 import { db } from "@/server/db";
 import { hasPermission, type OrgRole } from "@/lib/permissions";
+import { getSectionStates, moduleStatuses, type ModuleId } from "@/server/cycle-progress";
+import { buildKpiSnapshot, computeGlobalCompliance, getDefaultPeriod } from "@/lib/bsc-dashboard";
+
+const MODULE_NAMES: Record<ModuleId, string> = { M1: "Identidad", M2: "Diagnóstico", M3: "Formulación", M4: "Implementación", M5: "Control" };
+const MODULE_COLORS: Record<ModuleId, string> = { M1: "#60a5fa", M2: "#fbbf24", M3: "#a78bfa", M4: "#f472b6", M5: "#4ade80" };
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-interface ModuleStatus {
-  status: "COMPLETADO" | "EN_CURSO" | "BLOQUEADO";
-  progress: number;
-}
-
-const M1_SECTIONS = ["vision", "mission", "values", "interests"] as const;
-const M2_SECTIONS = [
-  "pestec",
-  "porter",
-  "mefe",
-  "mefi",
-  "amofhit",
-  "mpc",
-  "competitiveAnalysis",
-  "industryAttractiveness",
-] as const;
-const M3_SECTIONS = ["olp", "strategy", "peyea"] as const;
-const M4_SECTIONS = ["strategicAxis", "portfolio"] as const;
-
-async function countModuleSections(cycleId: string) {
-  const [
-    visions,
-    missions,
-    values,
-    interests,
-    pestec,
-    porter,
-    mefe,
-    mefi,
-    amofhit,
-    mpc,
-    competitiveAnalysis,
-    industryAttractiveness,
-    olps,
-    strategies,
-    peyea,
-    axes,
-    portfolios,
-    projects,
-  ] = await Promise.all([
-    db.vision.count({ where: { cycleId } }),
-    db.mission.count({ where: { cycleId } }),
-    db.value.count({ where: { cycleId } }),
-    db.interest.count({ where: { cycleId } }),
-    db.pestecFactor.count({ where: { cycleId } }),
-    db.porterAnalysis.count({ where: { cycleId } }),
-    db.mefeFactor.count({ where: { cycleId } }),
-    db.mefiFactor.count({ where: { cycleId } }),
-    db.amofhitArea.count({ where: { cycleId } }),
-    db.mpcCompetitor.count({ where: { cycleId } }),
-    db.competitiveAnalysis.count({ where: { cycleId } }),
-    db.industryAttractiveness.count({ where: { cycleId } }),
-    db.olp.count({ where: { cycleId } }),
-    db.strategy.count({ where: { cycleId } }),
-    db.peyeaAnalysis.count({ where: { cycleId } }),
-    db.strategicAxis.count({ where: { cycleId } }),
-    db.portfolio.count({ where: { cycleId } }),
-    db.project.count({ where: { orgId: cycleId } }).catch(() => 0),
-  ]);
-
-  return {
-    m1: [visions > 0, missions > 0, values > 0, interests > 0],
-    m2: [
-      pestec > 0,
-      porter > 0,
-      mefe > 0,
-      mefi > 0,
-      amofhit > 0,
-      mpc > 0,
-      competitiveAnalysis > 0,
-      industryAttractiveness > 0,
-    ],
-    m3: [olps > 0, strategies > 0, peyea > 0],
-    m4: [axes > 0, portfolios > 0],
-    projects,
-  };
-}
-
-function computeModuleStatus(
-  checks: boolean[],
-  prevComplete: boolean
-): ModuleStatus {
-  if (!prevComplete) return { status: "BLOQUEADO", progress: 0 };
-  const done = checks.filter(Boolean).length;
-  const progress = Math.round((done / checks.length) * 100);
-  if (progress === 100) return { status: "COMPLETADO", progress: 100 };
-  if (done > 0) return { status: "EN_CURSO", progress };
-  return { status: "EN_CURSO", progress: 0 };
-}
 
 // ---------------------------------------------------------------------------
 // Router
@@ -105,11 +20,7 @@ function computeModuleStatus(
 export const cycleRouter = router({
   list: authOnlyProcedure.query(async ({ ctx }) => {
     // Get org from DB directly (JWT might be stale after onboarding)
-    const user = await db.user.findUnique({
-      where: { id: ctx.userId },
-      select: { activeOrganizationId: true, organizationId: true },
-    });
-    const orgId = user?.activeOrganizationId ?? user?.organizationId;
+    const orgId = await ctx.getActiveOrgId();
     if (!orgId) return [];
 
     return db.strategicCycle.findMany({
@@ -124,11 +35,7 @@ export const cycleRouter = router({
       // Leer org activa desde DB (igual que cycle.list) — el JWT puede estar
       // stale después de un cambio de organización y eso provoca FORBIDDEN
       // falsos que redirigen al dashboard en CycleLayout.
-      const user = await db.user.findUnique({
-        where: { id: ctx.userId },
-        select: { activeOrganizationId: true, organizationId: true },
-      });
-      const orgId = user?.activeOrganizationId ?? user?.organizationId;
+      const orgId = await ctx.getActiveOrgId();
       const cycle = await db.strategicCycle.findUniqueOrThrow({ where: { id: input.id } });
       if (cycle.organizationId !== orgId) {
         throw new TRPCError({ code: "FORBIDDEN", message: "Sin acceso" });
@@ -172,11 +79,7 @@ export const cycleRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const user = await db.user.findUnique({
-        where: { id: ctx.userId },
-        select: { activeOrganizationId: true, organizationId: true },
-      });
-      const orgId = user?.activeOrganizationId ?? user?.organizationId;
+      const orgId = await ctx.getActiveOrgId();
       const cycle = await db.strategicCycle.findUniqueOrThrow({ where: { id: input.id } });
       if (cycle.organizationId !== orgId) {
         throw new TRPCError({ code: "FORBIDDEN", message: "Sin acceso" });
@@ -188,11 +91,7 @@ export const cycleRouter = router({
   delete: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const user = await db.user.findUnique({
-        where: { id: ctx.userId },
-        select: { activeOrganizationId: true, organizationId: true },
-      });
-      const orgId = user?.activeOrganizationId ?? user?.organizationId;
+      const orgId = await ctx.getActiveOrgId();
       const cycle = await db.strategicCycle.findUniqueOrThrow({ where: { id: input.id } });
       if (cycle.organizationId !== orgId) {
         throw new TRPCError({ code: "FORBIDDEN", message: "Sin acceso" });
@@ -213,170 +112,135 @@ export const cycleRouter = router({
   getProgress: cycleProcedure
     .input(z.object({ cycleId: z.string() }))
     .query(async ({ ctx, input }) => {
-      const counts = await countModuleSections(input.cycleId);
-
-      const m1 = computeModuleStatus(counts.m1, true);
-      const m2 = computeModuleStatus(counts.m2, m1.status === "COMPLETADO");
-      const m3 = computeModuleStatus(
-        counts.m3,
-        m2.status === "COMPLETADO"
-      );
-      const m4 = computeModuleStatus(
-        counts.m4,
-        m3.status === "COMPLETADO"
-      );
-      const m5: ModuleStatus =
-        m4.status === "COMPLETADO"
-          ? counts.projects > 0
-            ? { status: "COMPLETADO", progress: 100 }
-            : { status: "EN_CURSO", progress: 0 }
-          : { status: "BLOQUEADO", progress: 0 };
-
-      const modules: Record<string, ModuleStatus> = {
-        M1: m1,
-        M2: m2,
-        M3: m3,
-        M4: m4,
-        M5: m5,
-      };
-
-      const modulesCompleted = Object.values(modules).filter(
-        (m) => m.status === "COMPLETADO"
-      ).length;
-
-      const percentage = Math.round(
-        Object.values(modules).reduce((sum, m) => sum + m.progress, 0) / 5
-      );
-
-      // Count active projects from the org
-      const activeProjects = await db.project
-        .count({ where: { orgId: ctx.organizationId, status: "ACTIVE" } })
-        .catch(() => 0);
-
-      const activeModuleName =
-        Object.entries(modules).find(
-          ([, m]) => m.status === "EN_CURSO"
-        )?.[0] ?? "M1";
-
+      const [states, activeProjects] = await Promise.all([
+        getSectionStates(ctx.db, input.cycleId, ctx.getActiveOrgId),
+        ctx.db.project.count({ where: { orgId: ctx.organizationId, status: "ACTIVE" } }),
+      ]);
+      const modules: Record<string, ReturnType<typeof moduleStatuses>[ModuleId]> = moduleStatuses(states);
+      const list = Object.values(modules);
+      const done = states.filter((s) => s.done).length;
       return {
-        percentage,
-        modulesCompleted,
+        percentage: Math.round((done / states.length) * 100),
+        modulesCompleted: list.filter((m) => m.status === "COMPLETADO").length,
         activeProjects,
         inProgress: activeProjects,
         pendingInvites: 0,
-        activeModuleName,
+        activeModuleName: (Object.entries(modules).find(([, m]) => m.status === "EN_CURSO")?.[0] ?? "M5") as string,
         modules,
+      };
+    }),
+
+  /** Estado de cada herramienta del plan (índices de módulo y menú lateral). */
+  sections: cycleProcedure
+    .input(z.object({ cycleId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const states = await getSectionStates(ctx.db, input.cycleId, ctx.getActiveOrgId);
+      return {
+        sections: states.map(({ sql: _sql, ...rest }) => rest),
+        modules: moduleStatuses(states),
+      };
+    }),
+
+  /** Tablero de inicio: avance del plan + BSC + portafolio + mis tareas, en un solo viaje. */
+  cockpit: cycleProcedure
+    .input(z.object({ cycleId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const now = new Date();
+      const cycle = await ctx.db.strategicCycle.findUniqueOrThrow({
+        where: { id: input.cycleId },
+        select: { yearStart: true, yearEnd: true },
+      });
+      const [states, kpis, projectAgg, myTasks, members, olpCount] = await Promise.all([
+        getSectionStates(ctx.db, input.cycleId, ctx.getActiveOrgId),
+        ctx.db.kpi.findMany({
+          where: { cycleId: input.cycleId, status: { in: ["aceptado", "en_edicion", "confirmado"] } },
+          select: {
+            id: true, code: true, name: true, description: true, dimensionBsc: true, unit: true, frequency: true,
+            direction: true, source: true, educanetLinkId: true, educanetLastReceivedAt: true, responsibleRole: true,
+            responsibleArea: { select: { name: true } },
+            periods: {
+              select: { period: true, metaGreen: true, metaAmber: true, metaRed: true, realValue: true, semaforoActual: true, percentCompletion: true, dataReceivedAt: true },
+            },
+          },
+        }),
+        ctx.db.$queryRaw<{ projects: bigint; total: bigint; done: bigint; overdue: bigint }[]>`
+          SELECT COUNT(DISTINCT p.id) AS projects,
+            COUNT(i.id) FILTER (WHERE i."parentId" IS NULL) AS total,
+            COUNT(i.id) FILTER (WHERE i."parentId" IS NULL AND ws.category = 'DONE') AS done,
+            COUNT(i.id) FILTER (WHERE i."dueDate" < NOW() AND COALESCE(ws.category, 'TODO') <> 'DONE') AS overdue
+          FROM "Project" p
+          JOIN "Portfolio" pf ON pf.id = p."portfolioId" AND pf."cycleId" = ${input.cycleId}
+          LEFT JOIN "Issue" i ON i."projectId" = p.id
+          LEFT JOIN "WorkflowStatus" ws ON ws.id = i."statusId"
+          WHERE p."orgId" = ${ctx.organizationId}`,
+        ctx.db.issue.findMany({
+          where: {
+            assigneeId: ctx.userId,
+            project: { orgId: ctx.organizationId },
+            OR: [{ status: null }, { status: { category: { not: "DONE" } } }],
+            dueDate: { not: null },
+          },
+          select: { id: true, summary: true, dueDate: true, type: true, project: { select: { id: true, name: true, color: true } } },
+          orderBy: { dueDate: "asc" },
+          take: 6,
+        }),
+        ctx.db.organizationMember.count({ where: { organizationId: ctx.organizationId } }),
+        ctx.db.olp.count({ where: { cycleId: input.cycleId } }),
+      ]);
+
+      const period = getDefaultPeriod(kpis, cycle.yearStart, cycle.yearEnd);
+      const snaps = kpis.map((k) => buildKpiSnapshot(k, period));
+      const bsc = computeGlobalCompliance(snaps);
+      const byDim = (["resultados_economicos", "posicion_mercado", "como_opera_empresa", "personas_cultura"] as const).map((d) => {
+        const list = snaps.filter((s) => s.dimensionBsc === d);
+        return {
+          dimension: d,
+          pct: bsc.byDimension[d],
+          verde: list.filter((s) => s.semaforo === "verde").length,
+          ambar: list.filter((s) => s.semaforo === "ambar").length,
+          rojo: list.filter((s) => s.semaforo === "rojo").length,
+          sinDato: list.filter((s) => s.semaforo === "sin_dato").length,
+          total: list.length,
+        };
+      });
+      const agg = projectAgg[0];
+      const total = Number(agg?.total ?? 0);
+      const done = Number(agg?.done ?? 0);
+      const modules = moduleStatuses(states);
+      return {
+        plan: {
+          percentage: Math.round((states.filter((s) => s.done).length / states.length) * 100),
+          modules,
+          next: (() => {
+            const n = states.find((s) => !s.done);
+            return n ? { label: n.label, description: n.description, module: n.module, path: n.path.startsWith("/") ? n.path : `/cycles/${input.cycleId}/${n.path}` } : null;
+          })(),
+        },
+        bsc: { period, globalPct: bsc.globalPct, counts: bsc.counts, byDim, kpis: snaps.length, olps: olpCount },
+        portfolio: {
+          projects: Number(agg?.projects ?? 0),
+          tasks: total,
+          done,
+          overdue: Number(agg?.overdue ?? 0),
+          progress: total ? Math.round((done / total) * 100) : 0,
+        },
+        myTasks,
+        members,
+        today: now,
       };
     }),
 
   getNextStep: cycleProcedure
     .input(z.object({ cycleId: z.string() }))
-    .query(async ({ input }) => {
-      const counts = await countModuleSections(input.cycleId);
-      const base = `/cycles/${input.cycleId}`;
-
-      // M1 checks
-      if (!counts.m1[0])
-        return {
-          title: "Define la Visión",
-          description:
-            "Establece la visión a largo plazo de tu organización.",
-          path: `${base}/m1-identity/vision`,
-        };
-      if (!counts.m1[1])
-        return {
-          title: "Define la Misión",
-          description: "Describe el propósito y razón de ser de tu organización.",
-          path: `${base}/m1-identity/mission`,
-        };
-      if (!counts.m1[2])
-        return {
-          title: "Define los Valores",
-          description: "Establece los valores que guían a tu organización.",
-          path: `${base}/m1-identity/values`,
-        };
-      if (!counts.m1[3])
-        return {
-          title: "Define los Intereses",
-          description:
-            "Identifica los intereses organizacionales y principios cardinales.",
-          path: `${base}/m1-identity/interests`,
-        };
-
-      // M2 checks
-      if (!counts.m2[0])
-        return {
-          title: "Análisis PESTEC",
-          description:
-            "Analiza los factores políticos, económicos, sociales, tecnológicos y ecológicos.",
-          path: `${base}/m2-diagnosis/pestec`,
-        };
-      if (!counts.m2[1])
-        return {
-          title: "5 Fuerzas de Porter",
-          description: "Evalúa las fuerzas competitivas de tu industria.",
-          path: `${base}/m2-diagnosis/porter`,
-        };
-      if (!counts.m2[5])
-        return {
-          title: "Matriz MPC",
-          description:
-            "Compara tu organización con los competidores principales.",
-          path: `${base}/m2-diagnosis/mpc`,
-        };
-      if (!counts.m2[2])
-        return {
-          title: "Matriz MEFE",
-          description:
-            "Sintetiza las oportunidades y amenazas del entorno externo.",
-          path: `${base}/m2-diagnosis/mefe`,
-        };
-      if (!counts.m2[4])
-        return {
-          title: "Auditoría AMOFHIT",
-          description:
-            "Realiza la auditoría interna por áreas funcionales.",
-          path: `${base}/m2-diagnosis/amofhit`,
-        };
-      if (!counts.m2[3])
-        return {
-          title: "Matriz MEFI",
-          description:
-            "Sintetiza las fortalezas y debilidades internas.",
-          path: `${base}/m2-diagnosis/mefi`,
-        };
-
-      // M3 checks
-      if (!counts.m3[0])
-        return {
-          title: "Objetivos de Largo Plazo",
-          description: "Define los OLP vinculados a tu visión estratégica.",
-          path: `${base}/m3-formulation/olp`,
-        };
-      if (!counts.m3[1])
-        return {
-          title: "Formulación de Estrategias",
-          description:
-            "Genera estrategias usando el FODA cruzado y otras matrices.",
-          path: `${base}/m3-formulation/strategies`,
-        };
-      if (!counts.m3[2])
-        return {
-          title: "Análisis PEYEA",
-          description: "Evalúa la posición estratégica de tu organización.",
-          path: `${base}/m3-formulation/peyea`,
-        };
-
-      // M4
-      if (!counts.m4[0])
-        return {
-          title: "Despliegue Estratégico",
-          description:
-            "Crea ejes estratégicos y portafolios para ejecutar tus estrategias.",
-          path: `${base}/m4-deployment`,
-        };
-
-      return null;
+    .query(async ({ ctx, input }) => {
+      const states = await getSectionStates(ctx.db, input.cycleId, ctx.getActiveOrgId);
+      const next = states.find((s) => !s.done);
+      if (!next) return null;
+      return {
+        title: next.label,
+        description: next.description,
+        path: next.path.startsWith("/") ? next.path : `/cycles/${input.cycleId}/${next.path}`,
+      };
     }),
 
   getActivity: cycleProcedure
@@ -393,85 +257,18 @@ export const cycleRouter = router({
 
   getPending: cycleProcedure
     .input(z.object({ cycleId: z.string() }))
-    .query(async ({ input }) => {
-      const counts = await countModuleSections(input.cycleId);
-      const base = `/cycles/${input.cycleId}`;
-      const items: {
-        title: string;
-        subtitle: string;
-        path: string;
-        color: string;
-      }[] = [];
-
-      // Find first incomplete module and list its pending sections
-      const m1Labels = ["Visión", "Misión", "Valores", "Intereses"];
-      const m1Paths = [
-        "m1-identity/vision",
-        "m1-identity/mission",
-        "m1-identity/values",
-        "m1-identity/interests",
-      ];
-      for (let i = 0; i < counts.m1.length; i++) {
-        if (!counts.m1[i]) {
-          items.push({
-            title: m1Labels[i],
-            subtitle: "M1 · Identidad",
-            path: `${base}/${m1Paths[i]}`,
-            color: "#185FA5",
-          });
-        }
-      }
-      if (items.length > 0) return items.slice(0, 5);
-
-      const m2Labels = [
-        "PESTEC",
-        "Porter",
-        "MEFE",
-        "MEFI",
-        "AMOFHIT",
-        "MPC",
-        "Análisis Competitivo",
-        "Atractividad",
-      ];
-      const m2Paths = [
-        "m2-diagnosis/pestec",
-        "m2-diagnosis/porter",
-        "m2-diagnosis/mefe",
-        "m2-diagnosis/mefi",
-        "m2-diagnosis/amofhit",
-        "m2-diagnosis/mpc",
-        "m2-diagnosis/competitive-analysis",
-        "m2-diagnosis/industry-attractiveness",
-      ];
-      for (let i = 0; i < counts.m2.length; i++) {
-        if (!counts.m2[i]) {
-          items.push({
-            title: m2Labels[i],
-            subtitle: "M2 · Diagnóstico",
-            path: `${base}/${m2Paths[i]}`,
-            color: "#D97706",
-          });
-        }
-      }
-      if (items.length > 0) return items.slice(0, 5);
-
-      const m3Labels = ["OLP", "Estrategias", "PEYEA"];
-      const m3Paths = [
-        "m3-formulation/olp",
-        "m3-formulation/strategies",
-        "m3-formulation/peyea",
-      ];
-      for (let i = 0; i < counts.m3.length; i++) {
-        if (!counts.m3[i]) {
-          items.push({
-            title: m3Labels[i],
-            subtitle: "M3 · Formulación",
-            path: `${base}/${m3Paths[i]}`,
-            color: "#7C3AED",
-          });
-        }
-      }
-
-      return items.slice(0, 5);
+    .query(async ({ ctx, input }) => {
+      const states = await getSectionStates(ctx.db, input.cycleId, ctx.getActiveOrgId);
+      const firstOpen = states.find((s) => !s.done)?.module;
+      if (!firstOpen) return [];
+      return states
+        .filter((s) => !s.done && s.module === firstOpen)
+        .slice(0, 5)
+        .map((s) => ({
+          title: s.label,
+          subtitle: `${s.module} · ${MODULE_NAMES[s.module]}`,
+          path: s.path.startsWith("/") ? s.path : `/cycles/${input.cycleId}/${s.path}`,
+          color: MODULE_COLORS[s.module],
+        }));
     }),
 });

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { router, protectedProcedure, editorProcedure } from "@/server/trpc/init";
+import { router, protectedProcedure, editorProcedure, cycleProcedure, cycleEditorProcedure } from "@/server/trpc/init";
 import { db } from "@/server/db";
 import { compareStrategies, clusterStrategies, DEFAULT_DUPLICATE_THRESHOLD } from "@/lib/strategy-similarity";
 
@@ -20,7 +20,7 @@ export const mdRouter = router({
   // getSetup: trae estrategias de las 5 matrices, OLPs y la consolidacion
   // actual. Si no hay consolidacion, propone una via clustering.
   // ───────────────────────────────────────────────────────────────────
-  getSetup: protectedProcedure
+  getSetup: cycleProcedure
     .input(z.object({ cycleId: z.string() }))
     .query(async ({ input }) => {
       const cycleId = input.cycleId;
@@ -92,7 +92,7 @@ export const mdRouter = router({
   // saveConsolidation: persiste la consolidacion (propuesta o manual)
   // Reemplaza completamente la consolidacion existente.
   // ───────────────────────────────────────────────────────────────────
-  saveConsolidation: editorProcedure
+  saveConsolidation: cycleEditorProcedure
     .input(
       z.object({
         cycleId: z.string(),
@@ -169,7 +169,7 @@ export const mdRouter = router({
   // ───────────────────────────────────────────────────────────────────
   // mergeManually: fusiona dos estrategias consolidadas en una nueva
   // ───────────────────────────────────────────────────────────────────
-  mergeManually: editorProcedure
+  mergeManually: cycleEditorProcedure
     .input(
       z.object({
         cycleId: z.string(),

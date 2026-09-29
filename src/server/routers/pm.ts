@@ -12,6 +12,7 @@ import {
   type BscCode,
   type StatusCategory,
 } from "@/lib/pm";
+import { computeStats, projectHealth as health, statsFromCounts, sumStats } from "@/lib/pm-stats";
 
 // Gestión de proyectos tipo Asana/ClickUp: portafolio generado desde el plan,
 // vistas de proyecto (lista, tablero, Gantt, calendario), evidencias y tiempos.
@@ -36,54 +37,6 @@ async function createDefaultWorkflow(db: Db, projectId: string) {
   return db.workflowStatus.findMany({ where: { projectId }, orderBy: { sortOrder: "asc" } });
 }
 
-type IssueLite = {
-  projectId: string;
-  parentId: string | null;
-  dueDate: Date | null;
-  estimateHours: number | null;
-  timeSpent: number | null;
-  status: { category: string } | null;
-};
-
-function computeStats(issues: IssueLite[]) {
-  const now = Date.now();
-  // El avance se mide sobre tareas principales; las subtareas pesan dentro de su padre.
-  const top = issues.filter((i) => !i.parentId);
-  const total = top.length;
-  const done = top.filter((i) => i.status?.category === "DONE").length;
-  const inProgress = top.filter((i) => i.status?.category === "IN_PROGRESS").length;
-  const overdue = issues.filter(
-    (i) => i.dueDate && i.dueDate.getTime() < now && i.status?.category !== "DONE",
-  ).length;
-  const estimate = issues.reduce((a, i) => a + (i.estimateHours ?? 0), 0);
-  const spent = issues.reduce((a, i) => a + (i.timeSpent ?? 0), 0);
-  return {
-    total,
-    done,
-    inProgress,
-    todo: total - done - inProgress,
-    overdue,
-    progress: total ? Math.round((done / total) * 100) : 0,
-    estimate,
-    spent,
-  };
-}
-
-function health(stats: ReturnType<typeof computeStats>, endDate: Date | null, startDate: Date | null) {
-  if (stats.total === 0) return "SIN_TAREAS" as const;
-  if (stats.progress === 100) return "COMPLETADO" as const;
-  // Avance esperado según el tiempo transcurrido del proyecto.
-  if (startDate && endDate && endDate > startDate) {
-    const elapsed = (Date.now() - startDate.getTime()) / (endDate.getTime() - startDate.getTime());
-    const expected = Math.min(100, Math.max(0, elapsed * 100));
-    if (stats.progress + 25 < expected || (endDate.getTime() < Date.now() && stats.progress < 100)) return "EN_RIESGO" as const;
-    if (stats.progress + 10 < expected || stats.overdue > 0) return "ATENCION" as const;
-  } else if (stats.overdue > 0) {
-    return "ATENCION" as const;
-  }
-  return "EN_CAMINO" as const;
-}
-
 async function uniqueProjectKey(db: Db, orgId: string, base: string) {
   const clean = base.toUpperCase().replace(/[^A-Z0-9-]/g, "").slice(0, 8) || "PRY";
   let key = clean;
@@ -100,7 +53,7 @@ const truncate = (s: string, n: number) => (s.length > n ? s.slice(0, n - 1).tri
 // Plan → portafolio: Perspectiva BSC → Portafolio, OLP → Programa,
 // OCP → Proyecto, acciones trimestrales del OCP → Tareas (+ hito de la meta).
 // ---------------------------------------------------------------------------
-async function planFromCycle(db: Db, orgId: string, cycleId: string, userId: string, apply: boolean) {
+export async function planFromCycle(db: Db, orgId: string, cycleId: string, userId: string, apply: boolean) {
   const cycle = await db.strategicCycle.findUniqueOrThrow({ where: { id: cycleId } });
   const olps = await db.olp.findMany({
     where: { cycleId },
@@ -309,47 +262,70 @@ export const pmRouter = router({
   portfolioTree: protectedProcedure
     .input(z.object({ cycleId: z.string().optional() }).optional())
     .query(async ({ ctx, input }) => {
-      const cycleFilter = input?.cycleId ? { cycleId: input.cycleId } : {};
-      const [portfolios, projects] = await Promise.all([
+      const cycleId = input?.cycleId;
+      const [portfolios, projects, agg] = await Promise.all([
         ctx.db.portfolio.findMany({
-          where: { organizationId: ctx.organizationId, ...cycleFilter },
-          include: { axis: true, programs: { orderBy: { sortOrder: "asc" } } },
+          where: { organizationId: ctx.organizationId, ...(cycleId && { cycleId }) },
+          select: {
+            id: true, name: true, description: true, bscPerspective: true, status: true, sortOrder: true,
+            axis: { select: { name: true, color: true } },
+            programs: { select: { id: true, name: true, description: true }, orderBy: { sortOrder: "asc" } },
+          },
           orderBy: { sortOrder: "asc" },
         }),
         ctx.db.project.findMany({
-          where: { orgId: ctx.organizationId },
-          include: { ocp: { select: { code: true, year: true } } },
+          where: {
+            orgId: ctx.organizationId,
+            // Con ciclo: sus proyectos + los que no tienen portafolio.
+            ...(cycleId && { OR: [{ portfolio: { cycleId } }, { portfolioId: null }] }),
+          },
+          select: {
+            id: true, key: true, name: true, status: true, color: true, ownerId: true, portfolioId: true, programId: true,
+            startDate: true, endDate: true, ocp: { select: { code: true, year: true } },
+          },
           orderBy: { createdAt: "asc" },
         }),
+        // Métricas agregadas en la base de datos: una fila por proyecto.
+        ctx.db.$queryRaw<{ projectId: string; total: bigint; done: bigint; inprog: bigint; overdue: bigint; est: number; spent: number }[]>`
+          SELECT i."projectId",
+            COUNT(*) FILTER (WHERE i."parentId" IS NULL) AS total,
+            COUNT(*) FILTER (WHERE i."parentId" IS NULL AND ws.category = 'DONE') AS done,
+            COUNT(*) FILTER (WHERE i."parentId" IS NULL AND ws.category = 'IN_PROGRESS') AS inprog,
+            COUNT(*) FILTER (WHERE i."dueDate" < NOW() AND COALESCE(ws.category, 'TODO') <> 'DONE') AS overdue,
+            COALESCE(SUM(i."estimateHours"), 0)::float AS est,
+            COALESCE(SUM(i."timeSpent"), 0)::float AS spent
+          FROM "Issue" i
+          JOIN "Project" p ON p.id = i."projectId"
+          LEFT JOIN "WorkflowStatus" ws ON ws.id = i."statusId"
+          WHERE p."orgId" = ${ctx.organizationId}
+          GROUP BY i."projectId"`,
       ]);
-      const issues = await ctx.db.issue.findMany({
-        where: { projectId: { in: projects.map((p) => p.id) } },
-        select: {
-          projectId: true, parentId: true, dueDate: true, estimateHours: true, timeSpent: true,
-          status: { select: { category: true } },
-        },
-      });
-      const owners = await ctx.db.user.findMany({
-        where: { id: { in: projects.map((p) => p.ownerId).filter(Boolean) as string[] } },
-        select: { id: true, name: true },
-      });
+      const ownerIds = Array.from(new Set(projects.map((p) => p.ownerId).filter(Boolean) as string[]));
+      const owners = new Map(
+        (await ctx.db.user.findMany({ where: { id: { in: ownerIds } }, select: { id: true, name: true } })).map((u) => [u.id, u]),
+      );
+      const statsBy = new Map(
+        agg.map((r) => [
+          r.projectId,
+          statsFromCounts({ total: Number(r.total), done: Number(r.done), inProgress: Number(r.inprog), overdue: Number(r.overdue), estimate: r.est, spent: r.spent }),
+        ]),
+      );
+      const empty = statsFromCounts({ total: 0, done: 0, inProgress: 0, overdue: 0, estimate: 0, spent: 0 });
 
       const projectRows = projects.map((p) => {
-        const stats = computeStats(issues.filter((i) => i.projectId === p.id));
-        return {
-          ...p,
-          owner: owners.find((o) => o.id === p.ownerId) ?? null,
-          stats,
-          health: health(stats, p.endDate, p.startDate),
-        };
+        const stats = statsBy.get(p.id) ?? empty;
+        return { ...p, owner: p.ownerId ? (owners.get(p.ownerId) ?? null) : null, stats, health: health(stats, p.endDate, p.startDate) };
       });
-      const rollup = (rows: typeof projectRows) => {
-        const s = computeStats(issues.filter((i) => rows.some((r) => r.id === i.projectId)));
-        return { ...s, projects: rows.length, atRisk: rows.filter((r) => r.health === "EN_RIESGO").length };
-      };
+      const rollup = (rows: typeof projectRows) => ({
+        ...sumStats(rows.map((r) => r.stats)),
+        projects: rows.length,
+        atRisk: rows.filter((r) => r.health === "EN_RIESGO").length,
+      });
 
+      const pfIds = new Set(portfolios.map((p) => p.id));
       const tree = portfolios.map((pf) => {
         const pfProjects = projectRows.filter((p) => p.portfolioId === pf.id);
+        const programIds = new Set(pf.programs.map((pg) => pg.id));
         return {
           ...pf,
           stats: rollup(pfProjects),
@@ -357,10 +333,10 @@ export const pmRouter = router({
             const pgProjects = pfProjects.filter((p) => p.programId === pg.id);
             return { ...pg, stats: rollup(pgProjects), projects: pgProjects };
           }),
-          directProjects: pfProjects.filter((p) => !p.programId || !pf.programs.some((pg) => pg.id === p.programId)),
+          directProjects: pfProjects.filter((p) => !p.programId || !programIds.has(p.programId)),
         };
       });
-      const unassigned = projectRows.filter((p) => !p.portfolioId || !portfolios.some((pf) => pf.id === p.portfolioId));
+      const unassigned = projectRows.filter((p) => !p.portfolioId || !pfIds.has(p.portfolioId));
       return { tree, unassigned, totals: rollup(projectRows) };
     }),
 
@@ -456,6 +432,10 @@ export const pmRouter = router({
 
   /** Todo lo que necesita el espacio de trabajo del proyecto en una sola consulta. */
   workspace: projectProcedure.input(z.object({ projectId: z.string() })).query(async ({ ctx, input }) => {
+    const orgMembersPromise = ctx.db.organizationMember.findMany({
+      where: { organizationId: ctx.organizationId },
+      select: { user: { select: { id: true, name: true, email: true, area: true } } },
+    });
     const project = await ctx.db.project.findUniqueOrThrow({
       where: { id: input.projectId },
       include: {
@@ -475,12 +455,10 @@ export const pmRouter = router({
       },
     });
     if (project.workflows.length === 0) {
+      // Proyectos antiguos sin estados: se crean una única vez.
       project.workflows = await createDefaultWorkflow(ctx.db, project.id);
     }
-    const orgMembers = await ctx.db.organizationMember.findMany({
-      where: { organizationId: ctx.organizationId },
-      include: { user: { select: { id: true, name: true, email: true, area: true } } },
-    });
+    const orgMembers = await orgMembersPromise;
     const users = new Map<string, { id: string; name: string; email: string; area: string | null }>();
     for (const m of orgMembers) users.set(m.user.id, m.user);
     for (const m of project.members) users.set(m.user.id, m.user);
@@ -536,15 +514,14 @@ export const pmRouter = router({
       .filter((i) => i.dueDate && i.status?.category !== "DONE")
       .sort((a, b) => a.dueDate!.getTime() - b.dueDate!.getTime())
       .slice(0, 8);
-    const ids = issues.map((i) => i.id);
     const [activity, evidenceCount] = await Promise.all([
       ctx.db.issueHistory.findMany({
-        where: { issueId: { in: ids } },
+        where: { issue: { projectId: input.projectId }, field: { not: "sortOrder" } },
         orderBy: { createdAt: "desc" },
         take: 15,
         include: { issue: { select: { id: true, number: true, summary: true } } },
       }),
-      ctx.db.issueAttachment.count({ where: { issueId: { in: ids } } }),
+      ctx.db.issueAttachment.count({ where: { issue: { projectId: input.projectId } } }),
     ]);
     return {
       stats,
@@ -596,23 +573,18 @@ export const pmRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const last = await ctx.db.issue.findFirst({
-        where: { projectId: input.projectId },
-        orderBy: { number: "desc" },
-        select: { number: true },
-      });
-      let statusId = input.statusId ?? null;
-      if (!statusId) {
-        const s = await ctx.db.workflowStatus.findFirst({
-          where: { projectId: input.projectId, category: "TODO" },
-          orderBy: { sortOrder: "asc" },
-        });
-        statusId = s?.id ?? null;
-      }
-      const maxOrder = await ctx.db.issue.aggregate({
-        where: { projectId: input.projectId, parentId: input.parentId ?? null },
-        _max: { sortOrder: true },
-      });
+      const [last, defaultStatus, maxOrder] = await Promise.all([
+        ctx.db.issue.findFirst({ where: { projectId: input.projectId }, orderBy: { number: "desc" }, select: { number: true } }),
+        input.statusId
+          ? null
+          : ctx.db.workflowStatus.findFirst({
+              where: { projectId: input.projectId, category: "TODO" },
+              orderBy: { sortOrder: "asc" },
+              select: { id: true },
+            }),
+        ctx.db.issue.aggregate({ where: { projectId: input.projectId, parentId: input.parentId ?? null }, _max: { sortOrder: true } }),
+      ]);
+      const statusId = input.statusId ?? defaultStatus?.id ?? null;
       const issue = await ctx.db.issue.create({
         data: {
           projectId: input.projectId,
@@ -721,10 +693,10 @@ export const pmRouter = router({
           orderBy: [{ sortOrder: "asc" }, { number: "asc" }],
         },
         labels: { include: { label: true } },
-        comments: { orderBy: { createdAt: "asc" } },
-        attachments: { orderBy: { createdAt: "desc" } },
-        history: { orderBy: { createdAt: "desc" }, take: 50 },
-        timeEntries: { orderBy: { date: "desc" } },
+        comments: { orderBy: { createdAt: "asc" }, take: 200 },
+        attachments: { orderBy: { createdAt: "desc" }, take: 100 },
+        history: { where: { field: { not: "sortOrder" } }, orderBy: { createdAt: "desc" }, take: 50 },
+        timeEntries: { orderBy: { date: "desc" }, take: 100 },
         linksFrom: { include: { toIssue: { select: { id: true, number: true, summary: true, status: { select: { category: true } } } } } },
         linksTo: { include: { fromIssue: { select: { id: true, number: true, summary: true, status: { select: { category: true } } } } } },
       },
@@ -787,8 +759,10 @@ export const pmRouter = router({
       if (input.fromIssueId === input.toIssueId) {
         throw new TRPCError({ code: "BAD_REQUEST", message: "Una tarea no puede depender de sí misma" });
       }
-      const a = await assertIssueInOrg(ctx.db, input.fromIssueId, ctx.organizationId);
-      const b = await assertIssueInOrg(ctx.db, input.toIssueId, ctx.organizationId);
+      const [a, b] = await Promise.all([
+        assertIssueInOrg(ctx.db, input.fromIssueId, ctx.organizationId),
+        assertIssueInOrg(ctx.db, input.toIssueId, ctx.organizationId),
+      ]);
       if (a.projectId !== b.projectId) {
         throw new TRPCError({ code: "BAD_REQUEST", message: "Las dependencias deben estar en el mismo proyecto" });
       }

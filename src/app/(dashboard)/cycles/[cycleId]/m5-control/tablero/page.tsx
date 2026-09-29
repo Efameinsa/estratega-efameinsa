@@ -85,12 +85,8 @@ import {
   type KpiSnapshot,
   type Semaforo,
 } from "@/lib/bsc-dashboard";
-import {
-  exportDashboardPdf,
-  exportDashboardExcel,
-  exportDashboardPng,
-  type DashboardExportContext,
-} from "@/lib/dashboard-export";
+import { exportDashboardPdf, exportDashboardExcel, exportDashboardPng } from "@/lib/lazy-exports";
+import type { DashboardExportContext } from "@/lib/dashboard-export";
 
 type RouterOutputs = inferRouterOutputs<AppRouter>;
 type SetupData = RouterOutputs["dashboard"]["setup"];
@@ -119,7 +115,7 @@ function TableroInner() {
   // Polling cada 30s para que llegue lo nuevo de EduCaNet
   const setupQuery = trpc.dashboard.setup.useQuery(
     { cycleId },
-    { refetchInterval: 30_000, refetchIntervalInBackground: false },
+    { refetchInterval: 120_000, refetchIntervalInBackground: false },
   );
 
   const inferRelMut = trpc.dashboard.inferRelations.useMutation({
@@ -211,9 +207,9 @@ function TableroInner() {
   }
   if (setup.kpis.length === 0) {
     return (
-      <Card className="border-amber-300 bg-transparent">
+      <Card className="border-amber-500/30 bg-transparent">
         <CardContent className="flex flex-col items-start gap-3 py-8 text-left">
-          <AlertTriangle className="h-6 w-6 text-amber-600" />
+          <AlertTriangle className="h-6 w-6 text-amber-400" />
           <div>
             <p className="font-semibold">Aún no has diseñado tus indicadores</p>
             <p className="text-sm text-muted-foreground">
@@ -246,7 +242,7 @@ function TableroInner() {
       ref={containerRef}
       className={cn(
         "space-y-5",
-        presentation && "fixed inset-0 z-50 overflow-auto bg-white p-8",
+        presentation && "fixed inset-0 z-50 overflow-auto bg-background p-8",
       )}
     >
       <GlobalHeader
@@ -613,10 +609,10 @@ function ModeDimensions({
       </div>
 
       {topCritical && (
-        <Card className="border-red-300 bg-transparent">
-          <CardContent className="flex flex-wrap items-center justify-between gap-3 py-3 text-sm text-red-900">
+        <Card className="border-red-500/30 bg-transparent">
+          <CardContent className="flex flex-wrap items-center justify-between gap-3 py-3 text-sm text-red-300">
             <div className="flex items-start gap-2">
-              <AlertCircle className="mt-0.5 size-5 text-red-600" />
+              <AlertCircle className="mt-0.5 size-5 text-red-400" />
               <div>
                 <strong>1 KPI crítico requiere acción inmediata:</strong>{" "}
                 {topCritical.code} — {topCritical.name}.{" "}
@@ -628,7 +624,7 @@ function ModeDimensions({
             <Button
               size="sm"
               variant="outline"
-              className="border-red-300"
+              className="border-red-500/30"
               onClick={() => onSelectKpi(topCritical.id)}
             >
               Ver detalle <ChevronRight className="ml-1 size-3.5" />
@@ -705,7 +701,7 @@ function KpiMiniCard({
         "flex w-full flex-wrap items-start justify-between gap-2 rounded-md border p-2.5 text-left transition hover:-translate-y-0.5 hover:shadow-sm",
       )}
       style={{
-        backgroundColor: kpi.semaforo === "verde" ? "#FFFFFF" : sem.bg,
+        backgroundColor: sem.bg,
         borderColor: kpi.semaforo === "verde" ? "rgba(0,0,0,0.08)" : sem.color,
       }}
     >
@@ -722,7 +718,7 @@ function KpiMiniCard({
               <Plug className="mr-0.5 size-2.5" />
             </Badge>
           ) : (
-            <Badge className="border-amber-300 bg-transparent text-[10px] text-amber-900">
+            <Badge className="border-amber-500/30 bg-transparent text-[10px] text-amber-300">
               <HandMetal className="mr-0.5 size-2.5" />
             </Badge>
           )}
@@ -757,9 +753,9 @@ function KpiMiniCard({
         {kpi.trendDirection && (
           <div className="flex items-center gap-0.5 text-[10px]">
             {kpi.trendDirection === "up" ? (
-              <ArrowUp className="size-3 text-emerald-600" />
+              <ArrowUp className="size-3 text-emerald-400" />
             ) : kpi.trendDirection === "down" ? (
-              <ArrowDown className="size-3 text-rose-600" />
+              <ArrowDown className="size-3 text-rose-400" />
             ) : (
               <Minus className="size-3 text-muted-foreground" />
             )}
@@ -942,7 +938,7 @@ function ModeMap({
               zoomOnScroll
               zoomOnPinch
             >
-              <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="#e5e7eb" />
+              <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="rgba(167,139,250,0.14)" />
               <Controls showInteractive={false} />
             </ReactFlow>
           </div>
@@ -961,13 +957,13 @@ function ModeMap({
         <Card>
           <CardContent className="py-3 text-left text-xs">
             <strong className="block">Flechas e impacto</strong>
-            Verdes: flujo positivo. Ámbar: alerta. <span className="text-rose-600 font-semibold">Rojas: flujo bloqueado</span>{" "}
+            Verdes: flujo positivo. Ámbar: alerta. <span className="text-rose-400 font-semibold">Rojas: flujo bloqueado</span>{" "}
             por problema upstream.
           </CardContent>
         </Card>
-        <Card className="border-rose-200 bg-transparent">
+        <Card className="border-rose-500/30 bg-transparent">
           <CardContent className="py-3 text-left text-xs">
-            <strong className="block text-rose-900">Punto crítico</strong>
+            <strong className="block text-rose-300">Punto crítico</strong>
             {snapshots.some((s) => s.semaforo === "rojo")
               ? `${snapshots.filter((s) => s.semaforo === "rojo").length} KPIs en rojo están bloqueando el flujo hacia las dimensiones superiores.`
               : "Sin puntos críticos identificados."}
@@ -1108,7 +1104,7 @@ function ModeList({
                       {k.source === "educanet" ? (
                         <Plug className="mx-auto size-3.5 text-primary" />
                       ) : (
-                        <HandMetal className="mx-auto size-3.5 text-amber-600" />
+                        <HandMetal className="mx-auto size-3.5 text-amber-400" />
                       )}
                     </td>
                     <td className="px-2 py-2 text-right font-semibold">
@@ -1128,9 +1124,9 @@ function ModeList({
                     </td>
                     <td className="px-2 py-2 text-center">
                       {k.trendDirection === "up" ? (
-                        <ArrowUp className="mx-auto size-3.5 text-emerald-600" />
+                        <ArrowUp className="mx-auto size-3.5 text-emerald-400" />
                       ) : k.trendDirection === "down" ? (
-                        <ArrowDown className="mx-auto size-3.5 text-rose-600" />
+                        <ArrowDown className="mx-auto size-3.5 text-rose-400" />
                       ) : (
                         <Minus className="mx-auto size-3 text-muted-foreground" />
                       )}
@@ -1183,7 +1179,7 @@ function SyncFooter({
           <span>{educanet} sincronizados desde EduCaNet</span>
         </div>
         <div className="flex items-center gap-1">
-          <HandMetal className="size-3 text-amber-600" />
+          <HandMetal className="size-3 text-amber-400" />
           <span>{manual} de carga manual</span>
         </div>
         {minutesAgo != null && (
@@ -1299,7 +1295,7 @@ function KpiDrillDown({
                 "border-0",
                 kpi.source === "educanet"
                   ? "bg-primary/15 text-primary"
-                  : "bg-transparent text-amber-900",
+                  : "bg-transparent text-amber-300",
               )}
             >
               {kpi.source === "educanet" ? (

@@ -31,7 +31,7 @@ export default function JoinPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted/30 px-4">
       <div className="w-full max-w-[380px]">
-        <div className="bg-background border border-border/50 rounded-xl p-8 shadow-sm">
+        <div className="glass-strong rounded-2xl p-8">
           <h1 className="text-[17px] font-medium text-foreground mb-2 text-center">
             Unirte con código
           </h1>

@@ -1,5 +1,6 @@
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
+import { memoActiveOrg } from "./active-org";
 
 export async function createTRPCContext() {
   const session = await auth();
@@ -7,13 +8,15 @@ export async function createTRPCContext() {
 
   // Use activeOrganizationId as the primary org context
   const organizationId = (user?.activeOrganizationId ?? user?.organizationId) as string | undefined;
+  const userId = user?.id as string | undefined;
 
   return {
     db,
     session,
-    userId: user?.id as string | undefined,
+    userId,
     organizationId,
     role: user?.role as string | undefined,
+    getActiveOrgId: memoActiveOrg(userId, organizationId),
   };
 }
 

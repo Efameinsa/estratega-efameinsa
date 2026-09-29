@@ -83,7 +83,7 @@ export default function StrategiesRetainedPage() {
         </div>
         <div className="rounded-xl border border-amber-200/60 bg-transparent p-5">
           <div className="flex gap-3">
-            <AlertTriangle className="size-5 shrink-0 text-amber-600 mt-0.5" />
+            <AlertTriangle className="size-5 shrink-0 text-amber-400 mt-0.5" />
             <div>
               <p className="font-medium mb-1">Sin estrategias para clasificar</p>
               <p className="text-sm text-muted-foreground mb-3">
@@ -281,7 +281,7 @@ function Paso1({ setup, cycleId, onNext }: { setup: RetainedSetup; cycleId: stri
 function FunnelCard({ label, count, highlight }: { label: string; count: number; highlight?: boolean }) {
   return (
     <div className={`shrink-0 rounded-md border px-4 py-2 text-center min-w-[80px] ${highlight ? "border-emerald-400 bg-transparent" : ""}`}>
-      <div className={`text-2xl font-bold tabular-nums ${highlight ? "text-emerald-700" : ""}`}>{count}</div>
+      <div className={`text-2xl font-bold tabular-nums ${highlight ? "text-emerald-300" : ""}`}>{count}</div>
       <div className="text-[10px] text-muted-foreground">{label}</div>
     </div>
   );
@@ -296,7 +296,7 @@ function RetainedCard({
 }) {
   const currentType = (item.dalessioType ?? item.dalessioInferred) as DalessioType | null;
   const currentTypeDef = getTypeDef(currentType);
-  const groupColor = currentTypeDef ? GROUP_INFO[currentTypeDef.group].color : "#6b7280";
+  const groupColor = currentTypeDef ? GROUP_INFO[currentTypeDef.group].color : "#9a91b8";
 
   return (
     <div className="rounded-lg border bg-card p-3" style={{ borderLeftWidth: 4, borderLeftColor: groupColor }}>
@@ -316,32 +316,32 @@ function RetainedCard({
           </Badge>
         )}
         {(item.rumeltStatus === "aprobada" || item.rumeltStatus === "aprobada_manual") && (
-          <Badge variant="outline" className="text-[9px] bg-transparent text-emerald-700 border-emerald-200">
+          <Badge variant="outline" className="text-[9px] bg-transparent text-emerald-300 border-emerald-500/30">
             <Check className="size-2.5 mr-0.5" /> Rumelt OK
           </Badge>
         )}
         {item.ethicsStatus === "aprobada" && (
-          <Badge variant="outline" className="text-[9px] bg-transparent text-emerald-700 border-emerald-200">
+          <Badge variant="outline" className="text-[9px] bg-transparent text-emerald-300 border-emerald-500/30">
             <Shield className="size-2.5 mr-0.5" /> Etica OK
           </Badge>
         )}
         {item.ethicsStatus === "aprobada_con_mitigantes" && (
-          <Badge variant="outline" className="text-[9px] bg-transparent text-amber-700 border-amber-200">
+          <Badge variant="outline" className="text-[9px] bg-transparent text-amber-300 border-amber-500/30">
             <Shield className="size-2.5 mr-0.5" /> Con mitigante ({item.ethicsMitigantsCount})
           </Badge>
         )}
         {item.isEjemplar && (
-          <Badge variant="outline" className="text-[9px] bg-transparent text-emerald-800 border-emerald-300">
+          <Badge variant="outline" className="text-[9px] bg-transparent text-emerald-300 border-emerald-500/30">
             <Leaf className="size-2.5 mr-0.5" /> Promueve valores
           </Badge>
         )}
         {item.isReformulated && (
-          <Badge variant="outline" className="text-[9px] bg-transparent text-purple-700 border-purple-200">
+          <Badge variant="outline" className="text-[9px] bg-transparent text-purple-300 border-purple-500/30">
             <RefreshCw className="size-2.5 mr-0.5" /> Reformulada
           </Badge>
         )}
         {item.dalessioInferred && !item.dalessioType && (
-          <Badge variant="outline" className="text-[9px] bg-transparent text-yellow-700 border-yellow-200">
+          <Badge variant="outline" className="text-[9px] bg-transparent text-yellow-300 border-yellow-500/30">
             <Sparkles className="size-2.5 mr-0.5" /> Tipo inferido
           </Badge>
         )}
@@ -418,7 +418,7 @@ function Paso2({ setup, cycleId, onBack, onNext }: { setup: RetainedSetup; cycle
     return (
       <div className="space-y-4">
         <div className="rounded-md border border-amber-200/60 bg-transparent p-4 text-sm flex gap-2">
-          <AlertTriangle className="size-4 shrink-0 text-amber-600 mt-0.5" />
+          <AlertTriangle className="size-4 shrink-0 text-amber-400 mt-0.5" />
           <div>
             <p>No hay OLPs definidos. Define OLPs antes de vincular.</p>
             <Link href={`/cycles/${cycleId}/m3-formulation/olp`}><Button size="sm" className="mt-2">Ir a OLP</Button></Link>
@@ -490,7 +490,7 @@ function Paso2({ setup, cycleId, onBack, onNext }: { setup: RetainedSetup; cycle
                 const isOrphan = n === 0;
                 return (
                   <td key={o.id} className="p-2 text-center">
-                    <span className={`font-bold tabular-nums ${isOrphan ? "text-rose-600" : "text-emerald-600"}`}>
+                    <span className={`font-bold tabular-nums ${isOrphan ? "text-rose-400" : "text-emerald-400"}`}>
                       {n}/{total}
                     </span>
                   </td>
@@ -506,13 +506,13 @@ function Paso2({ setup, cycleId, onBack, onNext }: { setup: RetainedSetup; cycle
       <div className="space-y-1">
         {setup.retained.filter((s) => s.olpLinks.length === 0).map((s) => (
           <div key={s.id} className="rounded-md border border-amber-200/60 bg-transparent p-2 text-xs flex gap-2">
-            <AlertTriangle className="size-3.5 shrink-0 text-amber-600 mt-0.5" />
+            <AlertTriangle className="size-3.5 shrink-0 text-amber-400 mt-0.5" />
             <span><strong>{s.eCode}</strong> no aporta a ningun OLP. ¿Es relevante?</span>
           </div>
         ))}
         {setup.olps.filter((o) => !coverageByOlp[o.id]).map((o) => (
           <div key={o.id} className="rounded-md border border-amber-200/60 bg-transparent p-2 text-xs flex gap-2">
-            <AlertTriangle className="size-3.5 shrink-0 text-amber-600 mt-0.5" />
+            <AlertTriangle className="size-3.5 shrink-0 text-amber-400 mt-0.5" />
             <span><strong>{o.olpCode}</strong> sin cobertura. Considera revisar o reactivar contingencia.</span>
           </div>
         ))}
@@ -549,7 +549,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: RetainedSetup; cycleId: stri
         <CardHeader className="pb-2"><CardTitle className="text-sm">Resumen ejecutivo</CardTitle></CardHeader>
         <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
           <div className="rounded border p-3 bg-transparent">
-            <div className="text-3xl font-bold text-emerald-600">{setup.retained.length}</div>
+            <div className="text-3xl font-bold text-emerald-400">{setup.retained.length}</div>
             <div className="text-xs text-muted-foreground">retenidas finales</div>
           </div>
           <div className="rounded border p-3">
@@ -604,7 +604,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: RetainedSetup; cycleId: stri
                     </td>
                     <td className="p-2 text-[10px]">
                       {item.olpLinks.length === 0
-                        ? <span className="text-rose-600 italic">Sin OLPs</span>
+                        ? <span className="text-rose-400 italic">Sin OLPs</span>
                         : item.olpLinks.map((l) => {
                             const olp = setup.olps.find((o) => o.id === l.olpId);
                             return olp ? <span key={l.id} className="inline-block font-mono px-1 py-0.5 rounded bg-primary/10 text-primary mr-0.5">{olp.olpCode}</span> : null;
@@ -628,12 +628,12 @@ function Paso3({ setup, cycleId, onBack }: { setup: RetainedSetup; cycleId: stri
       {/* Diagnostico */}
       {allOk ? (
         <div className="rounded-md border border-emerald-200/60 bg-transparent p-3 text-sm">
-          <Check className="inline size-4 mr-1 text-emerald-600" />
+          <Check className="inline size-4 mr-1 text-emerald-400" />
           <strong>Tu set de estrategias retenidas esta completo:</strong> todas clasificadas, con responsable, prioridad y al menos un OLP. Listo para el PEI.
         </div>
       ) : (
         <div className="rounded-md border border-amber-200/60 bg-transparent p-3 text-sm">
-          <AlertTriangle className="inline size-4 mr-1 text-amber-600" />
+          <AlertTriangle className="inline size-4 mr-1 text-amber-400" />
           <strong>Observaciones:</strong>
           <ul className="text-xs text-muted-foreground mt-1 space-y-0.5 pl-4 list-disc">
             {orphanOlps.length > 0 && <li>{orphanOlps.length} OLP(s) sin estrategias: {orphanOlps.map((o) => o.olpCode).join(", ")}</li>}
@@ -652,7 +652,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: RetainedSetup; cycleId: stri
             <div className="text-sm">
               <p className="font-medium mb-1">¿Que sigue?</p>
               <p className="text-muted-foreground">
-                En el proximo modulo (<strong>Plan Estrategico Integral</strong>) veras el documento maestro
+                En el proximo modulo (<strong>Plan Estratégico Integral</strong>) veras el documento maestro
                 que consolida todo tu ciclo estrategico (M1, M2, M3) en una sola vista exportable.
               </p>
             </div>

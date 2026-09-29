@@ -298,9 +298,9 @@ export default function OcpPage() {
 
   if (setup.olps.length === 0) {
     return (
-      <Card className="border-amber-300 bg-transparent">
+      <Card className="border-amber-500/30 bg-transparent">
         <CardContent className="flex flex-col items-start gap-3 py-8 text-left">
-          <AlertTriangle className="h-6 w-6 text-amber-600" />
+          <AlertTriangle className="h-6 w-6 text-amber-400" />
           <div>
             <p className="font-semibold">No hay OLPs definidos en este ciclo</p>
             <p className="text-sm text-muted-foreground">
@@ -540,9 +540,9 @@ function OlpCard({
 }) {
   const statusColor =
     olp.status === "completo"
-      ? "border-emerald-300 bg-transparent"
+      ? "border-emerald-500/30 bg-transparent"
       : olp.status === "parcial"
-      ? "border-amber-300 bg-transparent"
+      ? "border-amber-500/30 bg-transparent"
       : "border-dashed bg-muted/10";
 
   const statusBadge =
@@ -589,7 +589,7 @@ function OlpCard({
         <Timeline years={horizonYears} covered={yearsCoveredSet} />
 
         {!hasStrategies && (
-          <div className="flex items-center gap-2 rounded-md border border-amber-300 bg-transparent px-3 py-2 text-xs text-amber-900">
+          <div className="flex items-center gap-2 rounded-md border border-amber-500/30 bg-transparent px-3 py-2 text-xs text-amber-300">
             <AlertTriangle className="h-4 w-4 shrink-0" />
             Este OLP no tiene estrategias vinculadas. Considera revisarlo en M3 · Estrategias
             antes de desagregar.
@@ -791,14 +791,14 @@ function Step2({
           />
 
           {closesWithTarget && (
-            <div className="flex items-center gap-2 rounded-md border border-emerald-300 bg-transparent px-3 py-2 text-xs text-emerald-900">
+            <div className="flex items-center gap-2 rounded-md border border-emerald-500/30 bg-transparent px-3 py-2 text-xs text-emerald-300">
               <CheckCircle2 className="h-4 w-4" />
               Progresión coherente: el último OCP cierra exactamente con el OLP en{" "}
               {setup.cycle.yearEnd}.
             </div>
           )}
           {selectedOlp.targetValue != null && sumOfMetas > 0 && !closesWithTarget && lastOcp && (
-            <div className="flex items-center gap-2 rounded-md border border-amber-300 bg-transparent px-3 py-2 text-xs text-amber-900">
+            <div className="flex items-center gap-2 rounded-md border border-amber-500/30 bg-transparent px-3 py-2 text-xs text-amber-300">
               <AlertTriangle className="h-4 w-4" />
               El último OCP marca {lastOcp.metaValue} pero la meta del OLP es{" "}
               {selectedOlp.targetValue}. Ajusta valores para que la progresión cierre.
@@ -997,7 +997,7 @@ function Step2({
             </div>
 
             {linkedStrategyIds.length === 0 && (
-              <div className="flex items-center gap-2 rounded-md border border-amber-300 bg-transparent px-3 py-2 text-xs text-amber-900">
+              <div className="flex items-center gap-2 rounded-md border border-amber-500/30 bg-transparent px-3 py-2 text-xs text-amber-300">
                 <AlertTriangle className="h-4 w-4" />
                 Este OCP no se conecta con ninguna estrategia. ¿Cómo lo lograrás?
               </div>
@@ -1473,16 +1473,16 @@ function Step3({
           </CardContent>
         </Card>
 
-        <Card className="border-amber-200 bg-transparent">
+        <Card className="border-amber-500/30 bg-transparent">
           <CardHeader>
-            <CardTitle className="text-base text-left text-amber-900">
+            <CardTitle className="text-base text-left text-amber-300">
               Observaciones automáticas
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2 text-xs text-left">
             {olpsWithoutOcps.length > 0 && (
               <div className="flex items-start gap-2">
-                <AlertTriangle className="mt-0.5 h-3 w-3 text-amber-600 shrink-0" />
+                <AlertTriangle className="mt-0.5 h-3 w-3 text-amber-400 shrink-0" />
                 <span>
                   {olpsWithoutOcps.length} OLP{olpsWithoutOcps.length === 1 ? "" : "s"} sin OCPs
                   definidos:{" "}
@@ -1492,7 +1492,7 @@ function Step3({
             )}
             {areasWithoutOcps.length > 0 && (
               <div className="flex items-start gap-2">
-                <AlertTriangle className="mt-0.5 h-3 w-3 text-amber-600 shrink-0" />
+                <AlertTriangle className="mt-0.5 h-3 w-3 text-amber-400 shrink-0" />
                 <span>
                   {areasWithoutOcps.length} área
                   {areasWithoutOcps.length === 1 ? "" : "s"} sin OCPs asignados:{" "}
@@ -1502,7 +1502,7 @@ function Step3({
             )}
             {overloadedAreas.length > 0 && (
               <div className="flex items-start gap-2">
-                <AlertTriangle className="mt-0.5 h-3 w-3 text-amber-600 shrink-0" />
+                <AlertTriangle className="mt-0.5 h-3 w-3 text-amber-400 shrink-0" />
                 <span>
                   Áreas con carga alta ({maxLoad} OCPs):{" "}
                   <strong>{overloadedAreas.map((a) => a.name).join(", ")}</strong>
@@ -1512,7 +1512,7 @@ function Step3({
             {olpsWithoutOcps.length === 0 &&
               areasWithoutOcps.length === 0 &&
               overloadedAreas.length === 0 && (
-                <div className="flex items-start gap-2 text-emerald-700">
+                <div className="flex items-start gap-2 text-emerald-300">
                   <CheckCircle2 className="mt-0.5 h-3 w-3 shrink-0" />
                   <span>Sin observaciones críticas. Buen trabajo.</span>
                 </div>
@@ -1625,11 +1625,11 @@ function RoadmapMatrix({
                           disabled={!onCellClick}
                           onClick={() => onCellClick?.(row.id, y)}
                           className={cn(
-                            "rounded-md border bg-transparent border-emerald-200 px-2 py-1 text-left w-full",
+                            "rounded-md border bg-transparent border-emerald-500/30 px-2 py-1 text-left w-full",
                             onCellClick && "hover:bg-transparent cursor-pointer",
                           )}
                         >
-                          <div className="font-mono text-[10px] text-emerald-700">
+                          <div className="font-mono text-[10px] text-emerald-300">
                             {cell.code}
                           </div>
                           <div className="font-medium">{cell.label}</div>

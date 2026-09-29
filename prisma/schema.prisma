@@ -240,6 +240,7 @@ model StrategicCycle {
   moduleStatuses  ModuleStatus[]
 
   @@index([organizationId])
+  @@index([organizationId, yearStart])
 }
 
 model ModuleStatus {
@@ -786,6 +787,7 @@ model StrategyOlp {
   olpId      String
   olp        Olp      @relation(fields: [olpId], references: [id], onDelete: Cascade)
   @@id([strategyId, olpId])
+  @@index([olpId])
 }
 
 model PeyeaAnalysis {
@@ -984,6 +986,7 @@ model Portfolio {
   programs    Program[]
   projects    Project[]
   @@index([cycleId])
+  @@index([organizationId, cycleId, sortOrder])
 }
 
 model Program {
@@ -1003,6 +1006,7 @@ model Program {
   updatedAt   DateTime  @updatedAt
   projects    Project[]
   @@index([portfolioId])
+  @@index([olpId])
 }
 
 // ==================== MODULE 5: PROJECT MANAGEMENT ====================
@@ -1049,6 +1053,7 @@ model Project {
   @@index([portfolioId])
   @@index([programId])
   @@index([ocpId])
+  @@index([orgId, status])
 }
 
 model ProjectMember {
@@ -1060,6 +1065,7 @@ model ProjectMember {
   role      String  @default("MEMBER") // ADMIN, PM, MEMBER, VIEWER
   createdAt DateTime @default(now())
   @@unique([projectId, userId])
+  @@index([userId])
 }
 
 // Configurable workflow statuses per project
@@ -1073,6 +1079,7 @@ model WorkflowStatus {
   sortOrder  Int     @default(0)
   issues     Issue[]
   @@index([projectId])
+  @@index([projectId, category, sortOrder])
 }
 
 model Component {
@@ -1176,6 +1183,9 @@ model Issue {
   @@index([sprintId])
   @@index([parentId])
   @@index([statusId])
+  @@index([projectId, sortOrder])
+  @@index([projectId, parentId, sortOrder])
+  @@index([assigneeId, dueDate])
 }
 
 model IssueLabel {
@@ -1184,6 +1194,7 @@ model IssueLabel {
   labelId String
   label   Label  @relation(fields: [labelId], references: [id], onDelete: Cascade)
   @@id([issueId, labelId])
+  @@index([labelId])
 }
 
 model IssueLink {
@@ -1195,6 +1206,7 @@ model IssueLink {
   type        String // BLOCKS, IS_BLOCKED_BY, RELATES_TO, DUPLICATES, IS_DUPLICATED_BY
   createdAt   DateTime @default(now())
   @@unique([fromIssueId, toIssueId, type])
+  @@index([toIssueId])
 }
 
 model IssueComment {
@@ -1205,7 +1217,7 @@ model IssueComment {
   body     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  @@index([issueId])
+  @@index([issueId, createdAt])
 }
 
 model IssueAttachment {
@@ -1219,7 +1231,7 @@ model IssueAttachment {
   uploadedBy String?
   note      String?  // descripción de la evidencia
   createdAt DateTime @default(now())
-  @@index([issueId])
+  @@index([issueId, createdAt])
 }
 
 model IssueHistory {
@@ -1231,7 +1243,7 @@ model IssueHistory {
   oldValue String?
   newValue String?
   createdAt DateTime @default(now())
-  @@index([issueId])
+  @@index([issueId, createdAt])
 }
 
 model IssueWatcher {
@@ -1251,6 +1263,7 @@ model TimeEntry {
   notes     String?
   createdAt DateTime @default(now())
   @@index([issueId])
+  @@index([userId])
 }
 
 // MODULE 4: OCP por Area (Objetivos de Corto Plazo)
@@ -1650,6 +1663,7 @@ model Kpi {
   @@index([cycleId])
   @@index([dimensionBsc])
   @@index([responsibleAreaId])
+  @@index([cycleId, status])
 }
 
 model KpiOlp {
@@ -1701,7 +1715,7 @@ model KpiValueHistory {
   educanetProjectSource String?
   idempotencyKey        String   @unique
   metadata              String?  // JSON
-  @@index([kpiId])
+  @@index([kpiId, receivedAt])
 }
 
 model WorkspaceToken {
@@ -1809,6 +1823,8 @@ model Alert {
   @@index([status])
   @@index([objectType, objectId])
   @@index([assigneeId])
+  @@index([cycleId, dedupeKey, status])
+  @@index([cycleId, status, priority])
 }
 
 model AlertRule {
@@ -1833,6 +1849,7 @@ model AlertRule {
   @@unique([cycleId, type, name])
   @@index([cycleId])
   @@index([type])
+  @@index([cycleId, type, active])
 }
 
 model AlertAction {
@@ -1914,6 +1931,7 @@ model Review {
   @@index([cycleId])
   @@index([status])
   @@index([scheduledAt])
+  @@index([cycleId, status, scheduledAt])
 }
 
 model ReviewAttendee {

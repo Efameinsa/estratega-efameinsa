@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { router, protectedProcedure, editorProcedure } from "@/server/trpc/init";
+import { router, cycleProcedure, cycleEditorProcedure } from "@/server/trpc/init";
 import { db } from "@/server/db";
 import { computeVerdict, generateReformulationSuggestion, type RumeltCriterion } from "@/lib/rumelt-suggestions";
 
@@ -10,7 +10,7 @@ export const rumeltRouter = router({
   // ───────────────────────────────────────────────────────────────────
   // getSetup: estrategias consolidadas + evaluaciones actuales + contexto
   // ───────────────────────────────────────────────────────────────────
-  getSetup: protectedProcedure
+  getSetup: cycleProcedure
     .input(z.object({ cycleId: z.string() }))
     .query(async ({ input }) => {
       const cycleId = input.cycleId;
@@ -74,7 +74,7 @@ export const rumeltRouter = router({
   // ───────────────────────────────────────────────────────────────────
   // setCriterion: marca pasa/no pasa con justificacion y sugerencia
   // ───────────────────────────────────────────────────────────────────
-  setCriterion: editorProcedure
+  setCriterion: cycleEditorProcedure
     .input(z.object({
       cycleId: z.string(),
       consolidatedId: z.string(),
@@ -141,7 +141,7 @@ export const rumeltRouter = router({
   // ───────────────────────────────────────────────────────────────────
   // overrideVerdict: usuario sobreescribe veredicto automatico
   // ───────────────────────────────────────────────────────────────────
-  overrideVerdict: editorProcedure
+  overrideVerdict: cycleEditorProcedure
     .input(z.object({
       cycleId: z.string(),
       consolidatedId: z.string(),
@@ -170,7 +170,7 @@ export const rumeltRouter = router({
   // ───────────────────────────────────────────────────────────────────
   // reformulate: crea una nueva ConsolidatedStrategy hija con texto nuevo
   // ───────────────────────────────────────────────────────────────────
-  reformulate: editorProcedure
+  reformulate: cycleEditorProcedure
     .input(z.object({
       cycleId: z.string(),
       consolidatedId: z.string(),

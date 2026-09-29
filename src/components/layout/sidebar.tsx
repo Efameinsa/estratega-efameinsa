@@ -291,10 +291,33 @@ function TreeNode({
 // Build sidebar tree data
 // ---------------------------------------------------------------------------
 
+// Ejecución: visible siempre, haya o no un ciclo seleccionado.
+const EXECUTION_GROUP: TreeNodeData =
+    {
+      label: "Ejecución Estratégica",
+      isGroupHeader: true,
+      defaultOpen: true,
+      children: [
+        {
+          label: "Portafolio",
+          icon: FolderKanban,
+          href: "/portfolio",
+        },
+        {
+          label: "Proyectos",
+          icon: Briefcase,
+          href: "/projects",
+        },
+        {
+          label: "Mis tareas",
+          icon: CheckCircle,
+          href: "/my-tasks",
+        },
+      ],
+    };
+
 function buildCycleTree(cycleId: string): TreeNodeData[] {
   const base = `/cycles/${cycleId}`;
-  const ref = (label: string, icon?: LucideIcon): TreeNodeData => ({ label, icon, status: "referencia" });
-  const locked = (label: string, tooltip: string, icon?: LucideIcon): TreeNodeData => ({ label, icon, status: "bloqueado", lockTooltip: tooltip });
 
   return [
     // ══════════════════════════════════════════════
@@ -412,31 +435,6 @@ function buildCycleTree(cycleId: string): TreeNodeData[] {
         },
       ],
     },
-    // ══════════════════════════════════════════════
-    // SECCION 2: EJECUCION ESTRATEGICA
-    // ══════════════════════════════════════════════
-    {
-      label: "Ejecución Estratégica",
-      isGroupHeader: true,
-      defaultOpen: false,
-      children: [
-        {
-          label: "Portafolio",
-          icon: FolderKanban,
-          href: "/portfolio",
-        },
-        {
-          label: "Proyectos",
-          icon: Briefcase,
-          href: "/projects",
-        },
-        {
-          label: "Mis tareas",
-          icon: CheckCircle,
-          href: "/my-tasks",
-        },
-      ],
-    },
   ];
 }
 
@@ -508,7 +506,7 @@ export function Sidebar({
   }, [cycles, lastCycleId, accessibleCycleIds]);
 
   const cycleTree = useMemo(
-    () => (cycleId ? buildCycleTree(cycleId) : []),
+    () => (cycleId ? [...buildCycleTree(cycleId), EXECUTION_GROUP] : [EXECUTION_GROUP]),
     [cycleId]
   );
 
@@ -518,7 +516,7 @@ export function Sidebar({
         "flex h-full shrink-0 flex-col overflow-y-auto overflow-x-hidden py-3 transition-all duration-200",
         collapsed ? "w-14 px-1.5" : "w-[300px] px-3"
       )}
-      style={{ backgroundColor: "#0F1117" }}
+      style={{ backgroundColor: "var(--sidebar)" }}
     >
       {/* Header: ESTRATEGA logo + org switcher */}
       <div className={cn("mb-4", collapsed ? "flex justify-center" : "px-2")}>
@@ -550,7 +548,7 @@ export function Sidebar({
             </button>
             {orgDropdownOpen && (
               <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-lg border border-sidebar-border p-1.5 shadow-lg"
-                style={{ backgroundColor: "#1F2937" }}
+                style={{ backgroundColor: "var(--popover)" }}
               >
                 <div className="flex items-center gap-2 rounded-md bg-sidebar-accent p-2">
                   <img src="/logo-isotipo-white.png" alt="" className="size-5" />
@@ -579,8 +577,18 @@ export function Sidebar({
         /* Collapsed: icon-only nav */
         <div className="flex flex-col items-center gap-1">
           <CollapsedNavItem href="/dashboard" icon={LayoutDashboard} label="Inicio" pathname={pathname} />
-          <CollapsedNavItem href="/projects" icon={Briefcase} label="Proyectos" pathname={pathname} />
+          {cycleId && (
+            <>
+              <CollapsedNavItem href={`/cycles/${cycleId}/m1-identity`} icon={Compass} label="M1 · Identidad" pathname={pathname} />
+              <CollapsedNavItem href={`/cycles/${cycleId}/m2-diagnosis`} icon={Search} label="M2 · Diagnóstico" pathname={pathname} />
+              <CollapsedNavItem href={`/cycles/${cycleId}/m3-formulation`} icon={Lightbulb} label="M3 · Formulación" pathname={pathname} />
+              <CollapsedNavItem href={`/cycles/${cycleId}/m4-deployment`} icon={Rocket} label="M4 · Implementación" pathname={pathname} />
+              <CollapsedNavItem href={`/cycles/${cycleId}/m5-control`} icon={BarChart3} label="M5 · Control" pathname={pathname} />
+            </>
+          )}
+          <div className="my-1 h-px w-6 bg-sidebar-border" />
           <CollapsedNavItem href="/portfolio" icon={FolderKanban} label="Portafolio" pathname={pathname} />
+          <CollapsedNavItem href="/projects" icon={Briefcase} label="Proyectos" pathname={pathname} />
           <CollapsedNavItem href="/my-tasks" icon={CheckCircle} label="Mis tareas" pathname={pathname} />
           <div className="mt-auto flex flex-col items-center gap-1 border-t border-sidebar-border pt-2">
             <CollapsedNavItem href="/admin/users" icon={Users} label="Miembros" pathname={pathname} />

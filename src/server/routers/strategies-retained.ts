@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { router, protectedProcedure, editorProcedure } from "@/server/trpc/init";
+import { router, editorProcedure, cycleProcedure, cycleEditorProcedure } from "@/server/trpc/init";
 import { db } from "@/server/db";
 import { inferDalessioType, DALESSIO_TYPES, type DalessioType } from "@/lib/dalessio-types";
 
@@ -7,7 +7,7 @@ const DalessioTypeSchema = z.enum(DALESSIO_TYPES.map((t) => t.key) as [DalessioT
 
 export const strategiesRetainedRouter = router({
   // getSetup: estrategias aprobadas en Auditoria Etica + OLPs + contingencia
-  getSetup: protectedProcedure
+  getSetup: cycleProcedure
     .input(z.object({ cycleId: z.string() }))
     .query(async ({ input }) => {
       const cycleId = input.cycleId;
@@ -160,7 +160,7 @@ export const strategiesRetainedRouter = router({
     }),
 
   // Marcar como retenida final (preparado para PEI)
-  markFinal: editorProcedure
+  markFinal: cycleEditorProcedure
     .input(z.object({ cycleId: z.string() }))
     .mutation(async ({ input }) => {
       // Solo cambia el status de las que ya estan retenida o reactivada a retenida_final

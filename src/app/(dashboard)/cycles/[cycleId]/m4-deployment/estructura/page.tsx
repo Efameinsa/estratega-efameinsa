@@ -75,14 +75,8 @@ import {
   type NodeType,
   type RaciRole,
 } from "@/lib/org-structure";
-import {
-  exportOrgPdf,
-  exportOrgExcel,
-  exportCanvasPng,
-  exportCanvasSvg,
-  type ExportOrgContext,
-  type ExportNode,
-} from "@/lib/org-export";
+import { exportOrgPdf, exportOrgExcel, exportCanvasPng, exportCanvasSvg } from "@/lib/lazy-exports";
+import type { ExportOrgContext, ExportNode } from "@/lib/org-export";
 
 type RouterOutputs = inferRouterOutputs<AppRouter>;
 type SetupData = RouterOutputs["orgStructure"]["setup"];
@@ -234,8 +228,8 @@ function StructurePageInner() {
       <Stepper step={step} onChange={setStep} canGoStep2={!!setup.structure || !!selectedType} />
 
       {noOcps && (
-        <Card className="border-amber-200 bg-transparent">
-          <CardContent className="py-3 text-left text-xs text-amber-900">
+        <Card className="border-amber-500/30 bg-transparent">
+          <CardContent className="py-3 text-left text-xs text-amber-300">
             Para mejores resultados, define primero tus OCPs en M4. El sistema usará esa
             información para sugerir las áreas necesarias.
           </CardContent>
@@ -380,14 +374,14 @@ function Step1({
         </CardContent>
       </Card>
 
-      <Card className="border-2 border-emerald-300 bg-transparent">
+      <Card className="border-2 border-emerald-500/30 bg-transparent">
         <CardHeader>
-          <CardTitle className="text-left text-base text-emerald-900">
+          <CardTitle className="text-left text-base text-emerald-300">
             <Sparkles className="mr-1 inline size-4" />
             Recomendación: {getStructureTypeDef(recType)?.label}
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-2 text-left text-sm text-emerald-900">
+        <CardContent className="space-y-2 text-left text-sm text-emerald-300">
           <p>{recommendation.recommendation.reason}</p>
           {recommendation.recommendation.detectedSignals.length > 0 && (
             <ul className="ml-4 list-disc text-xs">
@@ -497,7 +491,7 @@ function OrgFlowNode({ data, selected }: NodeProps) {
         maxWidth: 220,
       }}
     >
-      <Handle type="target" position={Position.Top} className="!bg-white/40 !border-white" />
+      <Handle type="target" position={Position.Top} className="!bg-white/5 !border-white" />
       <div className="flex items-center justify-between gap-1 text-[10px] opacity-80">
         <span className="font-mono">{d.code}</span>
         <span>{originIcon}</span>
@@ -508,7 +502,7 @@ function OrgFlowNode({ data, selected }: NodeProps) {
         {d.policyCount > 0 && <span>· {d.policyCount} pol</span>}
         {d.ftes != null && <span>· {d.ftes} FTE</span>}
       </div>
-      <Handle type="source" position={Position.Bottom} className="!bg-white/40 !border-white" />
+      <Handle type="source" position={Position.Bottom} className="!bg-white/5 !border-white" />
     </div>
   );
 }
@@ -715,8 +709,8 @@ function Step2({
       </div>
 
       {!isFullscreen && (
-        <Card className="border-emerald-200 bg-transparent">
-          <CardContent className="py-3 text-left text-xs text-emerald-900">
+        <Card className="border-emerald-500/30 bg-transparent">
+          <CardContent className="py-3 text-left text-xs text-emerald-300">
             <strong>Organigrama generado automáticamente.</strong> El sistema construyó la
             estructura {structure.type} basándose en tus estrategias, OCPs y mitigantes éticos.
             Revisa, edita o agrega lo que falte. Todo es modificable.
@@ -782,7 +776,7 @@ function Step2({
             fitView
             proOptions={{ hideAttribution: true }}
           >
-            <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="#cbd5e1" />
+            <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="rgba(167,139,250,0.14)" />
             <Controls />
             <MiniMap nodeColor={(n) => getNodeTypeDef((n.data as { nodeType: string }).nodeType)?.color ?? "#64748b"} />
           </ReactFlow>
@@ -897,7 +891,7 @@ function NodeEditor({
       : "+ Agregado manualmente";
 
   return (
-    <Card className="border-2 border-amber-300">
+    <Card className="border-2 border-amber-500/30">
       <CardHeader>
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
@@ -1044,7 +1038,7 @@ function NodeEditor({
                       "rounded-full border px-2 py-0.5 text-[11px] transition",
                       isOn
                         ? p.mandatory
-                          ? "border-amber-400 bg-transparent text-amber-900"
+                          ? "border-amber-400 bg-transparent text-amber-300"
                           : "border-primary bg-primary text-primary-foreground"
                         : "border-border bg-muted/20 hover:bg-muted",
                     )}
@@ -1059,7 +1053,7 @@ function NodeEditor({
         </div>
 
         {node.ocpLinks.length === 0 && node.policyLinks.length === 0 && (
-          <div className="flex items-center gap-2 rounded-md border border-amber-300 bg-transparent px-3 py-2 text-xs text-amber-900">
+          <div className="flex items-center gap-2 rounded-md border border-amber-500/30 bg-transparent px-3 py-2 text-xs text-amber-300">
             <AlertTriangle className="size-4" />
             Esta área no tiene OCPs ni políticas asignadas. ¿Qué hace?
           </div>
@@ -1281,7 +1275,7 @@ function Step3({
                           </div>
                           <div className="font-medium">{n.name}</div>
                           {count === 0 && (
-                            <span className="text-[10px] text-amber-700">Sin OCPs</span>
+                            <span className="text-[10px] text-amber-300">Sin OCPs</span>
                           )}
                         </td>
                         {setup.ocps.map((o) => {
@@ -1355,7 +1349,7 @@ function Step3({
                       style={{
                         width: `${pct}%`,
                         backgroundColor:
-                          l.count === 0 ? "rgba(0,0,0,0.08)" : l.count > 5 ? "#E11D48" : "#7aa8e0",
+                          l.count === 0 ? "rgba(0,0,0,0.08)" : l.count > 5 ? "#E11D48" : "#a78bfa",
                       }}
                     />
                   </div>
@@ -1403,13 +1397,13 @@ function Step3({
       </div>
 
       {observations.length > 0 && (
-        <Card className="border-amber-200 bg-transparent">
+        <Card className="border-amber-500/30 bg-transparent">
           <CardHeader>
-            <CardTitle className="text-left text-base text-amber-900">
+            <CardTitle className="text-left text-base text-amber-300">
               Observaciones del diseño ({observations.length})
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-1 text-xs text-left text-amber-900">
+          <CardContent className="space-y-1 text-xs text-left text-amber-300">
             <ul className="ml-4 list-disc space-y-1">
               {observations.slice(0, 12).map((o, i) => (
                 <li key={i}>{o}</li>

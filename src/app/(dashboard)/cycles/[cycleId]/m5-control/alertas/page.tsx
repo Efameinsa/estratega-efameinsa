@@ -54,11 +54,8 @@ import {
   type Priority,
   type AlertStatus,
 } from "@/lib/alerts-catalog";
-import {
-  exportAlertsExcel,
-  type AlertsExportContext,
-  type ExportAlert,
-} from "@/lib/alerts-export";
+import { exportAlertsExcel } from "@/lib/lazy-exports";
+import type { AlertsExportContext, ExportAlert } from "@/lib/alerts-export";
 
 type RouterOutputs = inferRouterOutputs<AppRouter>;
 type SetupData = RouterOutputs["alerts"]["setup"];
@@ -83,7 +80,7 @@ export default function AlertasPage() {
 
   const setupQuery = trpc.alerts.setup.useQuery(
     { cycleId },
-    { refetchInterval: 60_000 },
+    { refetchInterval: 180_000, refetchIntervalInBackground: false },
   );
 
   const evaluateNow = trpc.alerts.evaluateNow.useMutation({
@@ -240,8 +237,8 @@ function InboxView({
   return (
     <div className="space-y-4">
       {critical.length > 0 && (
-        <Card className="border-red-300 bg-transparent">
-          <CardContent className="flex items-start gap-2 py-3 text-sm text-red-900">
+        <Card className="border-red-500/30 bg-transparent">
+          <CardContent className="flex items-start gap-2 py-3 text-sm text-red-300">
             <AlertCircle className="mt-0.5 size-5" />
             <div>
               <strong>Tienes {critical.length} alertas críticas que requieren atención inmediata.</strong>
@@ -255,7 +252,7 @@ function InboxView({
             <Button
               size="sm"
               variant="outline"
-              className="ml-auto border-red-300"
+              className="ml-auto border-red-500/30"
               onClick={() => setFilter("critica")}
             >
               Ver críticas
@@ -371,8 +368,8 @@ function FilterPill({
         active ? "text-white shadow-sm" : "text-muted-foreground hover:text-foreground",
       )}
       style={{
-        borderColor: active ? color ?? "#475569" : "transparent",
-        backgroundColor: active ? color ?? "#475569" : "rgba(0,0,0,0.04)",
+        borderColor: active ? color ?? "#94a3b8" : "transparent",
+        backgroundColor: active ? color ?? "#94a3b8" : "rgba(0,0,0,0.04)",
       }}
     >
       {label}
@@ -453,7 +450,7 @@ function AlertCardInbox({
               <span>{alert.assignee.name}</span>
             </div>
           ) : (
-            <Badge variant="outline" className="border-amber-400 text-[10px] text-amber-700">
+            <Badge variant="outline" className="border-amber-400 text-[10px] text-amber-300">
               Sin asignar
             </Badge>
           )}

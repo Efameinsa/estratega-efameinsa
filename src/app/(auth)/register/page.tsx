@@ -66,10 +66,10 @@ function RegisterContent() {
 
   return (
     <div className="w-full max-w-[400px]">
-      <div className="bg-background border border-border/50 rounded-xl p-8 shadow-sm">
+      <div className="glass-strong rounded-2xl p-8">
         {/* Logo */}
         <div className="text-center mb-7">
-          <img src="/logo-isotipo-black.png" alt="Estratega" className="size-20 mx-auto mb-3" />
+          <img src="/logo-isotipo-white.png" alt="Estratega" className="size-20 mx-auto mb-3" />
           <h1 className="text-[32px] font-medium">Crea tu cuenta</h1>
           <p className="text-sm text-muted-foreground mt-1">
             {inviteToken

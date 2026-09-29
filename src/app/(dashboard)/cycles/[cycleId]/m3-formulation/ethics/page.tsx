@@ -63,12 +63,12 @@ export default function EthicsPage() {
     return (
       <div className="container mx-auto max-w-3xl p-6 space-y-6">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Auditoria Etica</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Auditoría Ética</h1>
           <p className="text-sm text-muted-foreground">Validacion final etica del proceso estrategico</p>
         </div>
         <div className="rounded-xl border border-amber-200/60 bg-transparent p-5">
           <div className="flex gap-3">
-            <AlertTriangle className="size-5 shrink-0 text-amber-600 mt-0.5" />
+            <AlertTriangle className="size-5 shrink-0 text-amber-400 mt-0.5" />
             <div>
               <p className="font-medium mb-1">Sin estrategias para auditar</p>
               <p className="text-sm text-muted-foreground mb-3">
@@ -175,7 +175,7 @@ function Paso1({ setup, cycleId, onNext }: { setup: EthicsSetup; cycleId: string
           {setup.strategies.map((s, i) => {
             const verdict = getVerdictKey(s, setup.evalsMap);
             const vi = verdict === "pendiente"
-              ? { color: "#6b7280", border: "rgba(107,114,128,0.30)", bg: "rgba(107,114,128,0.08)", icon: "—" }
+              ? { color: "#9a91b8", border: "rgba(107,114,128,0.30)", bg: "rgba(107,114,128,0.08)", icon: "—" }
               : VERDICT_INFO[verdict];
             const isActive = i === activeIdx;
             const e = setup.evalsMap[s.id];
@@ -192,7 +192,7 @@ function Paso1({ setup, cycleId, onNext }: { setup: EthicsSetup; cycleId: string
               >
                 <span>{vi.icon}</span>
                 <span className="font-bold">{s.eCode}</span>
-                {isEjemplar && <Leaf className="size-3 text-emerald-600" />}
+                {isEjemplar && <Leaf className="size-3 text-emerald-400" />}
               </button>
             );
           })}
@@ -259,7 +259,7 @@ function StrategyEvaluator({
 
   const verdict = getVerdictKey(strategy, { [strategy.id]: evaluation! });
   const vi = verdict === "pendiente"
-    ? { color: "#6b7280", bg: "rgba(107,114,128,0.08)", border: "rgba(107,114,128,0.30)", label: "Pendiente", icon: "—" }
+    ? { color: "#9a91b8", bg: "rgba(107,114,128,0.08)", border: "rgba(107,114,128,0.30)", label: "Pendiente", icon: "—" }
     : VERDICT_INFO[verdict];
 
   return (
@@ -308,11 +308,11 @@ function StrategyEvaluator({
                   <p className="text-xs text-muted-foreground mt-1">{bi.question}</p>
                 </div>
                 {violations > 0 ? (
-                  <Badge variant="outline" className="text-[10px] bg-transparent text-rose-700 border-rose-300">{violations} violacion(es)</Badge>
+                  <Badge variant="outline" className="text-[10px] bg-transparent text-rose-300 border-rose-500/30">{violations} violacion(es)</Badge>
                 ) : allEvaluated && promociones > 0 ? (
-                  <Badge variant="outline" className="text-[10px] bg-transparent text-emerald-700 border-emerald-300">{promociones} promueve</Badge>
+                  <Badge variant="outline" className="text-[10px] bg-transparent text-emerald-300 border-emerald-500/30">{promociones} promueve</Badge>
                 ) : allEvaluated ? (
-                  <Badge variant="outline" className="text-[10px] bg-transparent text-emerald-700 border-emerald-200">Aprobado</Badge>
+                  <Badge variant="outline" className="text-[10px] bg-transparent text-emerald-300 border-emerald-500/30">Aprobado</Badge>
                 ) : null}
               </div>
             </CardHeader>
@@ -411,7 +411,7 @@ function PrincipleRow({
           <div className="text-sm font-medium" style={{ color: rating === "viola" ? "#f87171" : rating === "promueve" ? "#15803D" : "inherit" }} title={principle.description}>
             {principle.label}
           </div>
-          {rating === "viola" && <div className="text-[10px] text-rose-700">⚠ Calificado como Viola</div>}
+          {rating === "viola" && <div className="text-[10px] text-rose-300">⚠ Calificado como Viola</div>}
         </td>
         {(["viola", "neutral", "promueve"] as EthicsRating[]).map((r) => (
           <td key={r} className="p-1.5 text-center">
@@ -421,7 +421,7 @@ function PrincipleRow({
               checked={rating === r}
               onChange={() => handleRatingChange(r)}
               className="size-4 cursor-pointer"
-              style={{ accentColor: r === "viola" ? "#f87171" : r === "promueve" ? "#4ade80" : "#6b7280" }}
+              style={{ accentColor: r === "viola" ? "#f87171" : r === "promueve" ? "#4ade80" : "#9a91b8" }}
             />
           </td>
         ))}
@@ -445,13 +445,13 @@ function PrincipleRow({
                 placeholder={rating === "viola" ? "Describe por que esta estrategia viola este principio..." : "Describe como esta estrategia promueve este principio..."}
               />
               {rating === "viola" && text.length > 0 && text.length < 30 && (
-                <p className="text-[11px] text-rose-600 mt-1">Faltan {30 - text.length} caracteres</p>
+                <p className="text-[11px] text-rose-400 mt-1">Faltan {30 - text.length} caracteres</p>
               )}
             </div>
             {rating === "viola" && (
               <div className="flex flex-wrap gap-2 items-center">
                 {hasMitigant ? (
-                  <Badge variant="outline" className="text-[10px] bg-transparent text-amber-700 border-amber-300">🛡 Mitigante registrado</Badge>
+                  <Badge variant="outline" className="text-[10px] bg-transparent text-amber-300 border-amber-500/30">🛡 Mitigante registrado</Badge>
                 ) : (
                   <Button size="sm" variant="outline" onClick={onOpenMitigant}>
                     <Shield className="size-3.5 mr-1.5" /> Definir mitigante
@@ -517,17 +517,17 @@ function MitigantModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-start justify-center overflow-y-auto p-4">
-      <div className="bg-background rounded-lg shadow-xl max-w-2xl w-full my-8 border-2 border-amber-300">
+      <div className="bg-background rounded-lg shadow-xl max-w-2xl w-full my-8 border-2 border-amber-500/30">
         <div className="flex items-center justify-between p-4 border-b bg-transparent">
           <h2 className="font-semibold flex items-center gap-2">
-            <Shield className="size-5 text-amber-600" /> Definir mitigante
+            <Shield className="size-5 text-amber-400" /> Definir mitigante
           </h2>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground"><X className="size-5" /></button>
         </div>
         <div className="p-5 space-y-4 max-h-[70vh] overflow-y-auto">
           {/* Recordatorio de la violacion */}
           <div className="rounded-md border border-rose-200/60 bg-transparent p-3 space-y-1 text-xs">
-            <p className="font-semibold text-rose-700">Violacion detectada</p>
+            <p className="font-semibold text-rose-300">Violacion detectada</p>
             <p><strong>Estrategia:</strong> <span className="font-mono">{strategy.eCode}</span> — {strategy.text}</p>
             <p><strong>Principio:</strong> {principleLabel}</p>
             {principleData?.justification && (
@@ -536,14 +536,14 @@ function MitigantModal({
           </div>
 
           <div>
-            <label className="text-xs font-medium block mb-1">Mitigante propuesto <span className="text-rose-600">*</span></label>
+            <label className="text-xs font-medium block mb-1">Mitigante propuesto <span className="text-rose-400">*</span></label>
             <Textarea value={text} onChange={(e) => setText(e.target.value)} rows={3} placeholder="Describe la medida concreta que neutralizara esta violacion..." className="text-sm" />
             <p className="text-[10px] text-muted-foreground mt-1">{text.length} / 30 caracteres mínimo</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div>
-              <label className="text-xs font-medium block mb-1">Responsable <span className="text-rose-600">*</span></label>
+              <label className="text-xs font-medium block mb-1">Responsable <span className="text-rose-400">*</span></label>
               <select value={responsible} onChange={(e) => setResponsible(e.target.value)} className="w-full rounded-md border bg-card px-2 py-1.5 text-sm">
                 <option value="">— Seleccionar —</option>
                 <option>Gerencia General</option>
@@ -561,7 +561,7 @@ function MitigantModal({
               )}
             </div>
             <div>
-              <label className="text-xs font-medium block mb-1">Plazo <span className="text-rose-600">*</span></label>
+              <label className="text-xs font-medium block mb-1">Plazo <span className="text-rose-400">*</span></label>
               <select value={deadline} onChange={(e) => setDeadline(e.target.value as typeof deadline)} className="w-full rounded-md border bg-card px-2 py-1.5 text-sm">
                 <option value="previo_lanzamiento">Previo al lanzamiento</option>
                 <option value="primer_trimestre">Primer trimestre de ejecucion</option>
@@ -570,7 +570,7 @@ function MitigantModal({
               </select>
             </div>
             <div>
-              <label className="text-xs font-medium block mb-1">Indicador de cumplimiento <span className="text-rose-600">*</span></label>
+              <label className="text-xs font-medium block mb-1">Indicador de cumplimiento <span className="text-rose-400">*</span></label>
               <Input value={indicator} onChange={(e) => setIndicator(e.target.value)} placeholder="Ej. auditoria anual externa" className="text-sm" />
             </div>
           </div>
@@ -580,10 +580,10 @@ function MitigantModal({
             <div className="grid grid-cols-3 gap-2">
               {(["mantiene", "neutral", "promueve"] as const).map((s) => {
                 const colors = s === "mantiene"
-                  ? { active: "bg-transparent text-rose-700 border-rose-500", inactive: "border-input text-muted-foreground" }
+                  ? { active: "bg-transparent text-rose-300 border-rose-500", inactive: "border-input text-muted-foreground" }
                   : s === "neutral"
-                    ? { active: "bg-transparent text-amber-700 border-amber-500", inactive: "border-input text-muted-foreground" }
-                    : { active: "bg-transparent text-emerald-700 border-emerald-500", inactive: "border-input text-muted-foreground" };
+                    ? { active: "bg-transparent text-amber-300 border-amber-500", inactive: "border-input text-muted-foreground" }
+                    : { active: "bg-transparent text-emerald-300 border-emerald-500", inactive: "border-input text-muted-foreground" };
                 const labels = { mantiene: "Mantiene violacion", neutral: "Reduce a neutral", promueve: "Convierte en promueve" };
                 return (
                   <button
@@ -672,7 +672,7 @@ function Paso2({ setup, cycleId: _cycleId, onBack, onNext }: { setup: EthicsSetu
 
       {pendingMitigants.length > 0 && (
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-sm text-rose-700">Pendientes de mitigar ({pendingMitigants.length})</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-sm text-rose-300">Pendientes de mitigar ({pendingMitigants.length})</CardTitle></CardHeader>
           <CardContent className="space-y-2">
             {pendingMitigants.map((pm, i) => (
               <div key={i} className="rounded-md border border-rose-200/60 bg-transparent p-3 text-xs">
@@ -794,7 +794,7 @@ function Paso3({ setup, cycleId: _cycleId, onBack }: { setup: EthicsSetup; cycle
                 const e = setup.evalsMap[s.id];
                 const verdict = getVerdictKey(s, setup.evalsMap);
                 const vi = verdict === "pendiente"
-                  ? { color: "#6b7280", bg: "transparent", border: "#e5e7eb", label: "Pendiente", icon: "—" }
+                  ? { color: "#9a91b8", bg: "transparent", border: "rgba(167,139,250,0.14)", label: "Pendiente", icon: "—" }
                   : VERDICT_INFO[verdict];
                 const promueveTotal = countPromueve(e);
                 const isEjemplar = promueveTotal >= 3 && countViolations(e) === 0;
@@ -804,7 +804,7 @@ function Paso3({ setup, cycleId: _cycleId, onBack }: { setup: EthicsSetup; cycle
                       <div className="flex items-start gap-2">
                         <Badge variant="outline" className="font-mono text-[10px] shrink-0">{s.eCode}</Badge>
                         <span className="text-xs leading-snug">{s.text}</span>
-                        {isEjemplar && <Badge variant="outline" className="text-[9px] bg-transparent text-emerald-700 border-emerald-300 shrink-0"><Leaf className="size-2.5 mr-0.5" />Ejemplar</Badge>}
+                        {isEjemplar && <Badge variant="outline" className="text-[9px] bg-transparent text-emerald-300 border-emerald-500/30 shrink-0"><Leaf className="size-2.5 mr-0.5" />Ejemplar</Badge>}
                       </div>
                     </td>
                     {BLOCK_ORDER.map((b) => {
@@ -813,7 +813,7 @@ function Paso3({ setup, cycleId: _cycleId, onBack }: { setup: EthicsSetup; cycle
                       const promueve = blockPrinciples.filter((p) => p.rating === "promueve").length;
                       const mitigated = violations.every((v) => e?.mitigants.some((m) => m.principleId === v.id));
                       let stateLabel = "—";
-                      let stateColor = "#6b7280";
+                      let stateColor = "#9a91b8";
                       let stateBg = "transparent";
                       if (violations.length > 0 && !mitigated) { stateLabel = "Viola"; stateColor = "#f87171"; stateBg = "rgba(220,38,38,0.1)"; }
                       else if (violations.length > 0 && mitigated) { stateLabel = "Mitigado"; stateColor = "#F59E0B"; stateBg = "rgba(245,158,11,0.1)"; }
@@ -875,7 +875,7 @@ function Paso3({ setup, cycleId: _cycleId, onBack }: { setup: EthicsSetup; cycle
             <div className="text-sm">
               <p className="font-medium mb-1">¿Que sigue?</p>
               <p className="text-muted-foreground">
-                En el proximo modulo (<strong>Plan Estrategico Integral</strong>) se consolidara todo tu trabajo
+                En el proximo modulo (<strong>Plan Estratégico Integral</strong>) se consolidara todo tu trabajo
                 en un documento final con las estrategias aprobadas y los mitigantes incluidos.
               </p>
             </div>
@@ -885,8 +885,8 @@ function Paso3({ setup, cycleId: _cycleId, onBack }: { setup: EthicsSetup; cycle
 
       <div className="flex flex-wrap gap-2 sticky bottom-0 bg-background/95 backdrop-blur py-3 border-t -mx-4 px-4 md:-mx-6 md:px-6">
         <Button variant="outline" size="sm" onClick={onBack}><ArrowLeft className="size-4 mr-1.5" /> Volver a evaluar</Button>
-        <Link href={`/cycles/${_cycleId}/m3-formulation`} className="ml-auto">
-          <Button size="sm">Continuar al Plan Integral <ArrowRight className="size-4 ml-1.5" /></Button>
+        <Link href={`/cycles/${_cycleId}/m3-formulation/strategies`} className="ml-auto">
+          <Button size="sm">Continuar a estrategias retenidas <ArrowRight className="size-4 ml-1.5" /></Button>
         </Link>
       </div>
     </div>

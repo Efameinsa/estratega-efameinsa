@@ -25,11 +25,7 @@ export const membersRouter = router({
   // Get current user's membership for the active org
   me: authOnlyProcedure.query(async ({ ctx }) => {
     // Get active org from user record (not from session, which might be stale)
-    const user = await ctx.db.user.findUnique({
-      where: { id: ctx.userId },
-      select: { activeOrganizationId: true, organizationId: true },
-    });
-    const orgId = user?.activeOrganizationId ?? user?.organizationId;
+    const orgId = await ctx.getActiveOrgId();
     if (!orgId) return null;
 
     return ctx.db.organizationMember.findUnique({

@@ -19,14 +19,15 @@ export const dashboardRouter = router({
   // Carga todo el set de KPIs confirmados con sus períodos y datos para construir snapshots
   setup: cycleProcedure
     .input(z.object({ cycleId: z.string() }))
-    .query(async ({ input }) => {
+    .query(async ({ ctx, input }) => {
       const [cycle, organization, kpis, relations] = await Promise.all([
         db.strategicCycle.findUniqueOrThrow({
           where: { id: input.cycleId },
           select: { id: true, name: true, yearStart: true, yearEnd: true },
         }),
-        db.organization.findFirstOrThrow({
-          where: { cycles: { some: { id: input.cycleId } } },
+        // cycleProcedure ya validó que el ciclo es de esta organización.
+        db.organization.findUniqueOrThrow({
+          where: { id: ctx.organizationId },
           select: { id: true, name: true, sector: true, color: true },
         }),
         db.kpi.findMany({
@@ -238,7 +239,7 @@ export const dashboardRouter = router({
     }),
 
   // Preferencias del usuario para el tablero
-  getConfig: protectedProcedure
+  getConfig: cycleProcedure
     .input(z.object({ cycleId: z.string() }))
     .query(async ({ ctx, input }) => {
       const cfg = await db.dashboardConfig.findUnique({
@@ -247,7 +248,7 @@ export const dashboardRouter = router({
       return cfg;
     }),
 
-  upsertConfig: protectedProcedure
+  upsertConfig: cycleProcedure
     .input(
       z.object({
         cycleId: z.string(),

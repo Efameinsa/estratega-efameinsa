@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { trpc } from "@/lib/trpc";
@@ -25,7 +26,7 @@ import {
   Lightbulb,
   Rocket,
   BarChart3,
-  Lock,
+  CheckCircle2,
   type LucideIcon,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -66,7 +67,7 @@ const MODULES: ModuleDef[] = [
   },
   {
     id: "M4",
-    name: "M4 · Despliegue",
+    name: "M4 · Implementación",
     Icon: Rocket,
     pathSuffix: "m4-deployment",
     requires: "Requiere M3",
@@ -76,7 +77,7 @@ const MODULES: ModuleDef[] = [
     name: "M5 · Control BSC",
     Icon: BarChart3,
     pathSuffix: "m5-control",
-    requires: "Requiere proyectos",
+    requires: "Requiere M4",
   },
 ];
 
@@ -88,11 +89,7 @@ export default function DashboardPage() {
   const { data: cycles, isLoading } = trpc.cycle.list.useQuery();
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <p className="text-sm text-muted-foreground">Cargando...</p>
-      </div>
-    );
+    return <div className="mx-auto h-40 max-w-7xl animate-pulse rounded-xl bg-muted/40" />;
   }
 
   const isNewUser = !cycles || cycles.length === 0;
@@ -238,294 +235,253 @@ interface CycleData {
   status: string;
 }
 
+const DIM_META: Record<string, { label: string; color: string }> = {
+  resultados_economicos: { label: "Financiera", color: "#4ade80" },
+  posicion_mercado: { label: "Clientes", color: "#60a5fa" },
+  como_opera_empresa: { label: "Procesos", color: "#fbbf24" },
+  personas_cultura: { label: "Aprendizaje", color: "#a78bfa" },
+};
+
+const CYCLE_STATUS: Record<string, string> = {
+  DRAFT: "Borrador",
+  IN_PROGRESS: "En ejecución",
+  REVIEW: "En revisión",
+  APPROVED: "Aprobado",
+  ARCHIVED: "Archivado",
+};
+
+function Ring({ value, color, size = 64 }: { value: number; color: string; size?: number }) {
+  const r = (size - 8) / 2;
+  const c = 2 * Math.PI * r;
+  return (
+    <svg width={size} height={size} className="-rotate-90" aria-hidden>
+      <circle cx={size / 2} cy={size / 2} r={r} stroke="var(--muted)" strokeWidth={7} fill="none" />
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={r}
+        stroke={color}
+        strokeWidth={7}
+        fill="none"
+        strokeLinecap="round"
+        strokeDasharray={c}
+        strokeDashoffset={c * (1 - value / 100)}
+        className="transition-all duration-700"
+      />
+    </svg>
+  );
+}
+
+function StatCard({ label, value, hint, ring, color }: { label: string; value: string; hint: string; ring: number; color: string }) {
+  return (
+    <div className="flex items-center gap-4 rounded-xl border bg-card p-4">
+      <Ring value={Math.max(0, Math.min(100, ring))} color={color} />
+      <div className="min-w-0">
+        <p className="text-xs text-muted-foreground">{label}</p>
+        <p className="text-2xl font-semibold tabular-nums">{value}</p>
+        <p className="truncate text-xs text-muted-foreground">{hint}</p>
+      </div>
+    </div>
+  );
+}
+
 function WorkDashboard({ cycle }: { cycle: CycleData }) {
-  const router = useRouter();
   const { data: session } = useSession();
   const user = session?.user as Record<string, unknown> | undefined;
   const orgName = (user?.organizationName as string) ?? "";
-
-  const { data: members } = trpc.user.list.useQuery();
-  const { data: cycleProgress } = trpc.cycle.getProgress.useQuery({
-    cycleId: cycle.id,
-  });
-  const { data: recentActivity } = trpc.cycle.getActivity.useQuery({
-    cycleId: cycle.id,
-  });
-  const { data: pendingItems } = trpc.cycle.getPending.useQuery({
-    cycleId: cycle.id,
-  });
-  const { data: nextStep } = trpc.cycle.getNextStep.useQuery({
-    cycleId: cycle.id,
-  });
-
+  const firstName = ((user?.name as string) ?? "").split(" ")[0];
+  const { data, isLoading } = trpc.cycle.cockpit.useQuery({ cycleId: cycle.id });
   const [showCreateCycle, setShowCreateCycle] = useState(false);
 
   return (
-    <div className="p-6 space-y-5">
-      {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-xl font-medium text-foreground mb-1">
-            {cycle.name}
-          </h1>
+    <div className="mx-auto max-w-7xl space-y-6">
+      <div className="flex flex-wrap items-end gap-4">
+        <div className="min-w-0 flex-1">
           <p className="text-sm text-muted-foreground">
-            {orgName} · {cycle.yearStart}–{cycle.yearEnd} · Ciclo en progreso
+            {firstName ? `Hola, ${firstName}` : "Bienvenido"}
+            {orgName ? ` · ${orgName}` : ""}
+          </p>
+          <h1 className="text-2xl font-semibold tracking-tight">{cycle.name}</h1>
+          <p className="text-sm text-muted-foreground">
+            Horizonte {cycle.yearStart}–{cycle.yearEnd} · {CYCLE_STATUS[cycle.status] ?? cycle.status}
           </p>
         </div>
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={() => setShowCreateCycle(true)}
-        >
-          <Plus className="w-3.5 h-3.5 mr-1.5" />
-          Nuevo ciclo
+        <Button size="sm" variant="outline" onClick={() => setShowCreateCycle(true)}>
+          <Plus className="size-3.5" /> Nuevo ciclo
         </Button>
       </div>
 
-      {/* 4 métricas */}
-      <div className="grid grid-cols-4 gap-3">
-        {[
-          {
-            label: "Progreso general",
-            value: `${cycleProgress?.percentage ?? 0}%`,
-            sub: `${cycleProgress?.activeModuleName ?? "M1"} en curso`,
-            fill: cycleProgress?.percentage ?? 0,
-            color: "#7aa8e0",
-          },
-          {
-            label: "Módulos completados",
-            value: `${cycleProgress?.modulesCompleted ?? 0} / 5`,
-            sub: `${cycleProgress?.modulesCompleted ?? 0} completado(s)`,
-            fill: ((cycleProgress?.modulesCompleted ?? 0) / 5) * 100,
-            color: "#7aa8e0",
-          },
-          {
-            label: "Proyectos activos",
-            value: String(cycleProgress?.activeProjects ?? 0),
-            sub: `${cycleProgress?.inProgress ?? 0} en progreso`,
-            fill: cycleProgress?.activeProjects ? 60 : 0,
-            color: "#34d399",
-          },
-          {
-            label: "Miembros del equipo",
-            value: String(members?.length ?? 0),
-            sub: "Usuarios activos",
-            fill: 70,
-            color: "#7F77DD",
-          },
-        ].map((m) => (
-          <div
-            key={m.label}
-            className="bg-background border border-border/50 rounded-xl p-4"
-          >
-            <p className="text-[11px] text-muted-foreground mb-1.5">
-              {m.label}
-            </p>
-            <p className="text-[22px] font-medium text-foreground mb-0.5">
-              {m.value}
-            </p>
-            <p className="text-[11px] text-muted-foreground">{m.sub}</p>
-            <div className="h-[3px] bg-muted rounded-full mt-3 overflow-hidden">
-              <div
-                className="h-full rounded-full transition-all"
-                style={{ width: `${m.fill}%`, background: m.color }}
-              />
-            </div>
+      {isLoading || !data ? (
+        <div className="grid gap-4 md:grid-cols-4">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="h-28 animate-pulse rounded-xl bg-muted/40" />
+          ))}
+        </div>
+      ) : (
+        <>
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <StatCard
+              label="Avance del plan"
+              value={`${data.plan.percentage}%`}
+              hint={`${Object.values(data.plan.modules).filter((m) => m.status === "COMPLETADO").length} de 5 módulos completos`}
+              ring={data.plan.percentage}
+              color="#a78bfa"
+            />
+            <StatCard
+              label="Cumplimiento BSC"
+              value={data.bsc.kpis ? `${data.bsc.globalPct}%` : "—"}
+              hint={data.bsc.kpis ? `${data.bsc.kpis} KPIs · periodo ${data.bsc.period}` : "Aún sin KPIs"}
+              ring={data.bsc.globalPct}
+              color="#4ade80"
+            />
+            <StatCard
+              label="Ejecución del portafolio"
+              value={`${data.portfolio.progress}%`}
+              hint={`${data.portfolio.projects} proyectos · ${data.portfolio.done}/${data.portfolio.tasks} tareas`}
+              ring={data.portfolio.progress}
+              color="#60a5fa"
+            />
+            <StatCard
+              label="Tareas vencidas"
+              value={String(data.portfolio.overdue)}
+              hint={data.portfolio.overdue ? "Requieren atención" : "Todo al día"}
+              ring={data.portfolio.tasks ? Math.round((data.portfolio.overdue / data.portfolio.tasks) * 100) : 0}
+              color={data.portfolio.overdue ? "#f87171" : "#94a3b8"}
+            />
           </div>
-        ))}
-      </div>
 
-      {/* Módulos del ciclo */}
-      <div>
-        <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider mb-2.5">
-          Planeamiento estratégico
-        </p>
-        <div className="grid grid-cols-5 gap-2.5">
-          {MODULES.map((mod) => {
-            const status = cycleProgress?.modules?.[mod.id];
-            const isLocked = status?.status === "BLOQUEADO";
-            const isDone = status?.status === "COMPLETADO";
-            const isActive = status?.status === "EN_CURSO";
-            const progress = status?.progress ?? 0;
+          <section className="space-y-3">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Recorrido del plan estratégico</h2>
+            <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+              {MODULES.map((mod, i) => {
+                const st = data.plan.modules[mod.id as keyof typeof data.plan.modules];
+                const done = st?.status === "COMPLETADO";
+                return (
+                  <li key={mod.id}>
+                    <Link
+                      href={`/cycles/${cycle.id}/${mod.pathSuffix}`}
+                      className={cn(
+                        "group flex h-full flex-col gap-2 rounded-xl border bg-card p-4 transition-colors hover:border-primary/50",
+                        data.plan.next?.module === mod.id && "border-primary/60 ring-1 ring-primary/30",
+                      )}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className={cn("flex size-8 items-center justify-center rounded-lg", done ? "bg-success/15 text-success" : "bg-primary/10 text-primary")}>
+                          <mod.Icon className="size-4" />
+                        </span>
+                        <span className="text-xs text-muted-foreground">Paso {i + 1}</span>
+                        {done && <CheckCircle2 className="ml-auto size-4 text-success" aria-label="Completado" />}
+                      </div>
+                      <p className="text-sm font-medium group-hover:text-primary">{mod.name}</p>
+                      <div className="mt-auto space-y-1">
+                        <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+                          <div
+                            className="h-full rounded-full transition-all duration-700"
+                            style={{ width: `${st?.progress ?? 0}%`, background: done ? "var(--success)" : "var(--primary)" }}
+                          />
+                        </div>
+                        <p className="text-xs text-muted-foreground">{st ? `${st.done}/${st.total} herramientas` : ""}</p>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
 
-            return (
-              <div
-                key={mod.id}
-                onClick={() =>
-                  !isLocked &&
-                  router.push(`/cycles/${cycle.id}/${mod.pathSuffix}`)
-                }
-                className={cn(
-                  "bg-background border rounded-xl p-3 relative transition-all",
-                  isLocked
-                    ? "opacity-50 cursor-not-allowed border-border/50"
-                    : "cursor-pointer hover:border-border border-border/50",
-                  isActive && "border-primary"
-                )}
-              >
-                {isLocked && (
-                  <Lock className="w-3 h-3 text-muted-foreground absolute top-2.5 right-2.5" />
-                )}
-                <div
-                  className={cn(
-                    "w-8 h-8 rounded-lg flex items-center justify-center mb-2",
-                    isDone
-                      ? "bg-transparent"
-                      : isActive
-                        ? "bg-primary/10"
-                        : "bg-muted/50"
-                  )}
-                >
-                  <mod.Icon
-                    className={cn(
-                      "w-4 h-4",
-                      isDone
-                        ? "text-emerald-600"
-                        : isActive
-                          ? "text-primary"
-                          : "text-muted-foreground"
-                    )}
-                  />
-                </div>
-                <p className="text-[11px] font-medium text-foreground leading-tight mb-1">
-                  {mod.name}
-                </p>
-                <p
-                  className={cn(
-                    "text-[10px]",
-                    isDone
-                      ? "text-emerald-600"
-                      : isActive
-                        ? "text-primary"
-                        : "text-muted-foreground"
-                  )}
-                >
-                  {isDone
-                    ? "Completado"
-                    : isActive
-                      ? `En curso · ${progress}%`
-                      : mod.requires}
-                </p>
-                <div className="h-[2px] bg-muted rounded-full mt-2 overflow-hidden">
-                  <div
-                    className="h-full rounded-full"
-                    style={{
-                      width: isDone
-                        ? "100%"
-                        : isActive
-                          ? `${progress}%`
-                          : "0%",
-                      background: isDone ? "#34d399" : "#7aa8e0",
-                    }}
-                  />
-                </div>
+          {data.plan.next && (
+            <Link href={data.plan.next.path} className="glass flex items-center gap-4 rounded-xl px-5 py-4">
+              <span className="size-2 shrink-0 animate-pulse rounded-full bg-primary shadow-[0_0_12px_rgb(167_139_250_/_0.8)]" />
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium">Siguiente paso · {data.plan.next.label}</p>
+                <p className="text-xs text-muted-foreground">{data.plan.next.description}</p>
               </div>
-            );
-          })}
-        </div>
-      </div>
+              <span className="inline-flex items-center gap-1 text-sm font-medium text-primary">
+                Ir ahora <ArrowRight className="size-4" />
+              </span>
+            </Link>
+          )}
 
-      {/* Banner siguiente paso */}
-      {nextStep && (
-        <div className="glass rounded-xl px-5 py-3.5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-primary animate-pulse flex-shrink-0 shadow-[0_0_12px_rgb(167_139_250_/_0.8)]" />
-            <div>
-              <p className="text-[13px] font-medium text-foreground">
-                Siguiente paso — {nextStep.title}
-              </p>
-              <p className="text-[11px] text-muted-foreground mt-0.5">
-                {nextStep.description}
-              </p>
-            </div>
+          <div className="grid gap-6 lg:grid-cols-3">
+            <section className="rounded-xl border bg-card p-5 lg:col-span-2">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="font-medium">Balanced Scorecard por perspectiva</h2>
+                <Link href={`/cycles/${cycle.id}/m5-control/tablero`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
+                  Ver tablero <ArrowRight className="size-3.5" />
+                </Link>
+              </div>
+              {data.bsc.kpis === 0 ? (
+                <p className="text-sm text-muted-foreground">Define tus KPIs en M5 para ver el semáforo por perspectiva.</p>
+              ) : (
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {data.bsc.byDim.map((d) => {
+                    const meta = DIM_META[d.dimension];
+                    return (
+                      <div key={d.dimension} className="rounded-lg border bg-background/40 p-4">
+                        <div className="flex items-center gap-2">
+                          <span className="size-2.5 rounded-full" style={{ background: meta.color }} />
+                          <span className="text-sm font-medium">{meta.label}</span>
+                          <span className="ml-auto text-lg font-semibold tabular-nums">{d.total ? `${d.pct}%` : "—"}</span>
+                        </div>
+                        <div className="mt-3 flex h-2 overflow-hidden rounded-full bg-muted" aria-label="Semáforo de KPIs">
+                          {d.verde > 0 && <div style={{ flex: d.verde, background: "var(--semaforo-verde)" }} />}
+                          {d.ambar > 0 && <div style={{ flex: d.ambar, background: "var(--semaforo-ambar)" }} />}
+                          {d.rojo > 0 && <div style={{ flex: d.rojo, background: "var(--semaforo-rojo)" }} />}
+                          {d.sinDato > 0 && <div style={{ flex: d.sinDato, background: "var(--semaforo-sin-dato)" }} />}
+                        </div>
+                        <p className="mt-2 text-xs text-muted-foreground">
+                          {d.total} KPIs · <span className="text-success">{d.verde} en meta</span> · <span className="text-warning">{d.ambar} en alerta</span> ·{" "}
+                          <span className="text-danger">{d.rojo} críticos</span>
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
+
+            <section className="rounded-xl border bg-card p-5">
+              <div className="mb-3 flex items-center justify-between">
+                <h2 className="font-medium">Mis próximas tareas</h2>
+                <Link href="/my-tasks" className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
+                  Ver todas <ArrowRight className="size-3.5" />
+                </Link>
+              </div>
+              {data.myTasks.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No tienes tareas pendientes con fecha.</p>
+              ) : (
+                <ul className="space-y-1">
+                  {data.myTasks.map((t) => {
+                    const due = t.dueDate ? new Date(t.dueDate) : null;
+                    const late = due ? due.getTime() < new Date(data.today).getTime() : false;
+                    return (
+                      <li key={t.id}>
+                        <Link href={`/projects/${t.project.id}/list?task=${t.id}`} className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent/40">
+                          <span className="size-2 shrink-0 rounded-full" style={{ background: t.project.color ?? "#a78bfa" }} />
+                          <span className="min-w-0 flex-1 truncate">{t.summary}</span>
+                          {due && (
+                            <span className={cn("shrink-0 text-xs", late ? "text-danger" : "text-muted-foreground")}>
+                              {due.toLocaleDateString("es-PE", { day: "numeric", month: "short", timeZone: "UTC" })}
+                            </span>
+                          )}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+              <div className="mt-4 flex items-center justify-between border-t pt-3 text-xs text-muted-foreground">
+                <span>{data.members} personas en la organización</span>
+                <Link href="/portfolio" className="text-primary hover:underline">
+                  Ir al portafolio
+                </Link>
+              </div>
+            </section>
           </div>
-          <Button
-            size="sm"
-            className="flex-shrink-0 ml-4"
-            onClick={() => router.push(nextStep.path)}
-          >
-            Ir ahora →
-          </Button>
-        </div>
+        </>
       )}
 
-      {/* Actividad reciente + Pendientes */}
-      <div className="grid grid-cols-2 gap-4">
-        {/* Actividad reciente */}
-        <div className="bg-background border border-border/50 rounded-xl p-4">
-          <h3 className="text-[13px] font-medium text-foreground mb-3">
-            Actividad reciente
-          </h3>
-          <div className="space-y-0">
-            {recentActivity?.slice(0, 5).map((item, i) => (
-              <div
-                key={i}
-                className="flex items-start gap-2.5 py-2 border-b border-border/40 last:border-b-0"
-              >
-                <div className="w-6 h-6 rounded-full bg-primary/10 text-primary text-[10px] font-medium flex items-center justify-center flex-shrink-0 mt-0.5">
-                  {item.userInitials}
-                </div>
-                <div className="min-w-0">
-                  <p className="text-[12px] text-muted-foreground leading-snug">
-                    <span className="text-foreground font-medium">
-                      {item.userName}
-                    </span>{" "}
-                    {item.action}
-                  </p>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">
-                    {item.timeAgo}
-                  </p>
-                </div>
-              </div>
-            ))}
-            {(!recentActivity || recentActivity.length === 0) && (
-              <p className="text-[12px] text-muted-foreground py-4 text-center">
-                Sin actividad reciente
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Pendientes del módulo activo */}
-        <div className="bg-background border border-border/50 rounded-xl p-4">
-          <h3 className="text-[13px] font-medium text-foreground mb-3">
-            Pendiente en {cycleProgress?.activeModuleName ?? "M1"}
-          </h3>
-          <div className="space-y-0">
-            {pendingItems?.map((item, i) => (
-              <div
-                key={i}
-                className="flex items-start gap-2.5 py-2.5 border-b border-border/40 last:border-b-0 cursor-pointer hover:bg-muted/30 rounded -mx-1 px-1 transition-colors"
-                onClick={() => router.push(item.path)}
-              >
-                <div
-                  className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5"
-                  style={{ background: item.color }}
-                />
-                <div className="min-w-0">
-                  <p className="text-[12px] text-foreground font-medium truncate">
-                    {item.title}
-                  </p>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">
-                    {item.subtitle}
-                  </p>
-                </div>
-              </div>
-            ))}
-            {(!pendingItems || pendingItems.length === 0) && (
-              <p className="text-[12px] text-muted-foreground py-4 text-center">
-                Todo al día ✓
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Modal crear ciclo */}
-      <CreateCycleDialog
-        open={showCreateCycle}
-        onOpenChange={setShowCreateCycle}
-      />
+      <CreateCycleDialog open={showCreateCycle} onOpenChange={setShowCreateCycle} />
     </div>
   );
 }

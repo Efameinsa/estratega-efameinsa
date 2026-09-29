@@ -1,7 +1,7 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink } from "@trpc/client";
+import { httpBatchStreamLink } from "@trpc/client";
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import superjson from "superjson";
@@ -12,8 +12,11 @@ export function TRPCProvider({ children }: { children: React.ReactNode }) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 5 * 1000,
+            // Los datos del plan cambian poco: evita recargar al volver a una página.
+            staleTime: 60 * 1000,
+            gcTime: 10 * 60 * 1000,
             refetchOnWindowFocus: false,
+            retry: 1,
           },
         },
       })
@@ -22,9 +25,12 @@ export function TRPCProvider({ children }: { children: React.ReactNode }) {
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
-        httpBatchLink({
+        // Streaming: cada procedimiento del lote responde apenas termina,
+        // sin esperar al más lento.
+        httpBatchStreamLink({
           url: "/api/trpc",
           transformer: superjson,
+          maxURLLength: 2083,
         }),
       ],
     })
