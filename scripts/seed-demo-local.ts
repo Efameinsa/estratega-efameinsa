@@ -1,13 +1,19 @@
 // Datos de demostración para probar la gestión de proyectos en local.
-// Uso: npx tsx scripts/seed-demo-local.ts   (solo contra una base localhost)
+// Uso: npx tsx scripts/seed-demo-local.ts   (solo contra una base localhost;
+// para otra base: ALLOW_REMOTE_SEED=1 y SEED_DEMO_PASSWORD=<clave>)
 import "dotenv/config";
 import bcrypt from "bcryptjs";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 const url = process.env.DATABASE_URL ?? "";
-if (!/@(localhost|127\.0\.0\.1)[:/]/.test(url)) {
+const isLocal = /@(localhost|127\.0\.0\.1)[:/]/.test(url);
+if (!isLocal && process.env.ALLOW_REMOTE_SEED !== "1") {
   console.error("Este script solo corre contra una base de datos local.");
+  process.exit(1);
+}
+if (!isLocal && !process.env.SEED_DEMO_PASSWORD) {
+  console.error("Define SEED_DEMO_PASSWORD para sembrar una base remota.");
   process.exit(1);
 }
 const db = new PrismaClient({ adapter: new PrismaPg({ connectionString: url }) });
@@ -18,7 +24,8 @@ async function main() {
     update: {},
     create: { id: "org-demo", name: "Corporación Demo SAC", sector: "Servicios", country: "PE" },
   });
-  const pass = await bcrypt.hash("demo1234", 10);
+  const plain = process.env.SEED_DEMO_PASSWORD ?? "demo1234";
+  const pass = await bcrypt.hash(plain, 10);
   const people = [
     { email: "gerente@demo.pe", name: "Santos Vilca", area: "Gerencia General", role: "PROPIETARIO" as const },
     { email: "marketing@demo.pe", name: "Lucía Paredes", area: "Marketing", role: "ADMINISTRADOR" as const },
@@ -115,7 +122,7 @@ async function main() {
     }
     i++;
   }
-  console.log("Plan demo creado. Usuarios:", people.map((p) => p.email).join(", "), "· clave: demo1234");
+  console.log("Plan demo creado. Usuarios:", people.map((p) => p.email).join(", "), "· clave:", isLocal ? plain : "(la de SEED_DEMO_PASSWORD)");
 }
 
 main()
