@@ -19,12 +19,12 @@ function getDatabaseUrl(): string {
 
 function createPrismaClient(): PrismaClient {
   const url = getDatabaseUrl();
-  // Desarrollo local (prisma dev / Postgres en localhost): el adapter de Neon
-  // habla por WebSocket y no funciona contra un Postgres TCP normal.
-  const isLocal = /@(localhost|127\.0\.0\.1)[:/]/.test(url);
-  const adapter = isLocal
-    ? new PrismaPg({ connectionString: url })
-    : new PrismaNeon({ connectionString: url });
+  // El adapter de Neon habla por WebSocket y solo sirve contra Neon. Cualquier
+  // otro Postgres (local, Supabase, RDS…) usa el driver TCP normal.
+  const isNeon = /\.neon\.tech[:/]/.test(url);
+  const adapter = isNeon
+    ? new PrismaNeon({ connectionString: url })
+    : new PrismaPg({ connectionString: url });
   return new PrismaClient({
     adapter,
     log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
