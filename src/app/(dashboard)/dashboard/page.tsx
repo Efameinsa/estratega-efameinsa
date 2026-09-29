@@ -458,7 +458,10 @@ function WorkDashboard({ cycle }: { cycle: CycleData }) {
                       <li key={t.id}>
                         <Link href={`/projects/${t.project.id}/list?task=${t.id}`} className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent/40">
                           <span className="size-2 shrink-0 rounded-full" style={{ background: t.project.color ?? "#a78bfa" }} />
-                          <span className="min-w-0 flex-1 truncate">{t.summary}</span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate">{t.summary}</span>
+                            <span className="block truncate text-xs text-muted-foreground">{t.project.name}</span>
+                          </span>
                           {due && (
                             <span className={cn("shrink-0 text-xs", late ? "text-danger" : "text-muted-foreground")}>
                               {due.toLocaleDateString("es-PE", { day: "numeric", month: "short", timeZone: "UTC" })}
