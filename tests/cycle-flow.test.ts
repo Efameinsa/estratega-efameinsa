@@ -80,6 +80,28 @@ describe("recorrido del ciclo estratégico", () => {
     expect(sections.find((s) => s.key === "portfolio")?.done).toBe(true);
   });
 
+  it("BCG y GE se guardan en el servidor y el BCG alimenta la Matriz de Decisión", async () => {
+    const state = { empresa: "Andina", productos: [{ id: "p1", nombre: "Limpieza", ventasPropias: "16" }] };
+    await api().matrixState.save({ cycleId: ctx.cycle.id, kind: "bcg", data: state });
+    expect((await api().matrixState.get({ cycleId: ctx.cycle.id, kind: "bcg" }))?.data).toEqual(state);
+    expect(await api().matrixState.get({ cycleId: ctx.cycle.id, kind: "ge" })).toBeNull();
+
+    const r = await api().bcg.saveRetainedStrategies({
+      cycleId: ctx.cycle.id,
+      strategies: [
+        { code: "BCG-A", name: "Estrella · Facility", description: "Invertir para mantener liderazgo." },
+        { code: "BCG-B", name: "Vaca lechera · Limpieza", description: "Usar la caja para financiar estrellas." },
+      ],
+    });
+    expect(r.count).toBe(2);
+    // volver a guardar reemplaza, no duplica
+    await api().bcg.saveRetainedStrategies({ cycleId: ctx.cycle.id, strategies: [{ code: "BCG-A", name: "Estrella · Facility", description: "Invertir." }] });
+    expect(await db.strategy.count({ where: { cycleId: ctx.cycle.id, type: "BCG" } })).toBe(1);
+    const { sections } = await api().cycle.sections({ cycleId: ctx.cycle.id });
+    expect(sections.find((s) => s.key === "bcg")?.done).toBe(true);
+    expect(sections.find((s) => s.key === "ge")?.done).toBe(false);
+  });
+
   it("las herramientas de M3 rechazan ciclos de otra organización", async () => {
     const other = await makeOrg();
     const intruder = callerFor(other.owner);
@@ -87,5 +109,8 @@ describe("recorrido del ciclo estratégico", () => {
     await expect(intruder.mcpe.getSetup({ cycleId: ctx.cycle.id })).rejects.toThrow(/acceso/);
     await expect(intruder.rumelt.getSetup({ cycleId: ctx.cycle.id })).rejects.toThrow(/acceso/);
     await expect(intruder.cycle.cockpit({ cycleId: ctx.cycle.id })).rejects.toThrow(/acceso/);
+    await expect(intruder.matrixState.get({ cycleId: ctx.cycle.id, kind: "bcg" })).rejects.toThrow(/acceso/);
+    await expect(intruder.bcg.saveRetainedStrategies({ cycleId: ctx.cycle.id, strategies: [] })).rejects.toThrow(/acceso/);
+    await expect(intruder.ge.saveRetainedStrategies({ cycleId: ctx.cycle.id, strategies: [] })).rejects.toThrow(/acceso/);
   });
 });

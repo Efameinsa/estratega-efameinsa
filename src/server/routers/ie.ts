@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { router, editorProcedure } from "@/server/trpc/init";
+import { router, cycleEditorProcedure } from "@/server/trpc/init";
 import { db } from "@/server/db";
 
 export const ieRouter = router({
-  saveRetainedStrategies: editorProcedure
+  saveRetainedStrategies: cycleEditorProcedure
     .input(
       z.object({
         cycleId: z.string(),

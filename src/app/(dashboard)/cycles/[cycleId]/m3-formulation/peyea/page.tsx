@@ -19,18 +19,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
-  ResponsiveContainer,
-  ScatterChart,
-  Scatter,
-  XAxis,
-  YAxis,
-  ZAxis,
-  Tooltip as RTooltip,
-  ReferenceLine,
-  ReferenceArea,
-  Cell,
-} from "recharts";
-import {
   Check,
   ChevronDown,
   ChevronRight,
@@ -46,6 +34,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { toast } from "sonner";
+import { PeyeaChart } from "@/components/matrices/peyea-chart";
 
 interface PeyeaItem {
   key: string;
@@ -346,7 +335,7 @@ function Paso1({
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div className="lg:col-span-2 space-y-4">
         {/* Caja informativa azul */}
-        <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 dark:border-primary/40 dark:bg-primary/90/30 p-4">
+        <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 dark:border-primary/40 dark:bg-primary/10 p-4">
           <div className="flex gap-3">
             <Info className="size-5 shrink-0 text-primary mt-0.5" />
             <div className="text-sm">
@@ -604,62 +593,35 @@ function VectorPreview({ vector }: { vector: ReturnType<typeof computeVector> | 
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
+        <PeyeaChart vector={vector} compact />
         <div className="grid grid-cols-2 gap-2 text-center">
           <div className="rounded-md border p-2">
-            <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Eje X</div>
+            <div className="text-[11px] text-muted-foreground">Eje X · industria + ventaja</div>
             <div className="text-lg font-bold tabular-nums">
               {vector.x >= 0 ? "+" : ""}{vector.x.toFixed(2)}
             </div>
-            <div className="text-[10px] text-muted-foreground">VC + FI</div>
           </div>
           <div className="rounded-md border p-2">
-            <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Eje Y</div>
+            <div className="text-[11px] text-muted-foreground">Eje Y · finanzas + entorno</div>
             <div className="text-lg font-bold tabular-nums">
               {vector.y >= 0 ? "+" : ""}{vector.y.toFixed(2)}
             </div>
-            <div className="text-[10px] text-muted-foreground">FF + EE</div>
           </div>
         </div>
         <div
           className="rounded-md p-3 text-center"
           style={{ backgroundColor: info.bg, borderColor: info.border, borderWidth: 1 }}
         >
-          <div className="text-[11px] uppercase tracking-wide text-muted-foreground">Perfil</div>
+          <div className="text-[11px] text-muted-foreground">Postura sugerida</div>
           <div className="text-base font-semibold" style={{ color: info.color }}>
             {info.label}
           </div>
-          <div className="text-[10px] text-muted-foreground">
-            Magnitud {vector.magnitude.toFixed(2)} · {vector.angleDeg.toFixed(0)}°
+          <div className="text-[11px] text-muted-foreground">
+            Intensidad {vector.magnitude.toFixed(2)} · dirección {vector.angleDeg.toFixed(0)}°
           </div>
         </div>
-        <MiniMatrix vector={vector} />
       </CardContent>
     </Card>
-  );
-}
-
-function MiniMatrix({ vector }: { vector: ReturnType<typeof computeVector> }) {
-  // Simple mini matrix as SVG for the side preview
-  const size = 160;
-  const half = size / 2;
-  const max = 12; // x and y can range -12 to +12 (sum of two scores 1-6 with sign)
-  const px = half + (vector.x / max) * (half - 10);
-  const py = half - (vector.y / max) * (half - 10);
-  const info = QUADRANT_INFO[vector.quadrant];
-  return (
-    <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-auto border rounded-md bg-muted/10">
-      {/* fondos cuadrante */}
-      <rect x={half} y="0" width={half} height={half} fill={QUADRANT_INFO.agresivo.bg} />
-      <rect x="0" y="0" width={half} height={half} fill={QUADRANT_INFO.conservador.bg} />
-      <rect x="0" y={half} width={half} height={half} fill={QUADRANT_INFO.defensivo.bg} />
-      <rect x={half} y={half} width={half} height={half} fill={QUADRANT_INFO.competitivo.bg} />
-      {/* ejes */}
-      <line x1="0" y1={half} x2={size} y2={half} stroke="rgba(167,139,250,0.14)" strokeWidth="1" />
-      <line x1={half} y1="0" x2={half} y2={size} stroke="rgba(167,139,250,0.14)" strokeWidth="1" />
-      {/* vector */}
-      <line x1={half} y1={half} x2={px} y2={py} stroke={info.color} strokeWidth="2.5" />
-      <circle cx={px} cy={py} r="4" fill={info.color} />
-    </svg>
   );
 }
 
@@ -684,69 +646,10 @@ function Paso2({
       <div className="lg:col-span-2">
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Matriz PEYEA</CardTitle>
+            <CardTitle className="text-base">Matriz PEYEA · posición estratégica y evaluación de la acción</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="w-full h-[480px] md:h-[560px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <ScatterChart margin={{ top: 30, right: 40, bottom: 36, left: 32 }}>
-                  <XAxis
-                    type="number"
-                    dataKey="x"
-                    domain={[-12, 12]}
-                    ticks={[-12, -8, -4, 0, 4, 8, 12]}
-                    tick={{ fontSize: 11, fill: "#9a91b8" }}
-                    tickLine={false}
-                    axisLine={{ stroke: "rgba(167,139,250,0.14)" }}
-                  />
-                  <YAxis
-                    type="number"
-                    dataKey="y"
-                    domain={[-12, 12]}
-                    ticks={[-12, -8, -4, 0, 4, 8, 12]}
-                    tick={{ fontSize: 11, fill: "#9a91b8" }}
-                    tickLine={false}
-                    axisLine={{ stroke: "rgba(167,139,250,0.14)" }}
-                  />
-                  <ZAxis range={[200, 200]} />
-
-                  {/* Cuadrantes coloreados */}
-                  <ReferenceArea x1={0} x2={12} y1={0} y2={12} fill={QUADRANT_INFO.agresivo.color} fillOpacity={0.08} stroke="none" label={{ value: "AGRESIVO", position: "insideTopRight", fill: QUADRANT_INFO.agresivo.color, fontSize: 13, fontWeight: 600, offset: 12 }} />
-                  <ReferenceArea x1={-12} x2={0} y1={0} y2={12} fill={QUADRANT_INFO.conservador.color} fillOpacity={0.08} stroke="none" label={{ value: "CONSERVADOR", position: "insideTopLeft", fill: QUADRANT_INFO.conservador.color, fontSize: 13, fontWeight: 600, offset: 12 }} />
-                  <ReferenceArea x1={0} x2={12} y1={-12} y2={0} fill={QUADRANT_INFO.competitivo.color} fillOpacity={0.08} stroke="none" label={{ value: "COMPETITIVO", position: "insideBottomRight", fill: QUADRANT_INFO.competitivo.color, fontSize: 13, fontWeight: 600, offset: 12 }} />
-                  <ReferenceArea x1={-12} x2={0} y1={-12} y2={0} fill={QUADRANT_INFO.defensivo.color} fillOpacity={0.08} stroke="none" label={{ value: "DEFENSIVO", position: "insideBottomLeft", fill: QUADRANT_INFO.defensivo.color, fontSize: 13, fontWeight: 600, offset: 12 }} />
-
-                  {/* Etiquetas de ejes */}
-                  <ReferenceLine y={0} stroke="#94a3b8" strokeWidth={1.5} />
-                  <ReferenceLine x={0} stroke="#94a3b8" strokeWidth={1.5} />
-
-                  {/* Vector como linea desde origen al punto */}
-                  <ReferenceLine
-                    segment={[{ x: 0, y: 0 }, { x: vector.x, y: vector.y }]}
-                    stroke={info.color}
-                    strokeWidth={3}
-                    ifOverflow="hidden"
-                  />
-
-                  <RTooltip
-                    cursor={false}
-                    content={({ active, payload }) =>
-                      active && payload?.length ? (
-                        <div className="rounded-md border bg-background p-2 text-xs shadow">
-                          <div className="font-semibold">Tu vector</div>
-                          <div>X = {vector.x.toFixed(2)}</div>
-                          <div>Y = {vector.y.toFixed(2)}</div>
-                        </div>
-                      ) : null
-                    }
-                  />
-
-                  <Scatter data={[{ x: vector.x, y: vector.y }]} fill={info.color}>
-                    <Cell key="0" />
-                  </Scatter>
-                </ScatterChart>
-              </ResponsiveContainer>
-            </div>
+            <PeyeaChart vector={vector} />
           </CardContent>
         </Card>
       </div>
@@ -764,16 +667,16 @@ function Paso2({
               ({vector.x >= 0 ? "+" : ""}{vector.x.toFixed(2)}, {vector.y >= 0 ? "+" : ""}{vector.y.toFixed(2)})
             </div>
             <Separator className="my-2" />
-            <Row label="Eje X (VC + FI)" value={vector.x.toFixed(2)} />
+            <Row label="Eje X (FI + VC)" value={vector.x.toFixed(2)} />
             <Row label="Eje Y (FF + EE)" value={vector.y.toFixed(2)} />
-            <Row label="Magnitud" value={vector.magnitude.toFixed(2)} />
-            <Row label="Angulo" value={`${vector.angleDeg.toFixed(0)}°`} />
+            <Row label="Intensidad" value={vector.magnitude.toFixed(2)} />
+            <Row label="Dirección" value={`${vector.angleDeg.toFixed(0)}°`} />
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm">Promedios por dimension</CardTitle>
+            <CardTitle className="text-sm">Promedios por dimensión</CardTitle>
           </CardHeader>
           <CardContent className="space-y-1.5 text-sm">
             <Row label="FF" value={vector.ffAvg.toFixed(2)} color={DIMENSION_INFO.FF.color} />
@@ -899,7 +802,7 @@ function Paso3({
                   key={s.code}
                   className={`rounded-lg border p-3 cursor-pointer transition-all ${
                     isRetained
-                      ? "border-primary/40 bg-primary/10/40 dark:bg-primary/90/20"
+                      ? "border-primary/40 bg-primary/10/40 dark:bg-primary/10"
                       : "hover:border-foreground/30"
                   }`}
                 >

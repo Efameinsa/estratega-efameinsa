@@ -22,7 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
   ResponsiveContainer, ScatterChart, Scatter, XAxis, YAxis, ZAxis,
-  Tooltip as RTooltip, ReferenceLine, ReferenceArea, Cell,
+  Tooltip as RTooltip, ReferenceLine, ReferenceArea, Cell, LabelList,
 } from "recharts";
 import {
   Check, ChevronRight, ArrowLeft, ArrowRight, AlertTriangle, Info,
@@ -188,7 +188,7 @@ function Paso1({
 }) {
   return (
     <div className="space-y-5">
-      <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 dark:border-primary/40 dark:bg-primary/90/30 p-4">
+      <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 dark:border-primary/40 dark:bg-primary/10 p-4">
         <div className="flex gap-3">
           <Info className="size-5 shrink-0 text-primary mt-0.5" />
           <div className="text-sm">
@@ -322,7 +322,7 @@ function Paso2({
           <CardContent>
             <IeChart mefiScore={mefiScore} mefeScore={mefeScore} cell={cell} />
             <div className="mt-3 text-[11px] text-muted-foreground text-center">
-              Eje X = MEFI · Eje Y = MEFE · Tu posicion marcada con punto azul
+              Eje X = MEFI (interno) · Eje Y = MEFE (externo) · El punto marca tu posición
             </div>
           </CardContent>
         </Card>
@@ -460,8 +460,13 @@ function IeChart({ mefiScore, mefeScore, cell }: { mefiScore: number; mefeScore:
             }
           />
 
-          <Scatter data={[{ x: mefiScore, y: mefeScore }]} fill={userInfo.color} stroke={userInfo.color} strokeWidth={2}>
+          <Scatter data={[{ x: mefiScore, y: mefeScore, label: `Tu posición (MEFI ${mefiScore.toFixed(2)} · MEFE ${mefeScore.toFixed(2)})` }]} fill={userInfo.color} stroke="#07060d" strokeWidth={2} shape="circle">
             <Cell key="0" />
+            <LabelList dataKey="label" content={(p: { x?: number | string; y?: number | string; width?: number | string; value?: unknown }) => (
+              <text x={Number(p.x) + Number(p.width ?? 0) / 2} y={Number(p.y) - 10} textAnchor="middle" fill="#f4f1fb" fontSize={12} fontWeight={600}>
+                {String(p.value ?? "")}
+              </text>
+            )} />
           </Scatter>
         </ScatterChart>
       </ResponsiveContainer>
@@ -559,7 +564,7 @@ function Paso3({
               const isRetained = retained.has(s.code);
               const priColor = s.priority === "alta" ? "#f87171" : s.priority === "media" ? "#F59E0B" : "#4ade80";
               return (
-                <label key={s.code} className={`rounded-lg border p-3 cursor-pointer transition-all ${isRetained ? "border-primary/40 bg-primary/10/40 dark:bg-primary/90/20" : "hover:border-foreground/30"}`}>
+                <label key={s.code} className={`rounded-lg border p-3 cursor-pointer transition-all ${isRetained ? "border-primary/40 bg-primary/10/40 dark:bg-primary/10" : "hover:border-foreground/30"}`}>
                   <div className="flex items-start gap-2">
                     <input type="checkbox" checked={isRetained} onChange={() => toggle(s.code)} className="mt-1 accent-blue-600 size-4 cursor-pointer" />
                     <div className="flex-1 min-w-0">

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { projectInitials, quarterRange, toBscCode, statusColor, plural } from "@/lib/pm";
 import { computeStats, projectHealth } from "@/lib/pm-stats";
+import { computeVector } from "@/lib/peyea-catalog";
 
 const d = (s: string) => new Date(`${s}T12:00:00Z`);
 const issue = (p: Partial<Parameters<typeof computeStats>[0][number]>) => ({
@@ -77,5 +78,20 @@ describe("lib/pm-stats", () => {
     expect(projectHealth({ ...stats(0), total: 0 }, end, start, now)).toBe("SIN_TAREAS");
     // Proyecto vencido sin terminar
     expect(projectHealth(stats(90), d("2026-06-01"), start, now)).toBe("EN_RIESGO");
+  });
+});
+
+
+describe("PEYEA", () => {
+  it("ubica el vector en el cuadrante correcto", () => {
+    const agresivo = computeVector({ FF: [6, 6], VC: [6, 6], EE: [6, 6], FI: [6, 6] });
+    expect(agresivo.quadrant).toBe("agresivo");
+    expect(agresivo.x).toBeCloseTo(5); // FI 6 + VC −1
+    expect(agresivo.y).toBeCloseTo(5); // FF 6 + EE −1
+    const defensivo = computeVector({ FF: [1], VC: [1], EE: [1], FI: [1] });
+    expect(defensivo.quadrant).toBe("defensivo");
+    expect(defensivo.x).toBeCloseTo(-5);
+    // los valores reales nunca salen de ±5: el gráfico no necesita escala ±12
+    for (const v of [agresivo, defensivo]) expect(Math.max(Math.abs(v.x), Math.abs(v.y))).toBeLessThanOrEqual(5);
   });
 });

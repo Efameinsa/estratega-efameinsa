@@ -388,8 +388,8 @@ function Paso2({ setup, cycleId, onBack, onNext }: { setup: McpeSetup; cycleId: 
                 );
               })}
               {/* Totales */}
-              <tr className="border-t-2 bg-primary/10 dark:bg-primary/90/30">
-                <td className="p-2 sticky left-0 bg-primary/10 dark:bg-primary/90/30 font-semibold text-sm">PTA Total</td>
+              <tr className="border-t-2 bg-primary/10 dark:bg-primary/10">
+                <td className="p-2 sticky left-0 bg-primary/10 dark:bg-primary/10 font-semibold text-sm">PTA Total</td>
                 <td />
                 {setup.strategies.map((s) => {
                   const total = setup.ptaByStrategy[s.id] ?? 0;

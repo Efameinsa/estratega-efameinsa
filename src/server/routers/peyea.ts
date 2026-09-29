@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { router, cycleProcedure, protectedProcedure, editorProcedure } from "@/server/trpc/init";
+import { router, cycleProcedure, cycleEditorProcedure } from "@/server/trpc/init";
 import { db } from "@/server/db";
 import {
   PEYEA_CATALOG,
@@ -262,7 +262,7 @@ export const peyeaRouter = router({
           vectorX: rest.vectorX,
           vectorY: rest.vectorY,
           quadrant: rest.quadrant,
-          organizationId: ctx.organizationId,
+          organizationId: ctx.organizationId!,
         },
         update: { ...data, organizationId: ctx.organizationId },
       });
@@ -271,7 +271,7 @@ export const peyeaRouter = router({
   // saveRetainedStrategies — guarda las estrategias retenidas del Paso 3
   // como filas en tabla Strategy con type="PEYEA" para que FODA Cruzado
   // y MD/MCPE las puedan recoger.
-  saveRetainedStrategies: editorProcedure
+  saveRetainedStrategies: cycleEditorProcedure
     .input(
       z.object({
         cycleId: z.string(),

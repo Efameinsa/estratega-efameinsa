@@ -35,26 +35,10 @@ function QuadrantCard({
   cycleId: string;
 }) {
   const colorStyles: Record<string, { border: string; bg: string; badge: string }> = {
-    green: {
-      border: "border-green-500/30 dark:border-green-900",
-      bg: "bg-transparent dark:bg-transparent",
-      badge: "bg-transparent text-green-300 dark:bg-transparent dark:text-green-200",
-    },
-    blue: {
-      border: "border-primary/25 dark:border-primary",
-      bg: "bg-primary/10/50 dark:bg-primary/90/20",
-      badge: "bg-primary/15 text-primary dark:bg-primary/80 dark:text-primary/80",
-    },
-    yellow: {
-      border: "border-yellow-500/30 dark:border-yellow-900",
-      bg: "bg-transparent dark:bg-transparent",
-      badge: "bg-transparent text-yellow-300 dark:bg-transparent dark:text-yellow-200",
-    },
-    red: {
-      border: "border-red-500/30 dark:border-red-900",
-      bg: "bg-transparent dark:bg-transparent",
-      badge: "bg-transparent text-red-300 dark:bg-transparent dark:text-red-200",
-    },
+    green: { border: "border-green-500/30", bg: "bg-transparent", badge: "bg-green-500/15 text-green-300" },
+    blue: { border: "border-sky-500/30", bg: "bg-transparent", badge: "bg-sky-500/15 text-sky-300" },
+    yellow: { border: "border-yellow-500/30", bg: "bg-transparent", badge: "bg-yellow-500/15 text-yellow-300" },
+    red: { border: "border-red-500/30", bg: "bg-transparent", badge: "bg-red-500/15 text-red-300" },
   };
 
   const style = colorStyles[color];

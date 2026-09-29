@@ -67,7 +67,7 @@ const ROLES = [
 const ROLE_COLORS: Record<string, string> = {
   ADMIN: "bg-transparent text-red-300 dark:bg-transparent dark:text-red-400",
   ALTA_DIRECCION: "bg-transparent text-purple-300 dark:bg-transparent dark:text-purple-400",
-  GERENTE: "bg-primary/15 text-primary dark:bg-primary/90/30 dark:text-primary",
+  GERENTE: "bg-primary/15 text-primary dark:bg-primary/10 dark:text-primary",
   JEFE_PROYECTO: "bg-transparent text-teal-300 dark:bg-transparent dark:text-teal-400",
   ANALISTA: "bg-transparent text-yellow-300 dark:bg-transparent dark:text-yellow-400",
   MIEMBRO_EQUIPO: "bg-transparent text-foreground dark:bg-transparent dark:text-gray-300",

@@ -43,6 +43,8 @@ import { projectRouter } from "@/server/routers/project";
 import { projectConfigRouter } from "@/server/routers/project-config";
 import { issueRouter } from "@/server/routers/issue";
 import { pmRouter } from "@/server/routers/pm";
+import { matrixStateRouter } from "@/server/routers/matrix-state";
+import { bcgRouter } from "@/server/routers/bcg";
 import { invitationsRouter } from "@/server/routers/invitations";
 import { membersRouter } from "@/server/routers/members";
 import { onboardingRouter } from "@/server/routers/onboarding";
@@ -95,6 +97,8 @@ export const appRouter = router({
   projectConfig: projectConfigRouter,
   issue: issueRouter,
   pm: pmRouter,
+  matrixState: matrixStateRouter,
+  bcg: bcgRouter,
   invitations: invitationsRouter,
   members: membersRouter,
   onboarding: onboardingRouter,

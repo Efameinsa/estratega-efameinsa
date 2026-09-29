@@ -208,6 +208,7 @@ model StrategicCycle {
   companyMetrics         CompanyMetric[]
   consolidatedStrategies ConsolidatedStrategy[]
   mcpeAnalysis           McpeAnalysis? @relation("CycleMcpeAnalysis")
+  matrixStates           MatrixState[]
   rumeltEvaluations      RumeltEvaluation[]
   ethicsEvaluations      EthicsEvaluation[]
   peiDocument            PeiDocument?
@@ -788,6 +789,19 @@ model StrategyOlp {
   olp        Olp      @relation(fields: [olpId], references: [id], onDelete: Cascade)
   @@id([strategyId, olpId])
   @@index([olpId])
+}
+
+// Estado de matrices que antes vivían solo en el navegador (BCG, GE…)
+model MatrixState {
+  id        String         @id @default(cuid())
+  cycleId   String
+  cycle     StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  kind      String         // bcg | ge
+  data      String         // JSON con el estado completo de la matriz
+  updatedBy String?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  @@unique([cycleId, kind])
 }
 
 model PeyeaAnalysis {

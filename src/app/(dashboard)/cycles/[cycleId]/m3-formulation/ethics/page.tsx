@@ -186,7 +186,7 @@ function Paso1({ setup, cycleId, onNext }: { setup: EthicsSetup; cycleId: string
                 key={s.id}
                 type="button"
                 onClick={() => setActiveIdx(i)}
-                className={`shrink-0 inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-mono border transition-all ${isActive ? "border-primary bg-primary/10 dark:bg-primary/90/30" : "border-border hover:border-foreground/30"}`}
+                className={`shrink-0 inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-mono border transition-all ${isActive ? "border-primary bg-primary/10 dark:bg-primary/10" : "border-border hover:border-foreground/30"}`}
                 style={!isActive ? { color: vi.color, borderColor: vi.border, backgroundColor: vi.bg } : undefined}
                 title={s.text}
               >

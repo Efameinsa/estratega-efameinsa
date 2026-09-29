@@ -163,15 +163,18 @@ function Paso1({ setup, cycleId, onNext }: { setup: OlpSetup; cycleId: string; o
   const strategiesByMatrix: Record<string, number> = { FODA: 0, PEYEA: 0, BCG: 0, IE: 0, GE: 0 };
   for (const s of setup.strategies) {
     const t = s.type ?? "";
-    if (["FO", "FA", "DO", "DA"].includes(t)) { strategiesByCross[t]++; strategiesByMatrix.FODA++; }
+    // El cruce FODA se guarda en crossType/swotQuadrant; "type" es la etiqueta D'Alessio.
+    const cross = (s as { crossType?: string | null }).crossType ?? s.swotQuadrant ?? "";
+    if (["FO", "FA", "DO", "DA"].includes(cross)) { strategiesByCross[cross]++; strategiesByMatrix.FODA++; }
     else if (t === "PEYEA") strategiesByMatrix.PEYEA++;
     else if (t === "IE") strategiesByMatrix.IE++;
     else if (t === "GE") strategiesByMatrix.GE++;
+    else if (t === "BCG") strategiesByMatrix.BCG++;
   }
 
   return (
     <div className="space-y-5">
-      <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 dark:border-primary/40 dark:bg-primary/90/30 p-4">
+      <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 dark:border-primary/40 dark:bg-primary/10 p-4">
         <div className="flex gap-3">
           <Info className="size-5 shrink-0 text-primary mt-0.5" />
           <div className="text-sm">
@@ -232,6 +235,7 @@ function Paso1({ setup, cycleId, onNext }: { setup: OlpSetup; cycleId: string; o
           <div className="flex flex-wrap gap-2 text-xs">
             <Badge variant="outline" className="text-[10px]">FODA Cruzado: {strategiesByMatrix.FODA}</Badge>
             <Badge variant="outline" className="text-[10px]">PEYEA: {strategiesByMatrix.PEYEA}</Badge>
+            <Badge variant="outline" className="text-[10px]">BCG: {strategiesByMatrix.BCG}</Badge>
             <Badge variant="outline" className="text-[10px]">IE: {strategiesByMatrix.IE}</Badge>
             <Badge variant="outline" className="text-[10px]">GE: {strategiesByMatrix.GE}</Badge>
           </div>
@@ -305,7 +309,7 @@ function Paso2({ setup, cycleId, onBack, onNext }: { setup: OlpSetup; cycleId: s
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div className="lg:col-span-2 space-y-5">
-        <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 dark:border-primary/40 dark:bg-primary/90/30 p-4">
+        <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 dark:border-primary/40 dark:bg-primary/10 p-4">
           <div className="flex gap-3">
             <Info className="size-5 shrink-0 text-primary mt-0.5" />
             <div className="text-sm">

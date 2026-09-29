@@ -391,6 +391,18 @@ async function main() {
     derivedRows.push(await db.strategy.create({ data: { ...O, description: d.desc, swotQuadrant: d.q, type: d.type, priority: "alta", status: "proposed", sortOrder: 20 + i } }));
   }
 
+  // Estrategias que la Matriz BCG envía a la Matriz de Decisión (una por unidad)
+  const BCG_STRATS = [
+    ["BCG-A", "Estrella · Facility management integral", "Ampliar la venta de servicios integrales a la cartera corporativa e invertir para mantener el liderazgo."],
+    ["BCG-B", "Vaca lechera · Limpieza corporativa", "Crear paquetes de limpieza certificada y usar el flujo de caja para financiar el crecimiento."],
+    ["BCG-C", "Interrogante · Seguridad electrónica", "Implementar supervisión digital con sensores IoT invirtiendo de forma selectiva."],
+    ["BCG-D", "Perro · Mantenimiento de edificios", "Salir de contratos de bajo margen y reposicionar el servicio en un nicho rentable."],
+    ["BCG-E", "Perro · Jardinería y paisajismo", "Evaluar la venta o tercerización de la línea para concentrar recursos."],
+  ];
+  for (const [i, [code, name, desc]] of BCG_STRATS.entries()) {
+    await db.strategy.create({ data: { ...O, code, description: `${name}: ${desc}`, swotQuadrant: "DERIVED_BCG", type: "BCG", status: "proposed", sortOrder: 40 + i } });
+  }
+
   // PEYEA con el vector calculado por la misma función de la app
   const PEYEA_SCORES: Record<string, number> = {
     "FF.ROE": 4, "FF.LEVERAGE": 5, "FF.LIQUIDITY": 4, "FF.CASH_FLOW": 3, "FF.WORKING_CAPITAL": 4, "FF.RISK": 4, "FF.EXIT": 3,
@@ -406,6 +418,31 @@ async function main() {
     data: {
       ...O, financialStrength: J(pv.FF), competitiveAdvantage: J(pv.VC), environmentalStability: J(pv.EE), industryStrength: J(pv.FI),
       vectorX: round(vec.x), vectorY: round(vec.y), quadrant: vec.quadrant,
+    },
+  });
+
+  // BCG y GE (estado de las matrices interactivas, guardado en el servidor)
+  const uid = (n: number) => `andina-bcg-${n}`;
+  await db.matrixState.create({
+    data: {
+      cycleId: CYCLE_ID, kind: "bcg",
+      data: J({
+        empresa: "Andina Servicios Integrales S.A.C.", anioActual: "2025", anioAnterior: "2024",
+        cortoY: "10", cortoX: "1.0", moneda: "S/", unidades: "Millones",
+        productos: [
+          { id: uid(1), nombre: "Facility management integral", ventasPropias: "12", ventasLider: "8", mercadoActual: "90", mercadoAnterior: "72" },
+          { id: uid(2), nombre: "Limpieza corporativa", ventasPropias: "16", ventasLider: "11", mercadoActual: "180", mercadoAnterior: "172" },
+          { id: uid(3), nombre: "Seguridad electrónica", ventasPropias: "3", ventasLider: "9", mercadoActual: "60", mercadoAnterior: "48" },
+          { id: uid(4), nombre: "Mantenimiento de edificios", ventasPropias: "5", ventasLider: "7", mercadoActual: "70", mercadoAnterior: "67" },
+          { id: uid(5), nombre: "Jardinería y paisajismo", ventasPropias: "2", ventasLider: "6", mercadoActual: "25", mercadoAnterior: "24" },
+        ],
+      }),
+    },
+  });
+  await db.matrixState.create({
+    data: {
+      cycleId: CYCLE_ID, kind: "ge",
+      data: J({ growth: 8.5, position: 2.9, growthSource: "atractividad", positionSource: "peyea", growthThreshold: 5, positionThreshold: 2.5 }),
     },
   });
 

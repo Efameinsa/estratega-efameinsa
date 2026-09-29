@@ -17,13 +17,14 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
   ResponsiveContainer, ScatterChart, Scatter, XAxis, YAxis, ZAxis,
-  Tooltip as RTooltip, ReferenceLine, ReferenceArea, Cell,
+  Tooltip as RTooltip, ReferenceLine, ReferenceArea, Cell, LabelList,
 } from "recharts";
 import {
   Check, ChevronDown, ChevronRight, ArrowLeft, ArrowRight, AlertTriangle,
   Info, Save, Target, TrendingUp, PlayCircle,
 } from "lucide-react";
 import { toast } from "sonner";
+import { useMatrixState } from "@/components/matrices/use-matrix-state";
 
 const STORAGE_KEY = (cycleId: string) => `ge-${cycleId}`;
 
@@ -58,13 +59,10 @@ export default function GePage() {
   const { data: allStrategies } = trpc.strategy.list.useQuery({ cycleId });
 
   // Hidratar desde localStorage o auto-carga
+  const matrix = useMatrixState<GeState>(cycleId, "ge", STORAGE_KEY(cycleId));
   useEffect(() => {
-    if (hidratado) return;
-    let initial: GeState = DEFAULT_STATE;
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY(cycleId));
-      if (raw) initial = { ...DEFAULT_STATE, ...JSON.parse(raw) };
-    } catch {}
+    if (hidratado || !matrix.ready) return;
+    const initial: GeState = { ...DEFAULT_STATE, ...(matrix.initial ?? {}) };
 
     // Auto-carga de posicion competitiva si no hay valor manual guardado
     if (initial.position === null) {
@@ -86,13 +84,14 @@ export default function GePage() {
 
     setState(initial);
     setHidratado(true);
-  }, [hidratado, cycleId, peyea, mefi]);
+  }, [hidratado, matrix.ready, matrix.initial, peyea, mefi]);
 
   // Persistir en localStorage
   useEffect(() => {
     if (!hidratado) return;
-    try { localStorage.setItem(STORAGE_KEY(cycleId), JSON.stringify(state)); } catch {}
-  }, [state, cycleId, hidratado]);
+    matrix.persist(state);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state, hidratado]);
 
   function update(patch: Partial<GeState>) {
     setState((s) => ({ ...s, ...patch }));
@@ -219,7 +218,7 @@ function Paso1({
 
   return (
     <div className="space-y-5">
-      <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 dark:border-primary/40 dark:bg-primary/90/30 p-4">
+      <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 dark:border-primary/40 dark:bg-primary/10 p-4">
         <div className="flex gap-3">
           <Info className="size-5 shrink-0 text-primary mt-0.5" />
           <div className="text-sm">
@@ -525,8 +524,13 @@ function GeChart({ state, quadrant }: { state: GeState; quadrant: GeQuadrant }) 
             }
           />
 
-          <Scatter data={[{ x: state.position!, y: state.growth! }]} fill={userInfo.color} stroke={userInfo.color} strokeWidth={2}>
+          <Scatter data={[{ x: state.position!, y: state.growth!, label: `Tu posición (${state.position?.toFixed(1)} · ${state.growth?.toFixed(1)} %)` }]} fill={userInfo.color} stroke="#07060d" strokeWidth={2} shape="circle">
             <Cell key="0" />
+            <LabelList dataKey="label" content={(p: { x?: number | string; y?: number | string; width?: number | string; value?: unknown }) => (
+              <text x={Number(p.x) + Number(p.width ?? 0) / 2} y={Number(p.y) - 10} textAnchor="middle" fill="#f4f1fb" fontSize={12} fontWeight={600}>
+                {String(p.value ?? "")}
+              </text>
+            )} />
           </Scatter>
         </ScatterChart>
       </ResponsiveContainer>
@@ -633,7 +637,7 @@ function Paso3({
               const isRetained = retained.has(s.code);
               const isTop3 = s.priority <= 3;
               return (
-                <label key={s.code} className={`rounded-lg border p-3 cursor-pointer transition-all ${isRetained ? "border-primary/40 bg-primary/10/40 dark:bg-primary/90/20" : "hover:border-foreground/30"}`} style={isTop3 ? { borderLeftWidth: 4, borderLeftColor: info.color } : undefined}>
+                <label key={s.code} className={`rounded-lg border p-3 cursor-pointer transition-all ${isRetained ? "border-primary/40 bg-primary/10/40 dark:bg-primary/10" : "hover:border-foreground/30"}`} style={isTop3 ? { borderLeftWidth: 4, borderLeftColor: info.color } : undefined}>
                   <div className="flex items-start gap-2">
                     <input type="checkbox" checked={isRetained} onChange={() => toggle(s.code)} className="mt-1 accent-blue-600 size-4 cursor-pointer" />
                     <div className="flex-1 min-w-0">

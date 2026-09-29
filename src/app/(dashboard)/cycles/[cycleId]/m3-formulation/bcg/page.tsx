@@ -12,7 +12,7 @@ import {
   Tooltip as RTooltip,
   ReferenceLine,
   ReferenceArea,
-  Cell,
+  Cell, LabelList,
 } from "recharts";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,6 +29,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
+import { trpc } from "@/lib/trpc";
+import { useMatrixState } from "@/components/matrices/use-matrix-state";
 import {
   Plus,
   Trash2,
@@ -262,25 +264,22 @@ export default function BcgPage() {
   const [paso, setPaso] = useState<1 | 2 | 3>(1);
   const [hidratado, setHidratado] = useState(false);
 
+  const matrix = useMatrixState<BcgState>(cycleId, "bcg", storageKey);
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(storageKey);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (parsed.productos && Array.isArray(parsed.productos)) {
-          setState({ ...getInitialState(), ...parsed });
-        }
-      }
-    } catch {}
+    if (!matrix.ready || hidratado) return;
+    const parsed = matrix.initial;
+    if (parsed && Array.isArray(parsed.productos)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- hidratación única desde el servidor
+      setState({ ...getInitialState(), ...parsed });
+    }
     setHidratado(true);
-  }, [storageKey]);
+  }, [matrix.ready, matrix.initial, hidratado]);
 
   useEffect(() => {
     if (!hidratado) return;
-    try {
-      localStorage.setItem(storageKey, JSON.stringify(state));
-    } catch {}
-  }, [state, storageKey, hidratado]);
+    matrix.persist(state);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state, hidratado]);
 
   const productosCalculados: ProductoCalculado[] = useMemo(() => {
     const cortoY = parseFloat(state.cortoY) || 0;
@@ -449,6 +448,21 @@ export default function BcgPage() {
     setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 50);
   }
 
+  const saveStrategies = trpc.bcg.saveRetainedStrategies.useMutation({
+    onSuccess: (r) => toast.success(`${r.count} estrategias del BCG enviadas a la Matriz de Decisión`),
+    onError: (e) => toast.error(e.message),
+  });
+  function guardarEstrategias() {
+    saveStrategies.mutate({
+      cycleId,
+      strategies: productosCalculados.map((p) => ({
+        code: `BCG-${p.letra}`,
+        name: `${QUADRANT_INFO[p.cuadrante].label} · ${p.nombre}`,
+        description: QUADRANT_INFO[p.cuadrante].estrategia,
+      })),
+    });
+  }
+
   function retroceder() {
     if (paso === 3) setPaso(2);
     else if (paso === 2) setPaso(1);
@@ -542,6 +556,8 @@ export default function BcgPage() {
           onLimpiar={limpiarTodo}
           onExport={exportarCsv}
           onPrint={() => window.print()}
+          onSave={guardarEstrategias}
+          saving={saveStrategies.isPending}
         />
       </div>
     </>
@@ -1109,7 +1125,7 @@ function ProductoCard({
 
           {/* Panel resultado en vivo */}
           {datosCompletos && calc && (
-            <div className="rounded-md bg-primary/10/70 dark:bg-primary/90/20 border border-primary/20 dark:border-primary/40 p-3">
+            <div className="rounded-md bg-primary/10/70 dark:bg-primary/10 border border-primary/20 dark:border-primary/40 p-3">
               <div className="grid grid-cols-3 gap-2 text-xs">
                 <LiveMetric
                   label="Participacion relativa"
@@ -1253,6 +1269,8 @@ function NavBar({
   onLimpiar,
   onExport,
   onPrint,
+  onSave,
+  saving,
 }: {
   paso: 1 | 2 | 3;
   onBack: () => void;
@@ -1260,6 +1278,8 @@ function NavBar({
   onLimpiar: () => void;
   onExport: () => void;
   onPrint: () => void;
+  onSave: () => void;
+  saving: boolean;
 }) {
   return (
     <div className="sticky bottom-0 mt-6 -mx-4 px-4 md:-mx-6 md:px-6 py-3 bg-background/95 backdrop-blur border-t flex items-center justify-between flex-wrap gap-2 print:hidden">
@@ -1281,6 +1301,10 @@ function NavBar({
             </Button>
             <Button variant="outline" size="sm" onClick={onPrint}>
               <Printer className="size-4 mr-1.5" /> Imprimir / PDF
+            </Button>
+            <Button size="sm" onClick={onSave} disabled={saving}>
+              {saving ? "Guardando…" : "Llevar estrategias a la Matriz de Decisión"}
+              <ArrowRight className="size-4 ml-1.5" />
             </Button>
           </>
         )}
@@ -1778,6 +1802,15 @@ function BcgChart({
                 {items.map((_, i) => (
                   <Cell key={i} />
                 ))}
+                <LabelList dataKey="letra" position="center" fill="#ffffff" fontSize={13} fontWeight={700} />
+                <LabelList
+                  dataKey="nombre"
+                  content={(p: { x?: number | string; y?: number | string; width?: number | string; height?: number | string; value?: unknown }) => (
+                    <text x={Number(p.x) + Number(p.width ?? 0) / 2} y={Number(p.y) + Number(p.height ?? 0) + 14} textAnchor="middle" fill="#cbc3e3" fontSize={11}>
+                      {String(p.value ?? "")}
+                    </text>
+                  )}
+                />
               </Scatter>
             ) : null
           )}

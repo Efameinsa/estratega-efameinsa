@@ -198,7 +198,7 @@ function Stepper({ paso, setPaso }: { paso: 1 | 2 | 3; setPaso: (p: 1 | 2 | 3) =
 function Paso1({ setup, onNext, cycleId }: { setup: FodaSetup; onNext: () => void; cycleId: string }) {
   return (
     <div className="space-y-5">
-      <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 dark:border-primary/40 dark:bg-primary/90/30 p-4">
+      <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 dark:border-primary/40 dark:bg-primary/10 p-4">
         <div className="flex gap-3">
           <Info className="size-5 shrink-0 text-primary mt-0.5" />
           <div className="text-sm">
@@ -835,7 +835,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: FodaSetup; cycleId: string; 
             </div>
           ))}
           {unused.length > 0 && (
-            <div className="flex gap-2 items-start rounded-md border border-primary/25/60 bg-primary/10/50 dark:border-primary/30 dark:bg-primary/90/20 p-2.5">
+            <div className="flex gap-2 items-start rounded-md border border-primary/25/60 bg-primary/10 dark:border-primary/30 dark:bg-primary/10 p-2.5">
               <Info className="size-4 shrink-0 text-primary mt-0.5" />
               <div className="text-xs leading-relaxed">
                 <span className="font-medium">{unused.length} elemento(s) sin cruzar:</span>{" "}

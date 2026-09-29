@@ -36,6 +36,9 @@ export const SECTIONS: Section[] = [
 
   { key: "foda", module: "M3", label: "FODA cruzado", description: "Cruza factores internos y externos para generar estrategias.", path: "m3-formulation/foda-cruzado", sql: exists("Strategy") },
   { key: "peyea", module: "M3", label: "Matriz PEYEA", description: "Evalúa la postura estratégica.", path: "m3-formulation/peyea", sql: exists("PeyeaAnalysis") },
+  { key: "bcg", module: "M3", label: "Matriz BCG", description: "Clasifica las unidades de negocio por crecimiento y participación.", path: "m3-formulation/bcg", sql: `EXISTS(SELECT 1 FROM "MatrixState" t WHERE t."cycleId" = $1 AND t.kind = 'bcg')` },
+  { key: "ie", module: "M3", label: "Matriz IE", description: "Cruza los puntajes de MEFE y MEFI.", path: "m3-formulation/ie", sql: exists("Strategy", `AND t."swotQuadrant" = 'DERIVED_IE'`) },
+  { key: "ge", module: "M3", label: "Gran estrategia (GE)", description: "Ubica la empresa según crecimiento del mercado y posición competitiva.", path: "m3-formulation/ge", sql: `EXISTS(SELECT 1 FROM "MatrixState" t WHERE t."cycleId" = $1 AND t.kind = 'ge')` },
   { key: "olp", module: "M3", label: "Objetivos de largo plazo", description: "Define los OLP por perspectiva del Balanced Scorecard.", path: "m3-formulation/olp", sql: exists("Olp") },
   { key: "md", module: "M3", label: "Matriz de decisión", description: "Consolida las estrategias de todas las matrices.", path: "m3-formulation/md", sql: exists("ConsolidatedStrategy") },
   { key: "mcpe", module: "M3", label: "Matriz MCPE", description: "Prioriza las estrategias consolidadas.", path: "m3-formulation/mcpe", sql: exists("McpeAnalysis") },
