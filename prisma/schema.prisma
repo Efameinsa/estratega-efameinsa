@@ -1,0 +1,2042 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  runtime      = "nodejs"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// AUTH & TENANCY
+
+enum OrgRole {
+  PROPIETARIO
+  ADMINISTRADOR
+  MIEMBRO
+}
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  type      String?
+  sector    String?
+  country   String   @default("PE")
+  plan      String   @default("free")
+  config    String   @default("{}")
+  color     String   @default("#185FA5")
+  logoUrl   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users       User[]
+  activeUsers User[]           @relation("ActiveOrganization")
+  cycles      StrategicCycle[]
+  members     OrganizationMember[]
+  invitations OrganizationInvitation[]
+  visions     Vision[]
+  missions    Mission[]
+  values      Value[]
+  ethicsCodes EthicsCode[]
+  interests   Interest[]
+  cardinalPrinciples CardinalPrinciple[]
+  pestecFactors      PestecFactor[]
+  porterAnalyses     PorterAnalysis[]
+  mefeFactors        MefeFactor[]
+  mefeStates         MefeState[]
+  competitiveAnalyses CompetitiveAnalysis[]
+  industryAttractivenessRecords IndustryAttractiveness[]
+  mpcFactorDefs      MpcFactorDef[]
+  mpcCompetitors     MpcCompetitor[]
+  amofhitAreas       AmofhitArea[]
+  mefiFactors        MefiFactor[]
+  mefiStates         MefiState[]
+  areaSyntheses      AreaSynthesis[]
+  internalReports    InternalReport[]
+  financialRatios    FinancialRatio[]
+  olps               Olp[]
+  strategies         Strategy[]
+  peyeaAnalyses      PeyeaAnalysis[]
+  mcpeEvaluations    McpeEvaluation[]
+  strategicAxes      StrategicAxis[]
+  portfolios         Portfolio[]
+  projects           Project[]
+  ocpAreas           OcpArea[]
+  ocps               Ocp[]
+  politicas          Politica[]
+  orgStructures      OrgStructure[]
+  resourcePlans      ResourcePlan[]
+  kpis               Kpi[]
+  workspaceTokens    WorkspaceToken[]
+  dashboardConfigs   DashboardConfig[]
+  alerts             Alert[]
+  reviews            Review[]
+}
+
+model OrganizationMember {
+  id             String       @id @default(cuid())
+  userId         String
+  organizationId String
+  orgRole        OrgRole      @default(MIEMBRO)
+  joinedAt       DateTime     @default(now())
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+  @@index([organizationId])
+}
+
+model OrganizationInvitation {
+  id             String       @id @default(cuid())
+  organizationId String
+  token          String       @unique @default(cuid())
+  code           String       @unique
+  createdById    String
+  expiresAt      DateTime
+  usedAt         DateTime?
+  maxUses        Int          @default(0)
+  useCount       Int          @default(0)
+  isActive       Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy      User         @relation(fields: [createdById], references: [id])
+
+  @@index([organizationId])
+}
+
+model User {
+  id             String       @id @default(cuid())
+  name           String
+  email          String       @unique
+  hashedPassword String
+  role           String       @default("MIEMBRO_EQUIPO")
+  area           String?
+  phone          String?
+  profile        String?
+  active              Boolean      @default(true)
+  onboardingCompleted Boolean      @default(false)
+  onboardingStep      String?      // ORG | INVITE | CYCLE | DONE
+  organizationId       String
+  organization         Organization @relation(fields: [organizationId], references: [id])
+  activeOrganizationId String?
+  activeOrganization   Organization? @relation("ActiveOrganization", fields: [activeOrganizationId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  sessions         Session[]
+  accounts         Account[]
+  approvedVisions  Vision[]  @relation("VisionApprover")
+  approvedMissions Mission[] @relation("MissionApprover")
+  projectMembers   ProjectMember[]
+  orgMemberships   OrganizationMember[]
+  createdInvitations OrganizationInvitation[]
+  kpiComments      KpiComment[]
+  dashboardConfigs DashboardConfig[]
+  assignedAlerts   Alert[]        @relation("AlertAssignee")
+  alertActions     AlertAction[]
+  alertComments    AlertComment[]
+  reviewsAsPresident Review[]     @relation("ReviewPresident")
+  reviewsAsSecretary Review[]     @relation("ReviewSecretary")
+  reviewAttendances  ReviewAttendee[]
+  reviewDecisions    ReviewDecision[]
+  reviewActions      ReviewCorrectiveAction[]
+  reviewComments     ReviewComment[]
+  @@index([organizationId])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// STRATEGIC CYCLE
+model StrategicCycle {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  name           String
+  yearStart      Int
+  yearEnd        Int
+  status         String       @default("DRAFT")
+  version        Int          @default(1)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  // M1
+  visions   Vision[]
+  missions  Mission[]
+  values    Value[]
+  ethicsCodes EthicsCode[]
+  interests Interest[]
+  cardinalPrinciples CardinalPrinciple[]
+
+  // M2 - External
+  pestecFactors          PestecFactor[]
+  porterAnalysis         PorterAnalysis?
+  mefeFactors            MefeFactor[]
+  mefeState              MefeState?
+  competitiveAnalysis    CompetitiveAnalysis?
+  industryAttractiveness IndustryAttractiveness?
+  mpcCompetitors         MpcCompetitor[]
+  mpcFactorDefs          MpcFactorDef[]
+  // M2 - Internal
+  amofhitAreas           AmofhitArea[]
+  mefiFactors            MefiFactor[]
+  mefiState              MefiState?
+  areaSyntheses          AreaSynthesis[]
+  internalReports        InternalReport[]
+  financialRatios        FinancialRatio[]
+  companyMetrics         CompanyMetric[]
+  consolidatedStrategies ConsolidatedStrategy[]
+  mcpeAnalysis           McpeAnalysis? @relation("CycleMcpeAnalysis")
+  rumeltEvaluations      RumeltEvaluation[]
+  ethicsEvaluations      EthicsEvaluation[]
+  peiDocument            PeiDocument?
+
+  // M3
+  olps            Olp[]
+  strategies      Strategy[]
+  peyeaAnalysis   PeyeaAnalysis?
+  mcpeEvaluations McpeEvaluation[]
+
+  // M4 - Strategic Deployment
+  strategicAxes   StrategicAxis[]
+  portfolios      Portfolio[]
+  ocpAreas        OcpArea[]
+  ocps            Ocp[]
+  politicas       Politica[]
+  policyContradictions PolicyContradiction[]
+  orgStructures   OrgStructure[]
+  resourcePlans   ResourcePlan[]
+  kpis            Kpi[]
+  kpiRelations    KpiRelation[]
+  dashboardConfigs DashboardConfig[]
+  alerts          Alert[]
+  alertRules      AlertRule[]
+  reviews         Review[]
+  reviewTemplates ReviewTemplate[]
+  reviewCalendarConfigs ReviewCalendarConfig[]
+
+  // Module tracking
+  moduleStatuses  ModuleStatus[]
+
+  @@index([organizationId])
+}
+
+model ModuleStatus {
+  id        String         @id @default(cuid())
+  cycleId   String
+  cycle     StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  moduleId  String         // M1, M2, M3, M4, M5
+  status    String         @default("PENDIENTE") // PENDIENTE, EN_CURSO, COMPLETADO, BLOQUEADO
+  progress  Int            @default(0)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  @@unique([cycleId, moduleId])
+  @@index([cycleId])
+}
+
+// MODULE 1: IDENTITY
+model Vision {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  cycleId        String
+  cycle          StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  text         String
+  timeHorizon  Int?
+  version      Int            @default(1)
+  approvedById String?
+  approvedBy   User?          @relation("VisionApprover", fields: [approvedById], references: [id])
+  approvedAt   DateTime?
+  aiScore      Float?
+  aiAnalysis   String?
+  isActive     Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  @@index([cycleId])
+}
+
+model Mission {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  cycleId        String
+  cycle          StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  text           String
+  componentsJson String?
+  version        Int            @default(1)
+  approvedById   String?
+  approvedBy     User?          @relation("MissionApprover", fields: [approvedById], references: [id])
+  approvedAt     DateTime?
+  aiScore        Float?
+  aiAnalysis     String?
+  isActive       Boolean        @default(true)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  @@index([cycleId])
+}
+
+model Value {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  cycleId        String
+  cycle          StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  behaviors   String?
+  sortOrder   Int            @default(0)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  policyLinks PolicyValue[]
+  @@index([cycleId])
+}
+
+model EthicsCode {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  cycleId        String
+  cycle          StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  category    String
+  description String
+  sortOrder   Int            @default(0)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  @@index([cycleId])
+}
+
+model Interest {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  cycleId        String
+  cycle          StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  description String
+  intensity   String
+  allies      String?
+  neutrals    String?
+  adversaries String?
+  sortOrder   Int            @default(0)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  @@index([cycleId])
+}
+
+model CardinalPrinciple {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  cycleId        String
+  cycle          StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  type        String
+  description String
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  @@index([cycleId])
+}
+
+// MODULE 2: DIAGNOSIS
+model PestecFactor {
+  id               String         @id @default(cuid())
+  organizationId   String
+  organization     Organization   @relation(fields: [organizationId], references: [id])
+  cycleId          String
+  cycle            StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  variable         String
+  description      String
+  subVarType       String         @default("primaria")
+  subVarId         String?
+  type             String         @default("O")
+  impact           Int            @default(3)
+  probability      Int            @default(3)
+  rating           Int            @default(0)
+  hallazgo         String?
+  evidenceChips    String         @default("[]")
+  evidenceNotes    String?
+  confirmed        Boolean        @default(false)
+  includeInMefe    Boolean        @default(false)
+  trend            String?
+  source           String?
+  sortOrder        Int            @default(0)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  @@index([cycleId])
+}
+
+model MefeFactor {
+  id                  String         @id @default(cuid())
+  organizationId      String
+  organization        Organization   @relation(fields: [organizationId], references: [id])
+  cycleId             String
+  cycle               StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  description         String
+  originalDescription String?
+  sourceFactorId      String?
+  type                String
+  weight              Float
+  rating              Int
+  score               Float
+  variable            String?
+  sortOrder           Int            @default(0)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  @@index([cycleId])
+}
+
+model MefeState {
+  id               String         @id @default(cuid())
+  organizationId   String
+  organization     Organization   @relation(fields: [organizationId], references: [id])
+  cycleId          String         @unique
+  cycle            StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  status           String         @default("en_construccion")
+  pptFinal         Float?
+  finalizedAt      DateTime?
+  finalizedBy      String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model CompetitiveAnalysis {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  cycleId        String         @unique
+  cycle          StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  data           String         @default("[]")
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model IndustryAttractiveness {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  cycleId        String         @unique
+  cycle          StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  data           String         @default("[]")
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model MpcFactorDef {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  cycleId        String
+  cycle          StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  name     String
+  weight   Float
+  source   String         @default("manual")
+  sortOrder Int           @default(0)
+  scores MpcScore[]
+  @@index([cycleId])
+}
+
+model MpcCompetitor {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  cycleId        String
+  cycle          StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  name       String
+  isOwnOrg   Boolean        @default(false)
+  totalScore Float?
+  sortOrder  Int            @default(0)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  scores MpcScore[]
+  @@index([cycleId])
+}
+
+model MpcScore {
+  id           String        @id @default(cuid())
+  competitorId String
+  competitor   MpcCompetitor @relation(fields: [competitorId], references: [id], onDelete: Cascade)
+  factorDefId  String
+  factorDef    MpcFactorDef  @relation(fields: [factorDefId], references: [id], onDelete: Cascade)
+  rating       Int
+  score        Float
+  @@unique([competitorId, factorDefId])
+}
+
+model PorterAnalysis {
+  id                String         @id @default(cuid())
+  organizationId    String
+  organization      Organization   @relation(fields: [organizationId], references: [id])
+  cycleId           String         @unique
+  cycle             StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  data              String         @default("{}")
+  overallScore      Float?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+}
+
+model AmofhitArea {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  cycleId        String
+  cycle          StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  area      String
+  findings  String @default("[]")
+  notes     String?
+  score     Float?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  @@unique([cycleId, area])
+}
+
+model MefiFactor {
+  id                  String         @id @default(cuid())
+  organizationId      String
+  organization        Organization   @relation(fields: [organizationId], references: [id])
+  cycleId             String
+  cycle               StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  description         String
+  originalDescription String?
+  sourceVariableId    String?
+  type                String
+  weight              Float
+  rating              Int
+  score               Float
+  area                String?
+  sortOrder           Int            @default(0)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  @@index([cycleId])
+}
+
+model MefiState {
+  id               String         @id @default(cuid())
+  organizationId   String
+  organization     Organization   @relation(fields: [organizationId], references: [id])
+  cycleId          String         @unique
+  cycle            StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  status           String         @default("en_construccion")
+  pptFinal         Float?
+  finalizedAt      DateTime?
+  finalizedBy      String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model AreaSynthesis {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  cycleId        String
+  cycle          StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  area       String
+  text       String
+  version    Int            @default(1)
+  createdAt  DateTime       @default(now())
+  @@index([cycleId, area])
+}
+
+model InternalReport {
+  id                       String         @id @default(cuid())
+  organizationId           String
+  organization             Organization   @relation(fields: [organizationId], references: [id])
+  cycleId                  String
+  cycle                    StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  diagnosticoGeneral       String?
+  principalesFortalezas    String         @default("[]")
+  principalesDebilidades   String         @default("[]")
+  patronesTransversales    String?
+  implicanciasFormulacion  String?
+  version                  Int            @default(1)
+  createdAt                DateTime       @default(now())
+  @@index([cycleId])
+}
+
+model FinancialRatio {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  cycleId        String
+  cycle          StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  category  String
+  name      String
+  formula   String?
+  value     Float
+  benchmark Float?
+  year      Int
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  @@index([cycleId])
+}
+
+// AMOFHIT — Catalogo maestro de indicadores cuantitativos por area
+model RatioMaster {
+  key             String  @id          // ej. "F.LIQ.CURRENT_RATIO"
+  area            String                // A, M, O, F, H, I, T
+  category        String                // ej. "Liquidez", "Rentabilidad"
+  name            String
+  formula         String?
+  unit            String                // "%", "veces", "dias", "USD", "ratio"
+  higherIsBetter  Boolean @default(true) // false para indicadores donde menor es mejor
+  defaultActive   Boolean @default(true) // si aparece activo por defecto vs "+ activar"
+  description     String?
+  sortOrder       Int     @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  industria       RatioIndustria[]
+  metrics         CompanyMetric[]
+  @@index([area, category, sortOrder])
+}
+
+// Promedios sectoriales precargados (editables por admin)
+model RatioIndustria {
+  id        String      @id @default(cuid())
+  ratioKey  String
+  ratio     RatioMaster @relation(fields: [ratioKey], references: [key], onDelete: Cascade)
+  sector    String       // manufactura, retail, servicios, tecnologia, ...
+  year      Int
+  value     Float
+  source    String?      // ej. "Damodaran NYU 2024", "SBS"
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  @@unique([ratioKey, sector, year])
+  @@index([sector, year])
+}
+
+// Valores cargados por la empresa para sus indicadores
+model CompanyMetric {
+  id              String      @id @default(cuid())
+  cycleId         String
+  cycle           StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  ratioKey        String
+  ratio           RatioMaster @relation(fields: [ratioKey], references: [key], onDelete: Cascade)
+  value           Float
+  sectorOverride  Float?       // si el usuario edita el promedio sectorial
+  year            Int
+  updatedById     String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  @@unique([cycleId, ratioKey, year])
+  @@index([cycleId])
+}
+
+// MODULE 3: FORMULATION
+model Olp {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  cycleId        String
+  cycle          StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  description    String
+  metric         String?
+  currentValue   Float?
+  targetValue    Float?
+  unit           String?
+  bscPerspective String?         // dimension code: FIN/CLI/INT/APR
+  areaId         String?
+  responsible    String?         // area o gerencia responsable
+  priority       String?         // alta/media/baja
+  targetYear     Int?            // año meta del OLP
+  sortOrder      Int            @default(0)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  strategies StrategyOlp[]
+  ocps       Ocp[]
+  references OlpReference[]
+  consolidatedLinks ConsolidatedStrategyOlp[]
+  kpiLinks   KpiOlp[]
+  @@index([cycleId])
+}
+
+model OlpReference {
+  id        String   @id @default(cuid())
+  olpId     String
+  olp       Olp      @relation(fields: [olpId], references: [id], onDelete: Cascade)
+  refType   String   // F | O | D | A | strategy
+  refId     String   // id del MefiFactor / MefeFactor / Strategy
+  refCode   String?  // snapshot ej. "F1", "E3"
+  refText   String?  // snapshot del texto
+  manual    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  @@index([olpId])
+}
+
+model Strategy {
+  id                String         @id @default(cuid())
+  organizationId    String
+  organization      Organization   @relation(fields: [organizationId], references: [id])
+  cycleId           String
+  cycle             StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  code              String?
+  description       String
+  swotQuadrant      String
+  type              String?
+  // FODA Cruzado: cruce, horizonte, prioridad y justificacion
+  crossType         String?        // "FO" | "FA" | "DO" | "DA"
+  horizon           String?        // "corto" | "mediano" | "largo"
+  priority          String?        // "alta" | "media" | "baja"
+  justification     String?
+  matrixAppearances String?
+  mdFrequency       Int            @default(0)
+  mcpeTotalScore    Float?
+  rumeltApproved    Boolean?
+  rumeltDetail      String?
+  ethicsApproved    Boolean?
+  ethicsDetail      String?
+  status            String         @default("proposed")
+  sortOrder         Int            @default(0)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  olps       StrategyOlp[]
+  mcpeScores McpeEvaluation[]
+  ocpLinks   OcpStrategy[]
+  origins    StrategyOrigin[]
+  policyLinks PolicyStrategy[]
+  @@index([cycleId])
+}
+
+// Matriz de Decision (MD): estrategias consolidadas tras fusionar duplicados de las 5 matrices
+model ConsolidatedStrategy {
+  id                String         @id @default(cuid())
+  cycleId           String
+  cycle             StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  code              String         // E1, E2, ...
+  text              String         // texto consolidado (editable)
+  type              String?        // tipo de estrategia (penetracion, desarrollo, etc.)
+  dalessioType      String?        // clasificacion D'Alessio (penetracion_mercado, integracion_adelante, etc.)
+  responsible       String?        // area/gerencia responsable
+  priority          String?        // alta | media | baja
+  status            String         @default("retenida") // retenida | contingencia | retenida_manual | descartada | retenida_final | reactivada
+  justification     String?        // justificacion del usuario (sobre todo si es retencion forzada)
+  contingencyReason String?        // razon por la que esta en contingencia
+  totalAppearances  Int            @default(1) // cuantas matrices la recomiendan
+  priorityScore     Float?         // peso calculado (convergencia + olp links)
+  sortOrder         Int            @default(0)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  origins           ConsolidatedStrategyOrigin[]
+  olpLinks          ConsolidatedStrategyOlp[]
+  policyLinks       PolicyConsolidatedStrategy[]
+  @@index([cycleId])
+}
+
+model ConsolidatedStrategyOrigin {
+  id              String   @id @default(cuid())
+  consolidatedId  String
+  consolidated    ConsolidatedStrategy @relation(fields: [consolidatedId], references: [id], onDelete: Cascade)
+  sourceStrategyId String   // id de la Strategy original
+  sourceMatrix    String   // foda_cruzado | peyea | bcg | ie | ge
+  sourceText      String   // snapshot del texto original
+  sourceCode      String?  // snapshot del codigo (E1 de FODA, etc.)
+  metadata        String?  // json con info adicional (tipo cruce, prioridad, etc.)
+  createdAt       DateTime @default(now())
+  @@index([consolidatedId])
+  @@index([sourceStrategyId])
+}
+
+model ConsolidatedStrategyOlp {
+  id              String   @id @default(cuid())
+  consolidatedId  String
+  consolidated    ConsolidatedStrategy @relation(fields: [consolidatedId], references: [id], onDelete: Cascade)
+  olpId           String
+  olp             Olp      @relation(fields: [olpId], references: [id], onDelete: Cascade)
+  origin          String   @default("user") // suggested | user
+  justification   String?
+  createdAt       DateTime @default(now())
+  @@unique([consolidatedId, olpId])
+  @@index([olpId])
+}
+
+// Trazabilidad FODA Cruzado: registra que F/O/D/A originaron cada estrategia
+model StrategyOrigin {
+  id          String   @id @default(cuid())
+  strategyId  String
+  strategy    Strategy @relation(fields: [strategyId], references: [id], onDelete: Cascade)
+  factorType  String   // "F" | "O" | "D" | "A"
+  factorId    String   // id del MefiFactor (F/D) o MefeFactor (O/A)
+  factorCode  String?  // snapshot ej. "F1", "O2"
+  factorText  String?  // snapshot del texto al momento de crearse
+  createdAt   DateTime @default(now())
+  @@index([strategyId])
+  @@index([factorType, factorId])
+}
+
+model StrategyOlp {
+  strategyId String
+  strategy   Strategy @relation(fields: [strategyId], references: [id], onDelete: Cascade)
+  olpId      String
+  olp        Olp      @relation(fields: [olpId], references: [id], onDelete: Cascade)
+  @@id([strategyId, olpId])
+}
+
+model PeyeaAnalysis {
+  id                     String         @id @default(cuid())
+  organizationId         String
+  organization           Organization   @relation(fields: [organizationId], references: [id])
+  cycleId                String         @unique
+  cycle                  StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  financialStrength      String @default("[]")
+  competitiveAdvantage   String @default("[]")
+  environmentalStability String @default("[]")
+  industryStrength       String @default("[]")
+  vectorX                Float?
+  vectorY                Float?
+  quadrant               String?
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
+}
+
+// Plan Estrategico Integral (PEI): documento maestro consolidado
+model PeiDocument {
+  id                          String         @id @default(cuid())
+  cycleId                     String         @unique
+  cycle                       StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  customExecutiveSummary      String?        // si el usuario edita el resumen autogenerado
+  lastExportedAt              DateTime?
+  presentationConfig          String?        // json con tema/logo/colores
+  createdAt                   DateTime       @default(now())
+  updatedAt                   DateTime       @updatedAt
+}
+
+// Auditoria Etica: validacion de estrategias contra principios eticos
+model EthicsEvaluation {
+  id                       String         @id @default(cuid())
+  cycleId                  String
+  cycle                    StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  consolidatedId           String         // referencia a ConsolidatedStrategy
+  status                   String         @default("pendiente") // pendiente | en_evaluacion | aprobada | requiere_mitigacion | aprobada_con_mitigantes | rechazada
+  autoVerdict              String?        // aprobada | requiere_mitigacion | aprobada_con_mitigantes | rechazada
+  finalVerdict             String?
+  overrideJustification    String?
+  createdAt                DateTime       @default(now())
+  updatedAt                DateTime       @updatedAt
+  principles               EthicsPrinciple[]
+  mitigants                EthicsMitigant[]
+  @@unique([cycleId, consolidatedId])
+  @@index([cycleId])
+}
+
+model EthicsPrinciple {
+  id            String           @id @default(cuid())
+  evaluationId  String
+  evaluation    EthicsEvaluation @relation(fields: [evaluationId], references: [id], onDelete: Cascade)
+  block         String           // derechos | justicia | utilitarismo
+  principleKey  String           // codigo unico del principio
+  rating        String           @default("neutral") // viola | neutral | promueve
+  justification String?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  mitigants     EthicsMitigant[]
+  @@unique([evaluationId, principleKey])
+}
+
+model EthicsMitigant {
+  id                    String           @id @default(cuid())
+  evaluationId          String
+  evaluation            EthicsEvaluation @relation(fields: [evaluationId], references: [id], onDelete: Cascade)
+  principleId           String
+  principle             EthicsPrinciple  @relation(fields: [principleId], references: [id], onDelete: Cascade)
+  text                  String           // mitigante propuesto (min 30 chars)
+  responsible           String
+  deadline              String           // previo_lanzamiento | primer_trimestre | primer_año | continuo
+  indicator             String           // KPI de cumplimiento
+  postSeverity          String           // mantiene | neutral | promueve
+  approved              Boolean          @default(true)
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+  derivedPolicies       Politica[]
+  @@index([evaluationId])
+}
+
+// Filtro de Rumelt: validacion de estrategias contra los 4 criterios
+model RumeltEvaluation {
+  id                       String         @id @default(cuid())
+  cycleId                  String
+  cycle                    StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  consolidatedId           String         // referencia a ConsolidatedStrategy
+  status                   String         @default("pendiente")  // pendiente | en_evaluacion | aprobada | en_revision | rechazada | aprobada_manual | reformulada
+  autoVerdict              String?        // aprobada | en_revision | rechazada
+  finalVerdict             String?        // igual al auto o sobreescrito por usuario
+  overrideJustification    String?        // requerido si finalVerdict != autoVerdict
+  reformulatedToId         String?        // si esta evaluacion fue reformulada, id de la nueva estrategia hija
+  createdAt                DateTime       @default(now())
+  updatedAt                DateTime       @updatedAt
+  criteria                 RumeltCriterion[]
+  @@unique([cycleId, consolidatedId])
+  @@index([cycleId])
+}
+
+model RumeltCriterion {
+  id            String           @id @default(cuid())
+  evaluationId  String
+  evaluation    RumeltEvaluation @relation(fields: [evaluationId], references: [id], onDelete: Cascade)
+  criterion     String           // consistencia | consonancia | ventaja | factibilidad
+  passes        Boolean?         // null = sin evaluar, true = pasa, false = no pasa
+  justification String?
+  suggestion    String?          // sugerencia generada por el sistema cuando passes=false
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  @@unique([evaluationId, criterion])
+}
+
+// MCPE: nueva implementacion ligada a ConsolidatedStrategy + factores reales
+model McpeAnalysis {
+  id          String         @id @default(cuid())
+  cycleId     String         @unique
+  cycle       StrategicCycle @relation("CycleMcpeAnalysis", fields: [cycleId], references: [id], onDelete: Cascade)
+  status      String         @default("borrador") // borrador | completo | archivado
+  progress    Float          @default(0) // % celdas calificadas
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  ratings     McpeRating[]
+}
+
+model McpeRating {
+  id              String       @id @default(cuid())
+  analysisId      String
+  analysis        McpeAnalysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)
+  factorId        String       // id del MefiFactor (F/D) o MefeFactor (O/A)
+  factorType      String       // "F" | "D" | "O" | "A"
+  consolidatedId  String       // id de ConsolidatedStrategy
+  pa              Int?         // 1-4 o null si N/A
+  pta             Float?       // peso x pa
+  origin          String       @default("user") // user | suggested | suggested_accepted | suggested_modified
+  justification   String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  @@unique([analysisId, factorId, consolidatedId])
+  @@index([analysisId])
+  @@index([consolidatedId])
+}
+
+model McpeEvaluation {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  cycleId        String
+  cycle          StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  strategyId String
+  strategy   Strategy       @relation(fields: [strategyId], references: [id], onDelete: Cascade)
+  factorType String
+  factorDesc String
+  weight     Float
+  pa         Int?
+  tca        Float?
+  createdAt  DateTime       @default(now())
+  @@index([cycleId])
+  @@index([strategyId])
+}
+
+// ==================== MODULE 4: STRATEGIC DEPLOYMENT ====================
+
+model StrategicAxis {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  cycleId        String
+  cycle          StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  color       String?
+  sortOrder   Int            @default(0)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  portfolios  Portfolio[]
+  @@index([cycleId])
+}
+
+model Portfolio {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  cycleId        String
+  cycle          StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  axisId      String?
+  axis        StrategicAxis? @relation(fields: [axisId], references: [id], onDelete: SetNull)
+  // Generado desde el plan: perspectiva BSC que agrupa (FIN | CLI | INT | APR)
+  bscPerspective String?
+  name        String
+  description String?
+  ownerId     String?
+  status      String         @default("ACTIVE")
+  sortOrder   Int            @default(0)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  programs    Program[]
+  projects    Project[]
+  @@index([cycleId])
+}
+
+model Program {
+  id          String    @id @default(cuid())
+  portfolioId String
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  // Generado desde el plan: el programa agrupa los OCP de un OLP
+  olpId       String?
+  name        String
+  description String?
+  ownerId     String?
+  status      String    @default("ACTIVE")
+  startDate   DateTime?
+  endDate     DateTime?
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  projects    Project[]
+  @@index([portfolioId])
+}
+
+// ==================== MODULE 5: PROJECT MANAGEMENT ====================
+
+model Project {
+  id          String     @id @default(cuid())
+  portfolioId String?
+  portfolio   Portfolio? @relation(fields: [portfolioId], references: [id], onDelete: SetNull)
+  programId   String?
+  program     Program?   @relation(fields: [programId], references: [id], onDelete: SetNull)
+  // Conexión OCP → Iniciativa: un Project puede colgar de un OCP (Fase B).
+  // Cuando ocpId está set, el proyecto es la "iniciativa" que ejecuta ese OCP.
+  ocpId       String?
+  ocp         Ocp?       @relation(fields: [ocpId], references: [id], onDelete: SetNull)
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id])
+  key         String                  // Short key like "SEI", "MKT"
+  name        String
+  description String?
+  ownerId     String?
+  status      String   @default("ACTIVE")  // ACTIVE, ON_HOLD, COMPLETED, CANCELLED
+  color       String?
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Integración Educanet: enviar el plan a operación
+  educanetCategoria          String?   // WEBINAR | CAMPANA_MARKETING | LANZAMIENTO_CURSO | EVENTO_PRESENCIAL
+  educanetWorkflowInstanciaId String?  // id devuelto por Educanet al recibir
+  educanetSyncedAt           DateTime? // timestamp del último envío exitoso
+  educanetOrgSlug            String?   // slug de la org de Educanet destino (multi-tenant)
+
+  members     ProjectMember[]
+  issues      Issue[]
+  sprints     Sprint[]
+  versions    Version[]
+  components  Component[]
+  workflows   WorkflowStatus[]
+  labels      Label[]
+
+  @@unique([orgId, key])
+  @@index([orgId])
+  @@index([portfolioId])
+  @@index([programId])
+  @@index([ocpId])
+}
+
+model ProjectMember {
+  id        String  @id @default(cuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  role      String  @default("MEMBER") // ADMIN, PM, MEMBER, VIEWER
+  createdAt DateTime @default(now())
+  @@unique([projectId, userId])
+}
+
+// Configurable workflow statuses per project
+model WorkflowStatus {
+  id         String  @id @default(cuid())
+  projectId  String
+  project    Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name       String
+  category   String  @default("TODO") // TODO, IN_PROGRESS, DONE
+  color      String?
+  sortOrder  Int     @default(0)
+  issues     Issue[]
+  @@index([projectId])
+}
+
+model Component {
+  id          String  @id @default(cuid())
+  projectId   String
+  project     Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  leadId      String?
+  issues      Issue[]
+  @@index([projectId])
+}
+
+model Label {
+  id        String  @id @default(cuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name      String
+  color     String  @default("#6b7280")
+  issueLabels IssueLabel[]
+  @@index([projectId])
+}
+
+model Version {
+  id          String    @id @default(cuid())
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  status      String    @default("UNRELEASED") // UNRELEASED, RELEASED, ARCHIVED
+  startDate   DateTime?
+  releaseDate DateTime?
+  sortOrder   Int       @default(0)
+  issues      Issue[]
+  @@index([projectId])
+}
+
+model Sprint {
+  id        String    @id @default(cuid())
+  projectId String
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name      String
+  goal      String?
+  status    String    @default("PLANNED") // PLANNED, ACTIVE, COMPLETED
+  startDate DateTime?
+  endDate   DateTime?
+  sortOrder Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  issues    Issue[]
+  @@index([projectId])
+}
+
+model Issue {
+  id            String    @id @default(cuid())
+  projectId     String
+  project       Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  number        Int                     // Auto-increment per project
+  type          String    @default("TASK") // EPIC, STORY, TASK, BUG, SUBTASK
+  summary       String
+  description   String?
+  statusId      String?
+  status        WorkflowStatus? @relation(fields: [statusId], references: [id], onDelete: SetNull)
+  priority      String    @default("MEDIUM") // CRITICAL, HIGH, MEDIUM, LOW
+  resolution    String?                  // FIXED, WONT_FIX, DUPLICATE, CANNOT_REPRODUCE, null=unresolved
+  assigneeId    String?
+  reporterId    String?
+  componentId   String?
+  component     Component? @relation(fields: [componentId], references: [id], onDelete: SetNull)
+  sprintId      String?
+  sprint        Sprint?   @relation(fields: [sprintId], references: [id], onDelete: SetNull)
+  versionId     String?
+  version       Version?  @relation(fields: [versionId], references: [id], onDelete: SetNull)
+  parentId      String?
+  parent        Issue?    @relation("IssueParent", fields: [parentId], references: [id], onDelete: SetNull)
+  children      Issue[]   @relation("IssueParent")
+  storyPoints   Int?
+  estimateHours Float?
+  timeSpent     Float?    @default(0)
+  startDate     DateTime?
+  dueDate       DateTime?
+  resolvedAt    DateTime?
+  // Generado desde el plan: acción trimestral del OCP que originó la tarea
+  ocpActionId   String?
+  sortOrder     Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  labels        IssueLabel[]
+  comments      IssueComment[]
+  attachments   IssueAttachment[]
+  history       IssueHistory[]
+  watchers      IssueWatcher[]
+  timeEntries   TimeEntry[]
+  linksFrom     IssueLink[] @relation("LinkFrom")
+  linksTo       IssueLink[] @relation("LinkTo")
+
+  @@unique([projectId, number])
+  @@index([projectId])
+  @@index([assigneeId])
+  @@index([sprintId])
+  @@index([parentId])
+  @@index([statusId])
+}
+
+model IssueLabel {
+  issueId String
+  issue   Issue  @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  labelId String
+  label   Label  @relation(fields: [labelId], references: [id], onDelete: Cascade)
+  @@id([issueId, labelId])
+}
+
+model IssueLink {
+  id         String @id @default(cuid())
+  fromIssueId String
+  fromIssue   Issue  @relation("LinkFrom", fields: [fromIssueId], references: [id], onDelete: Cascade)
+  toIssueId   String
+  toIssue     Issue  @relation("LinkTo", fields: [toIssueId], references: [id], onDelete: Cascade)
+  type        String // BLOCKS, IS_BLOCKED_BY, RELATES_TO, DUPLICATES, IS_DUPLICATED_BY
+  createdAt   DateTime @default(now())
+  @@unique([fromIssueId, toIssueId, type])
+}
+
+model IssueComment {
+  id       String   @id @default(cuid())
+  issueId  String
+  issue    Issue    @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  authorId String
+  body     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([issueId])
+}
+
+model IssueAttachment {
+  id        String   @id @default(cuid())
+  issueId   String
+  issue     Issue    @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  name      String
+  url       String
+  size      Int?
+  mimeType  String?
+  uploadedBy String?
+  note      String?  // descripción de la evidencia
+  createdAt DateTime @default(now())
+  @@index([issueId])
+}
+
+model IssueHistory {
+  id       String   @id @default(cuid())
+  issueId  String
+  issue    Issue    @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  userId   String?
+  field    String           // "status", "assignee", "priority", etc.
+  oldValue String?
+  newValue String?
+  createdAt DateTime @default(now())
+  @@index([issueId])
+}
+
+model IssueWatcher {
+  issueId String
+  issue   Issue  @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  userId  String
+  @@id([issueId, userId])
+}
+
+model TimeEntry {
+  id        String   @id @default(cuid())
+  issueId   String
+  issue     Issue    @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  userId    String
+  hours     Float
+  date      DateTime
+  notes     String?
+  createdAt DateTime @default(now())
+  @@index([issueId])
+}
+
+// MODULE 4: OCP por Area (Objetivos de Corto Plazo)
+model OcpArea {
+  id                String         @id @default(cuid())
+  organizationId    String
+  organization      Organization   @relation(fields: [organizationId], references: [id])
+  cycleId           String
+  cycle             StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  key               String         // slug estable: "comercial" | "marketing" | "custom-xxxx"
+  name              String
+  icon              String?        // nombre de icono lucide
+  kind              String         @default("predefined") // predefined | custom
+  sortOrder         Int            @default(0)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  ocpsAsResponsible Ocp[]            @relation("OcpResponsibleArea")
+  ocpSupports       OcpAreaSupport[]
+  @@unique([cycleId, key])
+  @@index([cycleId])
+}
+
+model Ocp {
+  id                String         @id @default(cuid())
+  organizationId    String
+  organization      Organization   @relation(fields: [organizationId], references: [id])
+  cycleId           String
+  cycle             StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  olpId             String
+  olp               Olp            @relation(fields: [olpId], references: [id], onDelete: Cascade)
+  code              String         // OCP{olpIndex}.{year} ej OCP2.3
+  description       String
+  year              Int
+  metaValue         Float?
+  metaText          String?
+  unit              String?
+  responsibleAreaId String?
+  responsibleArea   OcpArea?       @relation("OcpResponsibleArea", fields: [responsibleAreaId], references: [id], onDelete: SetNull)
+  indicator         String?
+  frequency         String?        // mensual | trimestral | semestral | anual
+  priority          String?        // alta | media | baja
+  status            String         @default("borrador") // borrador | definido | en_ejecucion | cumplido | no_cumplido
+  sortOrder         Int            @default(0)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  supportAreas      OcpAreaSupport[]
+  linkedStrategies  OcpStrategy[]
+  actions           OcpAction[]
+  resource          OcpResource?
+  policyLinks       PolicyOcp[]
+  orgNodeLinks      OrgNodeOcp[]
+  kpiLinks          KpiOcp[]
+  initiatives       Project[]  // Fase B: iniciativas/proyectos que ejecutan este OCP
+  @@unique([olpId, year])
+  @@index([cycleId])
+  @@index([olpId])
+  @@index([responsibleAreaId])
+}
+
+model OcpAreaSupport {
+  ocpId  String
+  ocp    Ocp     @relation(fields: [ocpId], references: [id], onDelete: Cascade)
+  areaId String
+  area   OcpArea @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  @@id([ocpId, areaId])
+  @@index([areaId])
+}
+
+model OcpStrategy {
+  ocpId      String
+  ocp        Ocp      @relation(fields: [ocpId], references: [id], onDelete: Cascade)
+  strategyId String
+  strategy   Strategy @relation(fields: [strategyId], references: [id], onDelete: Cascade)
+  @@id([ocpId, strategyId])
+  @@index([strategyId])
+}
+
+model OcpAction {
+  id          String   @id @default(cuid())
+  ocpId       String
+  ocp         Ocp      @relation(fields: [ocpId], references: [id], onDelete: Cascade)
+  quarter     String   // Q1 | Q2 | Q3 | Q4
+  description String
+  status      String   @default("pendiente") // pendiente | en_curso | completada
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([ocpId])
+}
+
+model OcpResource {
+  ocpId             String   @id
+  ocp               Ocp      @relation(fields: [ocpId], references: [id], onDelete: Cascade)
+  budgetEstimate    Float?
+  budgetCurrency    String?  @default("USD")
+  ftesRequired      Float?
+  techRequired      String?
+  otherDependencies String?
+  updatedAt         DateTime @updatedAt
+}
+
+// MODULE 4: Políticas Organizacionales
+model Politica {
+  id                    String         @id @default(cuid())
+  organizationId        String
+  organization          Organization   @relation(fields: [organizationId], references: [id])
+  cycleId               String
+  cycle                 StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  code                  String         // POL-CAT-NN
+  category              String         // general | comercial | operacional | financiera | rrhh | tecnologia | etica_social
+  name                  String
+  enunciado             String
+  justification         String?
+  origin                String         // suggested | mitigant | custom
+  ethicsMitigantId      String?
+  ethicsMitigant        EthicsMitigant? @relation(fields: [ethicsMitigantId], references: [id], onDelete: SetNull)
+  mandatory             Boolean        @default(false)
+  scope                 String?        // toda_organizacion | area | producto | mercado | situacion
+  scopeDetail           String?
+  responsible           String?
+  indicator             String?
+  reviewFrequency       String?        // mensual | trimestral | semestral | anual
+  exceptions            String?
+  validFrom             DateTime?
+  nextReview            DateTime?
+  status                String         @default("sugerida")  // sugerida | aceptada | en_edicion | confirmada | descartada
+  sortOrder             Int            @default(0)
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  strategies            PolicyStrategy[]
+  consolidatedStrategies PolicyConsolidatedStrategy[]
+  ocps                  PolicyOcp[]
+  valueLinks            PolicyValue[]
+  contradictionsAsA     PolicyContradiction[] @relation("PolicyA")
+  contradictionsAsB     PolicyContradiction[] @relation("PolicyB")
+  orgNodeLinks          OrgNodePolicy[]
+  @@index([cycleId])
+  @@index([category])
+  @@index([ethicsMitigantId])
+}
+
+model PolicyStrategy {
+  politicaId String
+  politica   Politica @relation(fields: [politicaId], references: [id], onDelete: Cascade)
+  strategyId String
+  strategy   Strategy @relation(fields: [strategyId], references: [id], onDelete: Cascade)
+  @@id([politicaId, strategyId])
+  @@index([strategyId])
+}
+
+model PolicyConsolidatedStrategy {
+  politicaId             String
+  politica               Politica             @relation(fields: [politicaId], references: [id], onDelete: Cascade)
+  consolidatedStrategyId String
+  consolidatedStrategy   ConsolidatedStrategy @relation(fields: [consolidatedStrategyId], references: [id], onDelete: Cascade)
+  @@id([politicaId, consolidatedStrategyId])
+  @@index([consolidatedStrategyId])
+}
+
+model PolicyOcp {
+  politicaId String
+  politica   Politica @relation(fields: [politicaId], references: [id], onDelete: Cascade)
+  ocpId      String
+  ocp        Ocp      @relation(fields: [ocpId], references: [id], onDelete: Cascade)
+  @@id([politicaId, ocpId])
+  @@index([ocpId])
+}
+
+model PolicyValue {
+  politicaId String
+  politica   Politica @relation(fields: [politicaId], references: [id], onDelete: Cascade)
+  valueId    String
+  value      Value    @relation(fields: [valueId], references: [id], onDelete: Cascade)
+  @@id([politicaId, valueId])
+  @@index([valueId])
+}
+
+model PolicyContradiction {
+  id               String         @id @default(cuid())
+  cycleId          String
+  cycle            StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  politicaAId      String
+  politicaA        Politica       @relation("PolicyA", fields: [politicaAId], references: [id], onDelete: Cascade)
+  politicaBId      String
+  politicaB        Politica       @relation("PolicyB", fields: [politicaBId], references: [id], onDelete: Cascade)
+  type             String         // posible | confirmada | resuelta
+  description      String
+  resolutionStatus String         @default("pendiente") // pendiente | resuelta | ignorada
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  @@index([cycleId])
+}
+
+// MODULE 4: Estructura Organizacional
+model OrgStructure {
+  id              String         @id @default(cuid())
+  organizationId  String
+  organization    Organization   @relation(fields: [organizationId], references: [id])
+  cycleId         String         @unique
+  cycle           StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  type            String         // funcional | divisional | matricial | por_procesos | en_red | hibrida
+  name            String
+  status          String         @default("borrador") // borrador | confirmada | archivada
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  nodes           OrgNode[]
+  relations       OrgRelation[]
+  @@index([cycleId])
+}
+
+model OrgNode {
+  id                 String       @id @default(cuid())
+  structureId        String
+  structure          OrgStructure @relation(fields: [structureId], references: [id], onDelete: Cascade)
+  code               String       // DIV-US | MKT | RH | COM-EJEC | AUD
+  name               String
+  nodeType           String       // directorio | ceo | division | gerencia | jefatura | comite | auditoria | otro
+  hierarchyLevel     Int          // 0=directorio, 1=CEO, 2=division/gerencia, 3=jefatura
+  positionX          Float        @default(0)
+  positionY          Float        @default(0)
+  responsibleRole    String?
+  ftesEstimated      Float?
+  origin             String       @default("manual") // auto_generated | template | manual
+  originReference    String?      // JSON: { source: "ocp" | "strategy" | "mitigant" | "policy", id, label }
+  notes              String?
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  parentRelations    OrgRelation[] @relation("OrgRelationChild")
+  childRelations     OrgRelation[] @relation("OrgRelationParent")
+  ocpLinks           OrgNodeOcp[]
+  policyLinks        OrgNodePolicy[]
+  responsibleKpis    Kpi[]
+  @@index([structureId])
+}
+
+model OrgRelation {
+  id            String   @id @default(cuid())
+  structureId   String
+  structure     OrgStructure @relation(fields: [structureId], references: [id], onDelete: Cascade)
+  parentNodeId  String
+  parentNode    OrgNode  @relation("OrgRelationParent", fields: [parentNodeId], references: [id], onDelete: Cascade)
+  childNodeId   String
+  childNode     OrgNode  @relation("OrgRelationChild", fields: [childNodeId], references: [id], onDelete: Cascade)
+  relationType  String   @default("reporta_directo") // reporta_directo | reporta_funcional | coordinacion | transversal
+  createdAt     DateTime @default(now())
+  @@unique([parentNodeId, childNodeId])
+  @@index([structureId])
+  @@index([childNodeId])
+}
+
+model OrgNodeOcp {
+  nodeId  String
+  node    OrgNode @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+  ocpId   String
+  ocp     Ocp     @relation(fields: [ocpId], references: [id], onDelete: Cascade)
+  raciRole String  // R=Responsable | A=Accountable | C=Consultado | I=Informado | S=Apoyo (simple)
+  origin   String  @default("manual") // auto_linked | manual
+  @@id([nodeId, ocpId])
+  @@index([ocpId])
+}
+
+model OrgNodePolicy {
+  nodeId      String
+  node        OrgNode  @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+  politicaId  String
+  politica    Politica @relation(fields: [politicaId], references: [id], onDelete: Cascade)
+  applies     String   @default("completamente") // completamente | parcialmente
+  @@id([nodeId, politicaId])
+  @@index([politicaId])
+}
+
+// MODULE 4: Recursos 7M (Money, Manpower, Materials, Machines, Methods, Mentality, Medio Ambiente)
+model ResourcePlan {
+  id              String         @id @default(cuid())
+  organizationId  String
+  organization    Organization   @relation(fields: [organizationId], references: [id])
+  cycleId         String         @unique
+  cycle           StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  horizonStart    Int
+  horizonEnd      Int
+  totalInvestment Float          @default(0)
+  currency        String         @default("USD")
+  status          String         @default("borrador") // borrador | confirmado | archivado
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  needs           ResourceNeed[]
+  manpowerProfiles ResourceManpowerProfile[]
+  moneySources    ResourceMoneySource[]
+  @@index([cycleId])
+}
+
+model ResourceNeed {
+  id             String       @id @default(cuid())
+  planId         String
+  plan           ResourcePlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  category       String       // money | manpower | materials | machines | methods | mentality | medio_ambiente
+  description    String
+  yearStart      Int
+  yearEnd        Int
+  amountEstimated Float?      // monto USD
+  quantity       Float?       // cantidad numérica (FTEs, m², horas, etc.)
+  unit           String?      // FTEs | m² | horas | certificaciones | USD
+  amountSecured  Float        @default(0)
+  provisionStatus String      @default("planeada") // planeada | comprometida | en_gestion | asegurada | faltante
+  riskLevel      String       @default("medio") // bajo | medio | alto
+  origin         String       @default("manual") // auto_detected | manual
+  originReference String?     // JSON: { source: "ocp" | "structure" | "strategy" | "industry_template", id, label }
+  notes          String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  links          ResourceLink[]
+  @@index([planId])
+  @@index([category])
+}
+
+model ResourceLink {
+  id           String       @id @default(cuid())
+  needId       String
+  need         ResourceNeed @relation(fields: [needId], references: [id], onDelete: Cascade)
+  linkType     String       // ocp | strategy | area | politica | mitigante
+  referenceId  String       // id del elemento vinculado
+  referenceLabel String?    // snapshot del nombre para mostrar
+  createdAt    DateTime     @default(now())
+  @@index([needId])
+}
+
+model ResourceManpowerProfile {
+  id                String       @id @default(cuid())
+  planId            String
+  plan              ResourcePlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  profileName       String       // "KAM internacional"
+  orgNodeId         String?      // referencia opcional a área
+  ftesCurrent       Float        @default(0)
+  ftesTarget        Float        @default(0)
+  ftesPerYear       String       @default("{}") // JSON: { "2026": 1, "2027": 2 }
+  costPerYear       Float?       // USD/año por persona
+  totalCost         Float        @default(0)
+  notes             String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  @@index([planId])
+}
+
+model ResourceMoneySource {
+  id             String       @id @default(cuid())
+  planId         String
+  plan           ResourcePlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  needId         String?      // opcional: vinculado a una necesidad específica
+  sourceType     String       // capital_propio | deuda_bancaria | inversionista | reinversion | otro
+  amount         Float
+  year           Int
+  status         String       @default("planeada") // planeada | comprometida | asegurada
+  notes          String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  @@index([planId])
+}
+
+// MODULE 5: KPIs y metas (Balanced Scorecard)
+model Kpi {
+  id                          String         @id @default(cuid())
+  organizationId              String
+  organization                Organization   @relation(fields: [organizationId], references: [id])
+  cycleId                     String
+  cycle                       StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  code                        String         // KPI-RE-01, KPI-PM-02, etc.
+  name                        String
+  description                 String?
+  formula                     String?
+  dimensionBsc                String         // resultados_economicos | posicion_mercado | como_opera_empresa | personas_cultura
+  unit                        String?        // USD | % | días | horas | unidades | FTEs | custom
+  frequency                   String         @default("mensual") // mensual | trimestral | semestral | anual
+  direction                   String         @default("mayor_mejor") // mayor_mejor | menor_mejor | objetivo_puntual
+  source                      String         @default("manual") // educanet | manual
+  educanetLinkId              String?        @unique // est_kpi_XXXXXXXX
+  educanetSendMode            String?        // manual | automatico
+  educanetProjectId           String?
+  educanetMetricId            String?
+  educanetLastReceivedAt      DateTime?
+  manualNextReminderDate      DateTime?
+  manualResponsible           String?
+  responsibleAreaId           String?
+  responsibleArea             OrgNode?       @relation(fields: [responsibleAreaId], references: [id], onDelete: SetNull)
+  responsibleRole             String?
+  status                      String         @default("sugerido") // sugerido | aceptado | en_edicion | confirmado | descartado
+  origin                      String         @default("auto_detected") // auto_detected | manual
+  sortOrder                   Int            @default(0)
+  createdAt                   DateTime       @default(now())
+  updatedAt                   DateTime       @updatedAt
+  olps                        KpiOlp[]
+  ocps                        KpiOcp[]
+  periods                     KpiPeriod[]
+  history                     KpiValueHistory[]
+  relationsAsOrigin           KpiRelation[]    @relation("KpiRelationOrigin")
+  relationsAsTarget           KpiRelation[]    @relation("KpiRelationTarget")
+  comments                    KpiComment[]
+  @@index([cycleId])
+  @@index([dimensionBsc])
+  @@index([responsibleAreaId])
+}
+
+model KpiOlp {
+  kpiId String
+  kpi   Kpi @relation(fields: [kpiId], references: [id], onDelete: Cascade)
+  olpId String
+  olp   Olp @relation(fields: [olpId], references: [id], onDelete: Cascade)
+  @@id([kpiId, olpId])
+  @@index([olpId])
+}
+
+model KpiOcp {
+  kpiId String
+  kpi   Kpi @relation(fields: [kpiId], references: [id], onDelete: Cascade)
+  ocpId String
+  ocp   Ocp @relation(fields: [ocpId], references: [id], onDelete: Cascade)
+  @@id([kpiId, ocpId])
+  @@index([ocpId])
+}
+
+model KpiPeriod {
+  id                    String   @id @default(cuid())
+  kpiId                 String
+  kpi                   Kpi      @relation(fields: [kpiId], references: [id], onDelete: Cascade)
+  period                String   // YYYY-MM | YYYY-QN | YYYY
+  metaGreen             Float?
+  metaAmber             Float?
+  metaRed               Float?
+  realValue             Float?
+  semaforoActual        String?  // verde | ambar | rojo | sin_dato
+  percentCompletion     Float?
+  dataReceivedAt        DateTime?
+  periodDataSource      String?  // educanet | manual
+  observation           String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  @@unique([kpiId, period])
+  @@index([kpiId])
+}
+
+model KpiValueHistory {
+  id                    String   @id @default(cuid())
+  kpiId                 String
+  kpi                   Kpi      @relation(fields: [kpiId], references: [id], onDelete: Cascade)
+  period                String
+  value                 Float
+  receivedAt            DateTime @default(now())
+  source                String   // educanet | manual
+  educanetProjectSource String?
+  idempotencyKey        String   @unique
+  metadata              String?  // JSON
+  @@index([kpiId])
+}
+
+model WorkspaceToken {
+  id              String       @id @default(cuid())
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name            String       // ej. "Token EduCaNet"
+  tokenHash       String       // bcrypt hash del token
+  tokenPrefix     String       // primeros 8 chars del token plaintext para identificar
+  permissions     String       @default("read_write") // read | read_write
+  active          Boolean      @default(true)
+  lastUsedAt      DateTime?
+  createdById     String
+  createdAt       DateTime     @default(now())
+  revokedAt       DateTime?
+  @@index([organizationId])
+  @@index([tokenPrefix])
+}
+
+// MODULE 5: Tablero BSC — Relaciones causa-efecto del mapa estratégico
+model KpiRelation {
+  id          String         @id @default(cuid())
+  cycleId     String
+  cycle       StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  sourceKpiId String
+  sourceKpi   Kpi            @relation("KpiRelationOrigin", fields: [sourceKpiId], references: [id], onDelete: Cascade)
+  targetKpiId String
+  targetKpi   Kpi            @relation("KpiRelationTarget", fields: [targetKpiId], references: [id], onDelete: Cascade)
+  relationType String        @default("causa_efecto") // causa_efecto | habilita | bloquea | neutral
+  intensity   String         @default("media")        // alta | media | baja
+  origin      String         @default("manual")       // auto_inferida | manual
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  @@unique([sourceKpiId, targetKpiId])
+  @@index([cycleId])
+  @@index([sourceKpiId])
+  @@index([targetKpiId])
+}
+
+// MODULE 5: Tablero BSC — Comentarios del directorio en KPIs
+model KpiComment {
+  id        String   @id @default(cuid())
+  kpiId     String
+  kpi       Kpi      @relation(fields: [kpiId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  text      String
+  mentions  String?  // JSON array of userIds mencionados
+  edited    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([kpiId])
+  @@index([userId])
+}
+
+// MODULE 5: Tablero BSC — Preferencias del usuario por ciclo
+model DashboardConfig {
+  id              String   @id @default(cuid())
+  cycleId         String
+  cycle           StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  defaultMode     String   @default("dimensiones") // dimensiones | mapa | lista
+  favoriteKpis    String   @default("[]") // JSON array de kpiIds
+  notificationsOn Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  @@unique([cycleId, userId])
+  @@index([userId])
+}
+
+// MODULE 5: Alertas estratégicas
+model Alert {
+  id              String         @id @default(cuid())
+  organizationId  String
+  organization    Organization   @relation(fields: [organizationId], references: [id])
+  cycleId         String
+  cycle           StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  type            String         // semaforo_critico | tendencia_negativa | datos_atrasados | olp_en_riesgo | hito_incumplido | personalizada
+  title           String
+  description     String
+  priority        String         @default("media") // alta | media | baja
+  status          String         @default("activa") // activa | en_seguimiento | resuelta | ignorada | reactivada
+  objectType      String         // kpi | olp | ocp
+  objectId        String
+  ruleId          String?
+  rule            AlertRule?     @relation(fields: [ruleId], references: [id], onDelete: SetNull)
+  contextData     String         @default("{}") // JSON con datos específicos
+  assigneeId      String?
+  assignee        User?          @relation("AlertAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  generatedAt     DateTime       @default(now())
+  assignedAt      DateTime?
+  resolvedAt      DateTime?
+  resolutionReason String?
+  resolutionType  String?        // resuelta | ignorada | automatica
+  dedupeKey       String         // {type}::{objectType}::{objectId}::active — único entre alertas activas
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  actions         AlertAction[]
+  comments        AlertComment[]
+  correctiveActions AlertCorrectiveAction[]
+  @@index([cycleId])
+  @@index([status])
+  @@index([objectType, objectId])
+  @@index([assigneeId])
+}
+
+model AlertRule {
+  id              String         @id @default(cuid())
+  cycleId         String
+  cycle           StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  type            String         // mismos valores que Alert.type
+  name            String
+  active          Boolean        @default(true)
+  configuration   String         @default("{}") // JSON con parámetros (N períodos, umbral, etc.)
+  appliesTo       String         @default("todos") // todos | especificos | por_dimension
+  appliesToIds    String         @default("[]") // JSON array si aplica a específicos
+  defaultPriority String         @default("media")
+  notifyTo        String         @default("[\"responsible\"]") // JSON: responsible | admin | userIds[]
+  channels        String         @default("[\"in_app\"]") // JSON: in_app | email
+  triggerCount    Int            @default(0)
+  lastTriggeredAt DateTime?
+  isDefault       Boolean        @default(false)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  alerts          Alert[]
+  @@unique([cycleId, type, name])
+  @@index([cycleId])
+  @@index([type])
+}
+
+model AlertAction {
+  id        String   @id @default(cuid())
+  alertId   String
+  alert     Alert    @relation(fields: [alertId], references: [id], onDelete: Cascade)
+  actionType String  // generada | asignada | comentada | estado_cambiado | escalada | resuelta | ignorada | reactivada | accion_correctiva
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  data      String   @default("{}") // JSON con detalles
+  createdAt DateTime @default(now())
+  @@index([alertId])
+}
+
+model AlertComment {
+  id        String   @id @default(cuid())
+  alertId   String
+  alert     Alert    @relation(fields: [alertId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  text      String
+  mentions  String?  // JSON array
+  edited    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([alertId])
+}
+
+model AlertCorrectiveAction {
+  id              String   @id @default(cuid())
+  alertId         String
+  alert           Alert    @relation(fields: [alertId], references: [id], onDelete: Cascade)
+  educanetTaskId  String?  // null si solo registro interno
+  description     String
+  responsibleName String
+  dueDate         DateTime?
+  status          String   @default("pendiente") // pendiente | en_curso | completada | cancelada
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  @@index([alertId])
+}
+
+// MODULE 5: Revisión Estratégica
+model Review {
+  id                 String         @id @default(cuid())
+  organizationId     String
+  organization       Organization   @relation(fields: [organizationId], references: [id])
+  cycleId            String
+  cycle              StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  type               String         // mensual | trimestral | semestral | anual | extraordinaria
+  title              String
+  period             String         // 2026-Q1 | 2026-01 | 2026-H1 | 2026
+  scheduledAt        DateTime
+  startedAt          DateTime?
+  finishedAt         DateTime?
+  durationMinutes    Int?
+  location           String?
+  status             String         @default("programada") // programada | en_curso | completada | cancelada | reprogramada
+  presidentId        String?
+  president          User?          @relation("ReviewPresident", fields: [presidentId], references: [id], onDelete: SetNull)
+  secretaryId        String?
+  secretary          User?          @relation("ReviewSecretary", fields: [secretaryId], references: [id], onDelete: SetNull)
+  extraordinaryReason String?
+  actSigned          Boolean        @default(false)
+  presidentSignedAt  DateTime?
+  presidentSignedName String?
+  secretarySignedAt  DateTime?
+  secretarySignedName String?
+  bscSnapshot        String?        // JSON con snapshot del Tablero al momento de la revisión
+  executiveSummary   String?        // resumen auto-generado o editado
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  attendees          ReviewAttendee[]
+  agendaItems        ReviewAgendaItem[]
+  decisions          ReviewDecision[]
+  correctiveActions  ReviewCorrectiveAction[]
+  comments           ReviewComment[]
+  @@index([cycleId])
+  @@index([status])
+  @@index([scheduledAt])
+}
+
+model ReviewAttendee {
+  id              String   @id @default(cuid())
+  reviewId        String
+  review          Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roleInReview    String?  // VP Comercial, Director, etc.
+  attendanceStatus String  @default("invitado") // invitado | confirmado | presente | ausente | ausente_justificado
+  justification   String?
+  arrivedAt       DateTime?
+  leftAt          DateTime?
+  createdAt       DateTime @default(now())
+  @@unique([reviewId, userId])
+  @@index([reviewId])
+}
+
+model ReviewAgendaItem {
+  id              String   @id @default(cuid())
+  reviewId        String
+  review          Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  parentItemId    String?
+  parent          ReviewAgendaItem? @relation("AgendaChildren", fields: [parentItemId], references: [id], onDelete: Cascade)
+  children        ReviewAgendaItem[] @relation("AgendaChildren")
+  order           Int      @default(0)
+  title           String
+  description     String?
+  assignedMinutes Int?
+  actualMinutes   Int?
+  origin          String   @default("plantilla") // plantilla | auto_generado | manual
+  itemType        String   // bienvenida | snapshot_bsc | alertas | kpis_dimension | ocps_incumplidos | estrategia | politica | decision | accion | otros
+  contextData     String   @default("{}") // JSON: KPI/OLP/OCP/alerta vinculados
+  covered         Boolean  @default(false)
+  discussionNotes String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  @@index([reviewId])
+}
+
+model ReviewDecision {
+  id              String   @id @default(cuid())
+  reviewId        String
+  review          Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  number          Int
+  text            String
+  decisionType    String   @default("tactica") // estrategica | tactica | operativa
+  linkType        String   @default("ninguna") // kpi | olp | ocp | estrategia | politica | ninguna
+  linkId          String?
+  justification   String?
+  requiresVote    Boolean  @default(false)
+  votingResult    String?  // JSON: { aFavor, enContra, abstenciones }
+  approved        Boolean  @default(true)
+  createdById     String?
+  createdBy       User?    @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt       DateTime @default(now())
+  @@index([reviewId])
+}
+
+model ReviewCorrectiveAction {
+  id              String   @id @default(cuid())
+  reviewId        String
+  review          Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  number          Int
+  description     String
+  responsibleId   String?
+  responsible     User?    @relation(fields: [responsibleId], references: [id], onDelete: SetNull)
+  responsibleName String?  // fallback si no es usuario del sistema
+  dueDate         DateTime?
+  priority        String   @default("media") // alta | media | baja
+  linkType        String   @default("ninguna") // alerta | kpi | ocp | olp | decision | ninguna
+  linkId          String?
+  educanetTaskId  String?
+  status          String   @default("pendiente") // pendiente | en_curso | completada | cancelada
+  completedAt     DateTime?
+  closingNotes    String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  @@index([reviewId])
+  @@index([status])
+}
+
+model ReviewTemplate {
+  id          String   @id @default(cuid())
+  cycleId     String
+  cycle       StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  type        String   // mensual | trimestral | semestral | anual
+  name        String
+  items       String   @default("[]") // JSON: estructura jerárquica de items
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@unique([cycleId, type, name])
+  @@index([cycleId])
+}
+
+model ReviewCalendarConfig {
+  id                  String   @id @default(cuid())
+  cycleId             String
+  cycle               StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  type                String   // mensual | trimestral | semestral | anual
+  active              Boolean  @default(true)
+  dayOfPeriod         Int?     // día 15 del mes, etc.
+  defaultHour         String?  // "10:00"
+  defaultDurationMin  Int      @default(120)
+  defaultAttendees    String   @default("[]") // JSON array user IDs
+  defaultPresidentId  String?
+  defaultSecretaryId  String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  @@unique([cycleId, type])
+  @@index([cycleId])
+}
+
+model ReviewComment {
+  id                    String   @id @default(cuid())
+  reviewId              String
+  review                Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  agendaItemId          String?
+  userId                String
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  text                  String
+  timestampDuringReview DateTime @default(now())
+  createdAt             DateTime @default(now())
+  @@index([reviewId])
+}

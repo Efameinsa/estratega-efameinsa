@@ -1,0 +1,399 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter), "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Cascadia Code", "Consolas", ui-monospace, monospace;
+  --font-heading: var(--font-inter), "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ===========================================================================
+ * Estratega · Tema único negro + morado liquid glass (inspirado en Educanet)
+ * Aplicado a toda la app — landing, auth, dashboard.
+ * =========================================================================*/
+:root {
+  /* Surfaces */
+  --background: #07060d;
+  --foreground: #f4f1fb;
+  --card: #110f1a;
+  --card-foreground: #f4f1fb;
+  --popover: #14111f;
+  --popover-foreground: #f4f1fb;
+
+  /* Primary — morado vibrante */
+  --primary: #a78bfa;
+  --primary-foreground: #0a0814;
+
+  /* Secondary — morado más oscuro/translúcido */
+  --secondary: #1c1530;
+  --secondary-foreground: #cdbefb;
+
+  /* Muted */
+  --muted: #181425;
+  --muted-foreground: #9a91b8;
+
+  /* Accent — violeta intenso */
+  --accent: #2a1f47;
+  --accent-foreground: #d6c8fc;
+
+  /* Destructive */
+  --destructive: #e2557a;
+
+  /* Borders & inputs */
+  --border: rgba(167, 139, 250, 0.12);
+  --input: rgba(167, 139, 250, 0.16);
+  --ring: #a78bfa;
+
+  /* Chart colors — paleta violeta */
+  --chart-1: #a78bfa;
+  --chart-2: #c4b5fd;
+  --chart-3: #7c3aed;
+  --chart-4: #f0abfc;
+  --chart-5: #818cf8;
+
+  --radius: 0.75rem;
+
+  /* Sidebar — más oscuro que el background */
+  --sidebar: #060410;
+  --sidebar-foreground: #9a91b8;
+  --sidebar-primary: #a78bfa;
+  --sidebar-primary-foreground: #0a0814;
+  --sidebar-accent: #1a1430;
+  --sidebar-accent-foreground: #f4f1fb;
+  --sidebar-border: rgba(167, 139, 250, 0.08);
+  --sidebar-ring: #a78bfa;
+}
+
+/* `.dark` se mantiene como alias del mismo tema para no romper `dark:` utilities */
+.dark {
+  --background: #07060d;
+  --foreground: #f4f1fb;
+  --card: #110f1a;
+  --card-foreground: #f4f1fb;
+  --popover: #14111f;
+  --popover-foreground: #f4f1fb;
+
+  --primary: #a78bfa;
+  --primary-foreground: #0a0814;
+
+  --secondary: #1c1530;
+  --secondary-foreground: #cdbefb;
+
+  --muted: #181425;
+  --muted-foreground: #9a91b8;
+
+  --accent: #2a1f47;
+  --accent-foreground: #d6c8fc;
+
+  --destructive: #e2557a;
+
+  --border: rgba(167, 139, 250, 0.12);
+  --input: rgba(167, 139, 250, 0.16);
+  --ring: #a78bfa;
+
+  --chart-1: #a78bfa;
+  --chart-2: #c4b5fd;
+  --chart-3: #7c3aed;
+  --chart-4: #f0abfc;
+  --chart-5: #818cf8;
+
+  --sidebar: #060410;
+  --sidebar-foreground: #9a91b8;
+  --sidebar-primary: #a78bfa;
+  --sidebar-primary-foreground: #0a0814;
+  --sidebar-accent: #1a1430;
+  --sidebar-accent-foreground: #f4f1fb;
+  --sidebar-border: rgba(167, 139, 250, 0.08);
+  --sidebar-ring: #a78bfa;
+}
+
+@keyframes dashMove {
+  from { stroke-dashoffset: 20; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* ---------------------------------------------------------------------------
+ * Liquid Glass system — aplicado globalmente.
+ * Stored as RGB triplets to compose alpha at usage site.
+ * -------------------------------------------------------------------------*/
+:root,
+.dark {
+  --landing-bg: 7 6 13;
+  --landing-fg: 244 241 251;
+  --glass-bg: 32 24 55;
+  --glass-bg-alpha: 0.45;
+  --glass-border: 196 181 253;
+  --glass-blur: 28px;
+  --glass-saturation: 180%;
+  --glow-violet: 167 139 250;
+  --glow-purple: 139 92 246;
+  --glow-fuchsia: 217 70 239;
+  --glow-blue: 167 139 250;  /* alias retro-compat, ahora morado */
+  --glow-cyan: 167 139 250;  /* alias retro-compat */
+  --halo-intensity: 0.32;
+
+  /* Tokens de texto/bordes usados por matrices y módulos (PESTEC, FODA, etc.)
+   * mapeados al tema morado para que la jerarquía visual sea coherente.
+   * Antes estaban indefinidos → texto blanco brillante con mucho contraste. */
+  --color-text-primary: #cbb9f5;
+  --color-text-secondary: #a698c7;
+  --color-text-tertiary: #7a708f;
+  --color-text-disabled: #4a4360;
+  --color-border-primary: rgba(167, 139, 250, 0.35);
+  --color-border-secondary: rgba(167, 139, 250, 0.22);
+  --color-border-tertiary: rgba(167, 139, 250, 0.18);
+  --color-primary: #a78bfa;
+  --color-primary-hover: #b89bff;
+  --color-surface-1: rgba(167, 139, 250, 0.05);
+  --color-surface-2: rgba(167, 139, 250, 0.09);
+  --color-surface-3: rgba(167, 139, 250, 0.13);
+}
+
+.landing-shell {
+  background: rgb(var(--landing-bg));
+  color: rgb(var(--landing-fg));
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.glass {
+  position: relative;
+  background: rgb(var(--glass-bg) / var(--glass-bg-alpha));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  border: 1px solid rgb(var(--glass-border) / 0.1);
+  box-shadow:
+    inset 0 1px 0 rgb(var(--glass-border) / 0.08),
+    0 0 0 1px rgb(var(--glass-border) / 0.04),
+    0 12px 40px -12px rgb(0 0 0 / 0.55);
+}
+
+.glass-strong {
+  position: relative;
+  background: rgb(var(--glass-bg) / 0.55);
+  backdrop-filter: blur(44px) saturate(200%);
+  -webkit-backdrop-filter: blur(44px) saturate(200%);
+  border: 1px solid rgb(var(--glass-border) / 0.14);
+  box-shadow:
+    inset 0 1px 0 rgb(var(--glass-border) / 0.14),
+    0 24px 70px -12px rgb(var(--glow-violet) / 0.28);
+}
+
+.glass-subtle {
+  background: rgb(var(--landing-bg) / 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgb(var(--glass-border) / 0.08);
+}
+
+.glass::before,
+.glass-strong::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    180deg,
+    rgb(var(--glass-border) / 0.22) 0%,
+    transparent 35%,
+    transparent 70%,
+    rgb(var(--glow-violet) / 0.22) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ---------- Halos / orbs decorativos ---------- */
+.bg-halo-top {
+  background: radial-gradient(
+    ellipse 65% 45% at 50% -10%,
+    rgb(var(--glow-violet) / var(--halo-intensity)),
+    transparent 70%
+  );
+}
+
+.bg-halo-violet {
+  background: radial-gradient(
+    ellipse 60% 40% at 80% 30%,
+    rgb(var(--glow-purple) / calc(var(--halo-intensity) * 0.9)),
+    transparent 60%
+  );
+}
+
+.bg-halo-cyan {
+  background: radial-gradient(
+    ellipse 55% 40% at 15% 70%,
+    rgb(var(--glow-fuchsia) / calc(var(--halo-intensity) * 0.6)),
+    transparent 65%
+  );
+}
+
+.bg-halo-purple {
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    rgb(var(--glow-violet) / 0.35),
+    transparent 70%
+  );
+}
+
+/* App shell — usado por el dashboard para tener el mismo fondo que la landing */
+.app-shell {
+  background: rgb(var(--landing-bg));
+  color: rgb(var(--landing-fg));
+  position: relative;
+  overflow: hidden;
+}
+
+.app-shell::before,
+.app-shell::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.app-shell::before {
+  inset: -10% 30% auto -10%;
+  height: 60vh;
+  background: radial-gradient(
+    ellipse at 0% 0%,
+    rgb(var(--glow-violet) / 0.18),
+    transparent 60%
+  );
+  filter: blur(40px);
+}
+
+.app-shell::after {
+  inset: auto -10% -20% 30%;
+  height: 60vh;
+  background: radial-gradient(
+    ellipse at 100% 100%,
+    rgb(var(--glow-fuchsia) / 0.12),
+    transparent 60%
+  );
+  filter: blur(50px);
+}
+
+.text-shimmer-landing {
+  background: linear-gradient(
+    100deg,
+    rgb(var(--landing-fg)) 0%,
+    rgb(var(--landing-fg) / 0.55) 35%,
+    rgb(var(--glow-violet)) 50%,
+    rgb(var(--landing-fg) / 0.55) 65%,
+    rgb(var(--landing-fg)) 100%
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  animation: shimmer-landing 6s ease-in-out infinite;
+}
+
+@keyframes shimmer-landing {
+  0%, 100% { background-position: 200% 0; }
+  50% { background-position: 0 0; }
+}
+
+.float-soft {
+  animation: float-soft 8s ease-in-out infinite;
+}
+
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-shimmer-landing,
+  .float-soft { animation: none !important; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass, .glass-strong, .glass-subtle {
+    background: rgb(var(--glass-bg));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .glass::before, .glass-strong::before { display: none; }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    transition-property: color, background-color, border-color, box-shadow;
+    transition-duration: 150ms;
+    transition-timing-function: ease-in-out;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-inter), "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  html {
+    @apply font-sans;
+    color-scheme: dark;
+  }
+
+  /* Scrollbars — tema violeta */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(167, 139, 250, 0.18);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(167, 139, 250, 0.35);
+  }
+}

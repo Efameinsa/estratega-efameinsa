@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "estratega-v2",
+  "main": ".open-next/worker.js",
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "compatibility_date": "2025-05-05",
+  "compatibility_flags": ["nodejs_compat"]
+
+  // Notas:
+  // - Este proyecto se desplego en Vercel (https://estratega-v2.vercel.app).
+  // - Este archivo se mantiene como referencia historica del intento con Cloudflare Workers.
+  // - Si se reactiva el deploy a Cloudflare, las variables sensibles deben configurarse
+  //   con `wrangler secret put DATABASE_URL`, `wrangler secret put AUTH_SECRET`, etc.
+  //   NO ponerlas como `vars` aqui (terminan en el repo).
+}
