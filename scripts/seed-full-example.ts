@@ -380,27 +380,32 @@ async function main() {
     for (const oi of s.olp) await db.strategyOlp.create({ data: { strategyId: st.id, olpId: olps[oi].id } });
     strategies.push({ id: st.id, code: s.code });
   }
-  const derived = [
-    { type: "PEYEA", q: "DERIVED_PEYEA", desc: "Agresivo: Penetración de mercado en segmentos corporativos de alto consumo." },
-    { type: "PEYEA", q: "DERIVED_PEYEA", desc: "Agresivo: Desarrollo de mercado en el sur del país." },
-    { type: "IE", q: "DERIVED_IE", desc: "Crecer y construir: desarrollo de mercado y de producto." },
-    { type: "GE", q: "DERIVED_GE", desc: "Invertir para crecer en servicios certificados de alto valor." },
+  // Estrategias que proponen PEYEA (agresivo), IE (celda V), GE (cuadrante I) y BCG.
+  // Cada una apunta a una estrategia del FODA cruzado (to = índice en STRATS) para
+  // que la Matriz de Decisión muestre convergencia real entre matrices.
+  const derived: { type: string; q: string; code: string; desc: string; to: number | null }[] = [
+    { type: "PEYEA", q: "DERIVED_PEYEA", code: "P1", to: 0, desc: "Penetración de mercado: ampliar la venta de servicios integrales a la cartera corporativa actual." },
+    { type: "PEYEA", q: "DERIVED_PEYEA", code: "P2", to: 1, desc: "Desarrollo de mercado: abrir operaciones en Arequipa y Trujillo con clientes mineros." },
+    { type: "PEYEA", q: "DERIVED_PEYEA", code: "P3", to: 3, desc: "Integración hacia atrás: alianza con un proveedor de robots de limpieza de alta eficiencia." },
+    { type: "PEYEA", q: "DERIVED_PEYEA", code: "P4", to: 5, desc: "Desarrollo de producto: certificar ISO 9001 e ISO 45001 para licitaciones de grandes clientes." },
+    { type: "IE", q: "DERIVED_IE", code: "I1", to: 0, desc: "Conservar y mantener · penetración de mercado: ampliar la venta de servicios integrales en la cartera corporativa." },
+    { type: "IE", q: "DERIVED_IE", code: "I2", to: 2, desc: "Conservar y mantener · desarrollo de producto: paquetes de limpieza certificada con reporte ESG." },
+    { type: "IE", q: "DERIVED_IE", code: "I3", to: 5, desc: "Conservar y mantener · desarrollo de producto: certificar ISO 9001 e ISO 45001 para acceder a grandes clientes." },
+    { type: "GE", q: "DERIVED_GE", code: "G1", to: 1, desc: "Cuadrante I · desarrollo de mercado: abrir operaciones en Arequipa y Trujillo." },
+    { type: "GE", q: "DERIVED_GE", code: "G2", to: 3, desc: "Cuadrante I · integración hacia atrás: alianza con proveedores de robots de limpieza." },
+    { type: "GE", q: "DERIVED_GE", code: "G3", to: 4, desc: "Cuadrante I · integración horizontal: supervisión digital en campo con app móvil y sensores IoT." },
+    { type: "BCG", q: "DERIVED_BCG", code: "BCG-A", to: 0, desc: "Estrella · Facility management integral: ampliar la venta de servicios integrales a la cartera corporativa e invertir para mantener el liderazgo." },
+    { type: "BCG", q: "DERIVED_BCG", code: "BCG-B", to: 2, desc: "Vaca lechera · Limpieza corporativa: paquetes de limpieza certificada que financian el crecimiento con su flujo de caja." },
+    { type: "BCG", q: "DERIVED_BCG", code: "BCG-C", to: 4, desc: "Interrogante · Seguridad electrónica: supervisión digital con sensores IoT, invirtiendo de forma selectiva." },
+    { type: "BCG", q: "DERIVED_BCG", code: "BCG-D", to: 7, desc: "Perro · Mantenimiento de edificios: salir de contratos de bajo margen y reposicionar el servicio en un nicho rentable." },
+    { type: "BCG", q: "DERIVED_BCG", code: "BCG-E", to: 7, desc: "Perro · Jardinería y paisajismo: salir de la línea de bajo margen y concentrar recursos." },
   ];
-  const derivedRows = [];
+  const derivedRows: { id: string; type: string | null; description: string; to: number | null }[] = [];
   for (const [i, d] of derived.entries()) {
-    derivedRows.push(await db.strategy.create({ data: { ...O, description: d.desc, swotQuadrant: d.q, type: d.type, priority: "alta", status: "proposed", sortOrder: 20 + i } }));
-  }
-
-  // Estrategias que la Matriz BCG envía a la Matriz de Decisión (una por unidad)
-  const BCG_STRATS = [
-    ["BCG-A", "Estrella · Facility management integral", "Ampliar la venta de servicios integrales a la cartera corporativa e invertir para mantener el liderazgo."],
-    ["BCG-B", "Vaca lechera · Limpieza corporativa", "Crear paquetes de limpieza certificada y usar el flujo de caja para financiar el crecimiento."],
-    ["BCG-C", "Interrogante · Seguridad electrónica", "Implementar supervisión digital con sensores IoT invirtiendo de forma selectiva."],
-    ["BCG-D", "Perro · Mantenimiento de edificios", "Salir de contratos de bajo margen y reposicionar el servicio en un nicho rentable."],
-    ["BCG-E", "Perro · Jardinería y paisajismo", "Evaluar la venta o tercerización de la línea para concentrar recursos."],
-  ];
-  for (const [i, [code, name, desc]] of BCG_STRATS.entries()) {
-    await db.strategy.create({ data: { ...O, code, description: `${name}: ${desc}`, swotQuadrant: "DERIVED_BCG", type: "BCG", status: "proposed", sortOrder: 40 + i } });
+    const row = await db.strategy.create({
+      data: { ...O, code: d.code, description: d.desc, swotQuadrant: d.q, type: d.type, priority: "alta", status: "proposed", sortOrder: 20 + i },
+    });
+    derivedRows.push({ id: row.id, type: row.type, description: row.description, to: d.to });
   }
 
   // PEYEA con el vector calculado por la misma función de la app
@@ -449,12 +454,16 @@ async function main() {
   // MD: estrategias consolidadas (las 8 del FODA cruzado)
   const consolidated = [];
   for (const [i, s] of STRATS.entries()) {
-    const extra = i === 0 ? [derivedRows[0]] : i === 1 ? [derivedRows[1], derivedRows[2]] : i === 5 ? [derivedRows[3]] : [];
+    const extra = derivedRows.filter((d) => d.to === i);
+    // Convergencia = número de matrices distintas que proponen la estrategia
+    const appearances = new Set(["foda_cruzado", ...extra.map((d) => (d.type ?? "").toLowerCase())]).size;
+    // ≥ 3 matrices: retenida. E7 (personas) se retiene a mano por ser clave para la perspectiva de aprendizaje.
+    const status = appearances >= 3 ? "retenida" : s.code === "E7" ? "retenida_manual" : "contingencia";
     const c = await db.consolidatedStrategy.create({
       data: {
         cycleId: CYCLE_ID, code: s.code, text: s.desc, type: s.type, dalessioType: s.dalessio,
         responsible: OLPS[s.olp[0]].resp, priority: i < 6 ? "alta" : "media",
-        status: s.code === "E8" ? "descartada" : "retenida", totalAppearances: 1 + (extra.length > 0 ? 1 : 0) + (i === 1 ? 1 : 0),
+        status, totalAppearances: appearances,
         priorityScore: round(4 - i * 0.3), sortOrder: i,
       },
     });
