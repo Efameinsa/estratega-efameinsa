@@ -38,7 +38,8 @@ describe("lib/pm", () => {
 
   it("usa el color del estado o el de su categoría", () => {
     expect(statusColor({ color: "#123456", category: "TODO" })).toBe("#123456");
-    expect(statusColor({ color: null, category: "DONE" })).toBe("#4ade80");
+    // 29-09-2026: paleta del CRM (verde de «terminado» = #1e7f4f, el de PROJECT_COLORS).
+    expect(statusColor({ color: null, category: "DONE" })).toBe("#1e7f4f");
     expect(plural(1, "proyecto", "proyectos")).toBe("1 proyecto");
     expect(plural(3, "proyecto", "proyectos")).toBe("3 proyectos");
   });
