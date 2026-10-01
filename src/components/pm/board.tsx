@@ -234,10 +234,10 @@ function Card({ task, overlay = false, done }: { task: Task; overlay?: boolean; 
         </div>
       )}
       <p className={cn("flex items-start gap-1.5 text-sm leading-snug", done && "text-muted-foreground line-through")}>
-        {milestone && <Diamond className="mt-0.5 size-3.5 shrink-0 text-amber-300" fill="currentColor" />}
+        {milestone && <Diamond className="mt-0.5 size-3.5 shrink-0 text-amber-700" fill="currentColor" />}
         {blocked && (
           <span title="Esperando a otra tarea">
-            <Lock className="mt-0.5 size-3.5 shrink-0 text-amber-300" />
+            <Lock className="mt-0.5 size-3.5 shrink-0 text-amber-700" />
           </span>
         )}
         {task.summary}

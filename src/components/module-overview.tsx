@@ -9,11 +9,11 @@ import { cn } from "@/lib/utils";
 type ModuleId = "M1" | "M2" | "M3" | "M4" | "M5";
 
 const MODULES: Record<ModuleId, { title: string; subtitle: string; icon: LucideIcon; color: string; next?: { label: string; href: string } }> = {
-  M1: { title: "Identidad estratégica", subtitle: "Visión, misión, valores e intereses: el norte de la organización.", icon: Compass, color: "#60a5fa", next: { label: "M2 · Diagnóstico", href: "m2-diagnosis" } },
-  M2: { title: "Diagnóstico", subtitle: "Análisis externo (PESTEC, Porter, MEFE, MPC) e interno (AMOFHIT, MEFI).", icon: Search, color: "#fbbf24", next: { label: "M3 · Formulación", href: "m3-formulation" } },
-  M3: { title: "Formulación", subtitle: "De las matrices a las estrategias retenidas y los objetivos de largo plazo.", icon: Lightbulb, color: "#a78bfa", next: { label: "M4 · Implementación", href: "m4-deployment" } },
-  M4: { title: "Implementación", subtitle: "Objetivos de corto plazo, políticas, estructura y recursos.", icon: Rocket, color: "#f472b6", next: { label: "M5 · Control (BSC)", href: "m5-control" } },
-  M5: { title: "Control · Balanced Scorecard", subtitle: "KPIs, tablero, alertas, revisiones y el portafolio que ejecuta el plan.", icon: BarChart3, color: "#4ade80", next: { label: "Portafolio de proyectos", href: "/portfolio" } },
+  M1: { title: "Identidad estratégica", subtitle: "Visión, misión, valores e intereses: el norte de la organización.", icon: Compass, color: "#185fa5", next: { label: "M2 · Diagnóstico", href: "m2-diagnosis" } },
+  M2: { title: "Diagnóstico", subtitle: "Análisis externo (PESTEC, Porter, MEFE, MPC) e interno (AMOFHIT, MEFI).", icon: Search, color: "#b45309", next: { label: "M3 · Formulación", href: "m3-formulation" } },
+  M3: { title: "Formulación", subtitle: "De las matrices a las estrategias retenidas y los objetivos de largo plazo.", icon: Lightbulb, color: "#8B1510", next: { label: "M4 · Implementación", href: "m4-deployment" } },
+  M4: { title: "Implementación", subtitle: "Objetivos de corto plazo, políticas, estructura y recursos.", icon: Rocket, color: "#be185d", next: { label: "M5 · Control (BSC)", href: "m5-control" } },
+  M5: { title: "Control · Balanced Scorecard", subtitle: "KPIs, tablero, alertas, revisiones y el portafolio que ejecuta el plan.", icon: BarChart3, color: "#1e7f4f", next: { label: "Portafolio de proyectos", href: "/portfolio" } },
 };
 
 /** Índice de módulo: herramientas en orden, estado de cada una y paso siguiente. */

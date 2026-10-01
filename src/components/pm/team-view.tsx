@@ -88,7 +88,7 @@ export function TeamView() {
                       {m.user.name}
                       {isOwner && (
                         <span title="Responsable del proyecto">
-                          <Crown className="size-3.5 text-amber-300" />
+                          <Crown className="size-3.5 text-amber-700" />
                         </span>
                       )}
                       {m.userId === meId && <span className="text-xs font-normal text-muted-foreground">(tú)</span>}
@@ -111,10 +111,10 @@ export function TeamView() {
                 <span className="space-y-1">
                   {load ? (
                     <>
-                      <ProgressBar value={(load.done / load.total) * 100} color="#4ade80" />
+                      <ProgressBar value={(load.done / load.total) * 100} color="#1e7f4f" />
                       <span className="block text-xs text-muted-foreground">
                         {load.done}/{load.total} tareas · {Math.round(load.spent * 10) / 10} h
-                        {load.overdue > 0 && <span className="text-red-400"> · {load.overdue} vencidas</span>}
+                        {load.overdue > 0 && <span className="text-red-700"> · {load.overdue} vencidas</span>}
                       </span>
                     </>
                   ) : (
@@ -130,7 +130,7 @@ export function TeamView() {
                   type="button"
                   onClick={() => remove.mutate({ projectId, userId: m.userId })}
                   disabled={isOwner}
-                  className="text-muted-foreground hover:text-red-400 disabled:opacity-30"
+                  className="text-muted-foreground hover:text-red-700 disabled:opacity-30"
                   aria-label="Quitar del proyecto"
                   title={isOwner ? "No puedes quitar al responsable" : "Quitar del proyecto"}
                 >

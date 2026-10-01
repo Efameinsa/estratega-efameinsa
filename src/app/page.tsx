@@ -21,7 +21,7 @@ export const metadata = {
 
 export default function LandingPage() {
   return (
-    <div className="landing-shell">
+    <div className="landing-shell dark">
       <DecorativeBackdrop />
       <Navbar />
       <main className="relative z-10">

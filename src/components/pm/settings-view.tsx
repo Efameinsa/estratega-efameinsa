@@ -44,7 +44,7 @@ function SettingsForm() {
     name: p.name,
     description: p.description ?? "",
     status: p.status,
-    color: p.color ?? "#a78bfa",
+    color: p.color ?? "#8B1510",
     start: dateToDay(p.startDate),
     end: dateToDay(p.endDate),
     portfolioId: p.portfolioId ?? "",
@@ -165,7 +165,7 @@ function SettingsForm() {
               <div key={s.id} className="flex items-center gap-2">
                 <input
                   type="color"
-                  defaultValue={s.color ?? "#94a3b8"}
+                  defaultValue={s.color ?? "#64748b"}
                   onBlur={(e) => e.target.value !== s.color && updSt.mutate({ id: s.id, color: e.target.value })}
                   className="h-8 w-9 cursor-pointer rounded border bg-transparent"
                   aria-label="Color del estado"
@@ -190,7 +190,7 @@ function SettingsForm() {
                   type="button"
                   disabled={p.workflows.length <= 2}
                   onClick={() => delSt.mutate({ id: s.id })}
-                  className="rounded p-2 text-muted-foreground hover:text-red-400 disabled:opacity-30"
+                  className="rounded p-2 text-muted-foreground hover:text-red-700 disabled:opacity-30"
                   aria-label="Eliminar estado"
                   title="Las tareas de este estado quedarán sin estado"
                 >
@@ -204,7 +204,7 @@ function SettingsForm() {
                 variant="outline"
                 disabled={!newStatus.trim()}
                 onClick={() => {
-                  createSt.mutate({ projectId, name: newStatus.trim(), category: "IN_PROGRESS", color: "#f472b6", sortOrder: p.workflows.length });
+                  createSt.mutate({ projectId, name: newStatus.trim(), category: "IN_PROGRESS", color: "#be185d", sortOrder: p.workflows.length });
                   setNewStatus("");
                 }}
               >
@@ -221,7 +221,7 @@ function SettingsForm() {
         </section>
 
         <section className="space-y-3 rounded-xl border border-red-500/30 bg-card p-5">
-          <h3 className="font-medium text-red-400">Eliminar proyecto</h3>
+          <h3 className="font-medium text-red-700">Eliminar proyecto</h3>
           <p className="text-xs text-muted-foreground">
             Se borran sus tareas, subtareas, evidencias, comentarios y horas. Escribe <span className="font-mono text-foreground">{p.key}</span> para confirmar.
           </p>

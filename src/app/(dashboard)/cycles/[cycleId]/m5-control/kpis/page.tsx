@@ -258,7 +258,7 @@ function Step1({
 
   return (
     <div className="space-y-6">
-      <Card className="border-primary/25 bg-primary/10/40">
+      <Card className="border-primary/25 bg-primary/5">
         <CardContent className="py-4 text-left text-sm text-primary">
           <strong className="block">Define cómo medirás tu plan.</strong>
           <span className="text-primary/80">
@@ -269,7 +269,7 @@ function Step1({
       </Card>
 
       <Card className="border-emerald-500/30 bg-transparent">
-        <CardContent className="py-4 text-left text-sm text-emerald-300">
+        <CardContent className="py-4 text-left text-sm text-emerald-700">
           <strong>{metrics.suggested} indicadores sugeridos.</strong> Origen:{" "}
           {setup.olps.length} OLPs y {setup.ocps.length} OCPs. Cobertura:{" "}
           {metrics.dimensionsCovered}/4 dimensiones BSC. {metrics.educanet} se conectarán con
@@ -291,7 +291,7 @@ function Step1({
         <FilterPill
           active={filterDim === "all"}
           label={`Todos (${active.length})`}
-          color="#94a3b8"
+          color="#64748b"
           onClick={() => setFilterDim("all")}
         />
         {BSC_DIMENSIONS.map((d) => (
@@ -440,7 +440,7 @@ function KpiCardStep1({
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-mono text-[10px] text-muted-foreground">{kpi.code}</span>
             {isAccepted ? (
-              <Badge variant="outline" className="border-emerald-400 text-[10px] text-emerald-300">
+              <Badge variant="outline" className="border-emerald-400 text-[10px] text-emerald-700">
                 <CheckCircle2 className="mr-1 size-3" /> Aceptado
               </Badge>
             ) : (
@@ -453,7 +453,7 @@ function KpiCardStep1({
                 <Plug className="mr-1 size-3" /> EduCaNet
               </Badge>
             ) : (
-              <Badge className="border-amber-500/30 bg-transparent text-[10px] text-amber-300">
+              <Badge className="border-amber-500/30 bg-transparent text-[10px] text-amber-700">
                 <HandMetal className="mr-1 size-3" /> Manual
               </Badge>
             )}
@@ -591,7 +591,7 @@ function Step2({
                   isCurrent
                     ? "border-primary bg-primary/10 ring-1 ring-primary/30"
                     : isConfirmed
-                    ? "border-emerald-500/30 bg-transparent text-emerald-300"
+                    ? "border-emerald-500/30 bg-transparent text-emerald-700"
                     : "border-border bg-muted/30 hover:bg-muted/60",
                 )}
               >
@@ -1015,7 +1015,7 @@ function KpiEditor({
           </div>
 
           {form.source === "educanet" && (
-            <div className="space-y-3 rounded-lg border bg-primary/10/30 p-4">
+            <div className="space-y-3 rounded-lg border bg-primary/5 p-4">
               <div className="space-y-1.5">
                 <Label className="text-xs">ID de vinculación EduCaNet</Label>
                 {kpi.educanetLinkId ? (
@@ -1061,8 +1061,8 @@ function KpiEditor({
 
               {kpi.educanetProjectId ? (
                 <div className="rounded-md border border-emerald-500/30 bg-transparent p-3 text-xs">
-                  <strong className="block text-emerald-300">Proyecto conectado</strong>
-                  <span className="text-emerald-300">
+                  <strong className="block text-emerald-700">Proyecto conectado</strong>
+                  <span className="text-emerald-700">
                     Proyecto: {kpi.educanetProjectId}
                     {kpi.educanetLastReceivedAt && (
                       <>
@@ -1216,7 +1216,7 @@ function KpiEditor({
             <tbody>
               {(["metaGreen", "metaAmber", "metaRed"] as const).map((field, idx) => {
                 const labels = ["Meta (verde)", "Aceptable (ámbar)", "Crítico (rojo)"];
-                const colors = ["text-emerald-400", "text-amber-400", "text-rose-400"];
+                const colors = ["text-emerald-700", "text-amber-700", "text-rose-700"];
                 return (
                   <tr key={field} className="border-t">
                     <td className={cn("px-3 py-2 font-medium", colors[idx])}>
@@ -1294,14 +1294,14 @@ function KpiEditor({
       </Card>
 
       {olpIds.length === 0 && (
-        <div className="flex items-center gap-2 rounded-md border border-amber-500/30 bg-transparent px-3 py-2 text-xs text-amber-300">
+        <div className="flex items-center gap-2 rounded-md border border-amber-500/30 bg-transparent px-3 py-2 text-xs text-amber-700">
           <AlertTriangle className="size-4" />
           Este indicador debe medir al menos un OLP.
         </div>
       )}
 
       {ready && (
-        <div className="flex items-start gap-2 rounded-md border border-emerald-500/30 bg-transparent px-3 py-2 text-xs text-emerald-300">
+        <div className="flex items-start gap-2 rounded-md border border-emerald-500/30 bg-transparent px-3 py-2 text-xs text-emerald-700">
           <CheckCircle2 className="mt-0.5 size-4" />
           <span>
             Indicador completo y conectado. Vinculado con {olpIds.length} OLP/s y{" "}
@@ -1442,13 +1442,13 @@ function Step3({
                     <div className="text-sm font-semibold" style={{ color: def.color }}>
                       {def.label}
                     </div>
-                    <div className={cn("text-xs", isLow && "text-amber-300")}>
+                    <div className={cn("text-xs", isLow && "text-amber-700")}>
                       {d.count} indicadores · {d.confirmed} confirmados
                     </div>
                   </div>
                 </div>
                 {isLow && (
-                  <p className="mt-2 text-xs text-amber-300">
+                  <p className="mt-2 text-xs text-amber-700">
                     Cobertura baja. Considera agregar más indicadores en esta dimensión.
                   </p>
                 )}
@@ -1487,11 +1487,11 @@ function Step3({
                     {o.hasEducanet ? <Plug className="mx-auto size-4 text-primary" /> : "—"}
                   </td>
                   <td className="px-2 py-2 text-center">
-                    {o.hasManual ? <HandMetal className="mx-auto size-4 text-amber-400" /> : "—"}
+                    {o.hasManual ? <HandMetal className="mx-auto size-4 text-amber-700" /> : "—"}
                   </td>
                   <td className="px-2 py-2 text-center">
                     {o.kpiCount > 0 ? (
-                      <Badge className="bg-transparent0 text-[10px] hover:bg-transparent0">
+                      <Badge className="bg-emerald-600 text-[10px] text-white hover:bg-emerald-600">
                         OK
                       </Badge>
                     ) : (
@@ -1530,7 +1530,7 @@ function Step3({
         </CardContent>
       </Card>
 
-      <Card className="border-primary/25 bg-primary/10/30">
+      <Card className="border-primary/25 bg-primary/5">
         <CardContent className="py-4 text-sm text-left text-primary">
           <strong className="block">¿Qué sigue?</strong>
           Con tus indicadores definidos, ahora puedes ir al Tablero BSC para ver el estado

@@ -13,10 +13,10 @@ export type Semaforo = "verde" | "ambar" | "rojo" | "sin_dato";
 
 export const SEMAFORO_COLORS: Record<Semaforo, { color: string; bg: string; label: string }> = {
   // Misma paleta que las variables --semaforo-* de globals.css
-  verde: { color: "#4ade80", bg: "rgba(74, 222, 128, 0.08)", label: "EN META" },
-  ambar: { color: "#fbbf24", bg: "rgba(251, 191, 36, 0.08)", label: "ALERTA" },
-  rojo: { color: "#f87171", bg: "rgba(248, 113, 113, 0.09)", label: "CRÍTICO" },
-  sin_dato: { color: "#8d83a8", bg: "rgba(141, 131, 168, 0.06)", label: "SIN DATO" },
+  verde: { color: "#1e7f4f", bg: "rgba(74, 222, 128, 0.08)", label: "EN META" },
+  ambar: { color: "#b45309", bg: "rgba(251, 191, 36, 0.08)", label: "ALERTA" },
+  rojo: { color: "#b3261e", bg: "rgba(248, 113, 113, 0.09)", label: "CRÍTICO" },
+  sin_dato: { color: "#6b6b6b", bg: "rgba(141, 131, 168, 0.06)", label: "SIN DATO" },
 };
 
 export interface KpiSnapshot {
@@ -396,7 +396,7 @@ export function getDimensionPalette(dim: BscDimension): {
 } {
   const def = BSC_DIMENSIONS.find((d) => d.key === dim);
   return {
-    color: def?.color ?? "#94a3b8",
+    color: def?.color ?? "#64748b",
     bg: def?.bg ?? "transparent",
     pastel: def?.bg ?? "transparent",
   };

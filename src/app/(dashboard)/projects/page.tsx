@@ -6,7 +6,7 @@ import { Briefcase, Plus, Search } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { PROJECT_STATUS, projectInitials } from "@/lib/pm";
+import { PROJECT_STATUS, colorDeMarca, projectInitials } from "@/lib/pm";
 import { EmptyState, HealthBadge, ProgressBar, UserAvatar, friendlyDate } from "@/components/pm/primitives";
 import { NewProjectDialog } from "@/components/pm/portfolio-page";
 
@@ -74,7 +74,7 @@ export default function ProjectsPage() {
         {projects.map((p) => (
           <Link key={p.id} href={`/projects/${p.id}/overview`} className="group space-y-3 rounded-xl border bg-card p-4 transition-colors hover:border-primary/40">
             <div className="flex items-start gap-3">
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-[#0a0814]" style={{ background: p.color ?? "#a78bfa" }}>
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-white" style={{ background: colorDeMarca(p.color) ?? "#8B1510" }}>
                 {projectInitials(p)}
               </span>
               <div className="min-w-0 flex-1">
@@ -83,7 +83,7 @@ export default function ProjectsPage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <ProgressBar value={p.stats.progress} color={p.color ?? undefined} />
+              <ProgressBar value={p.stats.progress} color={colorDeMarca(p.color) ?? undefined} />
               <span className="text-xs tabular-nums">{p.stats.progress}%</span>
             </div>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">

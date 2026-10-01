@@ -6,7 +6,7 @@ import { formatDistanceToNow } from "date-fns";
 import { es } from "date-fns/locale";
 import { AlertTriangle, CheckCircle2, Clock, Paperclip, Target, TrendingUp, CalendarClock, Diamond, Activity } from "lucide-react";
 import { trpc } from "@/lib/trpc";
-import { BSC_PERSPECTIVES, toBscCode } from "@/lib/pm";
+import { BSC_PERSPECTIVES, toBscCode, colorDeMarca } from "@/lib/pm";
 import { useWorkspace } from "./workspace-context";
 import { HealthBadge, ProgressBar, UserAvatar, friendlyDate, dueTone } from "./primitives";
 
@@ -78,16 +78,16 @@ export function Overview() {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            <Stat icon={CheckCircle2} label="Completadas" value={s.done} hint={`${s.inProgress} en progreso`} tone="#4ade80" />
-            <Stat icon={AlertTriangle} label="Vencidas" value={s.overdue} hint={s.overdue ? "Requieren acción" : "Todo al día"} tone={s.overdue ? "#f87171" : "#94a3b8"} />
+            <Stat icon={CheckCircle2} label="Completadas" value={s.done} hint={`${s.inProgress} en progreso`} tone="#1e7f4f" />
+            <Stat icon={AlertTriangle} label="Vencidas" value={s.overdue} hint={s.overdue ? "Requieren acción" : "Todo al día"} tone={s.overdue ? "#b3261e" : "#64748b"} />
             <Stat
               icon={Clock}
               label="Horas registradas"
               value={`${Math.round(s.spent * 10) / 10} h`}
               hint={s.estimate ? `de ${Math.round(s.estimate)} h estimadas` : "Sin estimación"}
-              tone="#60a5fa"
+              tone="#185fa5"
             />
-            <Stat icon={Paperclip} label="Evidencias" value={data.evidenceCount} hint="archivos adjuntos" tone="#a78bfa" />
+            <Stat icon={Paperclip} label="Evidencias" value={data.evidenceCount} hint="archivos adjuntos" tone="#8B1510" />
           </div>
         </div>
 
@@ -100,13 +100,13 @@ export function Overview() {
               </h3>
               <div className="flex h-3 overflow-hidden rounded-full bg-muted">
                 {data.byStatus.map((b, i) => (
-                  <div key={i} style={{ width: `${(b.count / totalByStatus) * 100}%`, background: b.color ?? "#94a3b8" }} title={`${b.name}: ${b.count}`} />
+                  <div key={i} style={{ width: `${(b.count / totalByStatus) * 100}%`, background: colorDeMarca(b.color) ?? "#64748b" }} title={`${b.name}: ${b.count}`} />
                 ))}
               </div>
               <div className="mt-3 flex flex-wrap gap-4 text-xs">
                 {data.byStatus.map((b, i) => (
                   <span key={i} className="flex items-center gap-1.5">
-                    <span className="size-2.5 rounded-sm" style={{ background: b.color ?? "#94a3b8" }} />
+                    <span className="size-2.5 rounded-sm" style={{ background: colorDeMarca(b.color) ?? "#64748b" }} />
                     {b.name} <span className="text-muted-foreground">{b.count}</span>
                   </span>
                 ))}
@@ -127,10 +127,10 @@ export function Overview() {
                         <UserAvatar user={u ?? null} size={24} />
                         <span className="truncate">{u?.name ?? "Sin asignar"}</span>
                       </span>
-                      <ProgressBar value={pct} color="#4ade80" />
+                      <ProgressBar value={pct} color="#1e7f4f" />
                       <span className="text-right text-xs text-muted-foreground">
                         {a.done}/{a.total} tareas
-                        {a.overdue > 0 && <span className="ml-1 text-red-400">· {a.overdue} vencidas</span>}
+                        {a.overdue > 0 && <span className="ml-1 text-red-700">· {a.overdue} vencidas</span>}
                         <br />
                         {Math.round(a.spent * 10) / 10} h{a.estimate ? ` / ${Math.round(a.estimate)} h` : ""}
                       </span>
@@ -239,7 +239,7 @@ export function Overview() {
                   return (
                     <li key={t.id}>
                       <button type="button" onClick={() => openTask(t.id)} className="flex w-full items-center gap-2 rounded-md px-1.5 py-1 text-left text-sm hover:bg-accent/40">
-                        {t.type === "MILESTONE" ? <Diamond className="size-3.5 shrink-0 text-amber-300" fill="currentColor" /> : <span className="size-2 shrink-0 rounded-full" style={{ background: t.status?.color ?? "#94a3b8" }} />}
+                        {t.type === "MILESTONE" ? <Diamond className="size-3.5 shrink-0 text-amber-700" fill="currentColor" /> : <span className="size-2 shrink-0 rounded-full" style={{ background: t.status?.color ?? "#64748b" }} />}
                         <span className="min-w-0 flex-1 truncate">{t.summary}</span>
                         <span className={`shrink-0 text-xs ${dueTone(t.dueDate, false)}`}>{friendlyDate(t.dueDate)}</span>
                         <UserAvatar user={u ?? null} size={18} />

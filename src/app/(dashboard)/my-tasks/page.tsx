@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
+import { colorDeMarca } from "@/lib/pm";
 import Link from "next/link";
 import { differenceInCalendarDays } from "date-fns";
 import { CheckCircle2, Diamond, Inbox } from "lucide-react";
@@ -8,11 +9,11 @@ import { trpc } from "@/lib/trpc";
 import { EmptyState, PriorityFlag, StatusPill, friendlyDate, dueTone, localDay } from "@/components/pm/primitives";
 
 const BUCKETS = [
-  { key: "overdue", label: "Vencidas", tone: "#f87171" },
-  { key: "today", label: "Hoy", tone: "#fbbf24" },
-  { key: "week", label: "Próximos 7 días", tone: "#60a5fa" },
-  { key: "later", label: "Más adelante", tone: "#a78bfa" },
-  { key: "none", label: "Sin fecha", tone: "#94a3b8" },
+  { key: "overdue", label: "Vencidas", tone: "#b3261e" },
+  { key: "today", label: "Hoy", tone: "#b45309" },
+  { key: "week", label: "Próximos 7 días", tone: "#185fa5" },
+  { key: "later", label: "Más adelante", tone: "#8B1510" },
+  { key: "none", label: "Sin fecha", tone: "#64748b" },
 ] as const;
 
 export default function MyTasksPage() {
@@ -59,14 +60,14 @@ export default function MyTasksPage() {
                   className="grid grid-cols-[1fr_auto] items-center gap-3 border-b px-4 py-2.5 text-sm last:border-b-0 hover:bg-accent/30 md:grid-cols-[1fr_180px_110px_90px_80px]"
                 >
                   <span className="flex min-w-0 items-center gap-2">
-                    {t.type === "MILESTONE" && <Diamond className="size-3.5 shrink-0 text-amber-300" fill="currentColor" />}
+                    {t.type === "MILESTONE" && <Diamond className="size-3.5 shrink-0 text-amber-700" fill="currentColor" />}
                     <span className="min-w-0">
                       <span className="block truncate">{t.summary}</span>
                       {t.parent && <span className="block truncate text-xs text-muted-foreground">en {t.parent.summary}</span>}
                     </span>
                   </span>
                   <span className="hidden min-w-0 items-center gap-1.5 text-xs text-muted-foreground md:flex">
-                    <span className="size-2 shrink-0 rounded-full" style={{ background: t.project.color ?? "#a78bfa" }} />
+                    <span className="size-2 shrink-0 rounded-full" style={{ background: colorDeMarca(t.project.color) ?? "#8B1510" }} />
                     <span className="truncate">{t.project.name}</span>
                   </span>
                   <span className="hidden md:block">

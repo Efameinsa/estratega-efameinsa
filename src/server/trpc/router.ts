@@ -25,6 +25,7 @@ import { rumeltRouter } from "@/server/routers/rumelt";
 import { ethicsAuditRouter } from "@/server/routers/ethics";
 import { strategiesRetainedRouter } from "@/server/routers/strategies-retained";
 import { peiRouter } from "@/server/routers/pei";
+import { presentationRouter } from "@/server/routers/presentation";
 import { peyeaRouter } from "@/server/routers/peyea";
 import { ocpRouter } from "@/server/routers/ocp";
 import { policiesRouter } from "@/server/routers/policies";
@@ -79,6 +80,7 @@ export const appRouter = router({
   ethicsAudit: ethicsAuditRouter,
   strategiesRetained: strategiesRetainedRouter,
   pei: peiRouter,
+  presentation: presentationRouter,
   peyea: peyeaRouter,
   ocp: ocpRouter,
   policies: policiesRouter,

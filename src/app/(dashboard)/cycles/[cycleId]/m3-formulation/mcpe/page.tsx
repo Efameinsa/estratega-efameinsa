@@ -34,17 +34,17 @@ interface McpeSetup {
 }
 
 const TYPE_INFO: Record<FactorType, { label: string; color: string; bg: string; border: string }> = {
-  F: { label: "Fortalezas", color: "#4ade80", bg: "rgba(22,163,74,0.08)", border: "rgba(22,163,74,0.35)" },
+  F: { label: "Fortalezas", color: "#1e7f4f", bg: "rgba(22,163,74,0.08)", border: "rgba(22,163,74,0.35)" },
   D: { label: "Debilidades", color: "#F43F5E", bg: "rgba(244,63,94,0.08)", border: "rgba(244,63,94,0.35)" },
-  O: { label: "Oportunidades", color: "#60a5fa", bg: "rgba(37,99,235,0.08)", border: "rgba(37,99,235,0.35)" },
-  A: { label: "Amenazas", color: "#F59E0B", bg: "rgba(245,158,11,0.08)", border: "rgba(245,158,11,0.35)" },
+  O: { label: "Oportunidades", color: "#185fa5", bg: "rgba(37,99,235,0.08)", border: "rgba(37,99,235,0.35)" },
+  A: { label: "Amenazas", color: "#b45309", bg: "rgba(245,158,11,0.08)", border: "rgba(245,158,11,0.35)" },
 };
 
 const PA_COLOR: Record<string, { bg: string; text: string }> = {
-  "1": { bg: "transparent", text: "#ee9c9c" },
-  "2": { bg: "transparent", text: "#f0c283" },
-  "3": { bg: "transparent", text: "#a8cc8d" },
-  "4": { bg: "transparent", text: "#85c9a8" },
+  "1": { bg: "transparent", text: "#b3261e" },
+  "2": { bg: "transparent", text: "#b45309" },
+  "3": { bg: "transparent", text: "#4d7c0f" },
+  "4": { bg: "transparent", text: "#1e7f4f" },
 };
 
 // ───────────────────────────────────────────────────────────────────────
@@ -72,7 +72,7 @@ export default function McpePage() {
         </div>
         <div className="rounded-xl border border-amber-200/60 bg-transparent p-5">
           <div className="flex gap-3">
-            <AlertTriangle className="size-5 shrink-0 text-amber-400 mt-0.5" />
+            <AlertTriangle className="size-5 shrink-0 text-amber-700 mt-0.5" />
             <div>
               <p className="font-medium mb-1">Antes de usar la MCPE necesitas:</p>
               <ul className="text-sm text-muted-foreground mb-3 space-y-1 list-disc pl-4">
@@ -146,7 +146,7 @@ function Paso1({ setup, cycleId, onNext }: { setup: McpeSetup; cycleId: string; 
 
   return (
     <div className="space-y-5">
-      <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 p-4">
+      <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
         <div className="flex gap-3">
           <Info className="size-5 shrink-0 text-primary mt-0.5" />
           <div className="text-sm">
@@ -167,10 +167,10 @@ function Paso1({ setup, cycleId, onNext }: { setup: McpeSetup; cycleId: string; 
             <div className="text-xs text-muted-foreground">factores entrarán al análisis</div>
             <Separator className="my-2" />
             <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="flex items-center gap-1"><span className="size-2 rounded-full bg-transparent0" /> {setup.factors.fortalezas.length} Fortalezas</div>
-              <div className="flex items-center gap-1"><span className="size-2 rounded-full bg-primary/100" /> {setup.factors.oportunidades.length} Oportunidades</div>
-              <div className="flex items-center gap-1"><span className="size-2 rounded-full bg-transparent0" /> {setup.factors.debilidades.length} Debilidades</div>
-              <div className="flex items-center gap-1"><span className="size-2 rounded-full bg-transparent0" /> {setup.factors.amenazas.length} Amenazas</div>
+              <div className="flex items-center gap-1"><span className="size-2 rounded-full bg-emerald-600" /> {setup.factors.fortalezas.length} Fortalezas</div>
+              <div className="flex items-center gap-1"><span className="size-2 rounded-full bg-primary" /> {setup.factors.oportunidades.length} Oportunidades</div>
+              <div className="flex items-center gap-1"><span className="size-2 rounded-full bg-amber-600" /> {setup.factors.debilidades.length} Debilidades</div>
+              <div className="flex items-center gap-1"><span className="size-2 rounded-full bg-red-600" /> {setup.factors.amenazas.length} Amenazas</div>
             </div>
             <div className="text-xs text-muted-foreground pt-2">
               Suma pesos internos: {internalWeight.toFixed(2)} · externos: {externalWeight.toFixed(2)}
@@ -212,7 +212,7 @@ function Paso1({ setup, cycleId, onNext }: { setup: McpeSetup; cycleId: string; 
               <div className="text-xs text-muted-foreground">tiempo estimado</div>
             </div>
           </div>
-          <div className="rounded-md border border-primary/25/60 bg-primary/10/40 p-2 text-xs flex gap-2">
+          <div className="rounded-md border border-primary/15 bg-primary/5 p-2 text-xs flex gap-2">
             <Sparkles className="size-3.5 shrink-0 text-primary mt-0.5" />
             <span>Tip: en el siguiente paso puedes pedir <strong>sugerencias automaticas</strong> al sistema para acelerar la calificacion.</span>
           </div>
@@ -300,7 +300,7 @@ function Paso2({ setup, cycleId, onBack, onNext }: { setup: McpeSetup; cycleId: 
         <Card><CardContent className="p-3"><div className="text-xl font-bold">{setup.factors.all.length}</div><div className="text-[10px] text-muted-foreground">factores</div></CardContent></Card>
         <Card><CardContent className="p-3"><div className="text-xl font-bold">{setup.strategies.length}</div><div className="text-[10px] text-muted-foreground">estrategias</div></CardContent></Card>
         <Card><CardContent className="p-3"><div className="text-xl font-bold">{setup.totalCells - setup.ratedCells}</div><div className="text-[10px] text-muted-foreground">por calificar</div></CardContent></Card>
-        <Card><CardContent className="p-3"><div className="text-xl font-bold text-emerald-400">{setup.progress.toFixed(0)}%</div><div className="text-[10px] text-muted-foreground">progreso</div></CardContent></Card>
+        <Card><CardContent className="p-3"><div className="text-xl font-bold text-emerald-700">{setup.progress.toFixed(0)}%</div><div className="text-[10px] text-muted-foreground">progreso</div></CardContent></Card>
       </div>
 
       {/* Barra de acciones */}
@@ -396,7 +396,7 @@ function Paso2({ setup, cycleId, onBack, onNext }: { setup: McpeSetup; cycleId: 
                   const isLeader = total === Math.max(...Object.values(setup.ptaByStrategy));
                   return (
                     <td key={s.id} className="p-2 text-center">
-                      <div className={`font-bold tabular-nums text-base ${isLeader && total > 0 ? "text-emerald-300" : ""}`}>
+                      <div className={`font-bold tabular-nums text-base ${isLeader && total > 0 ? "text-emerald-700" : ""}`}>
                         {total.toFixed(2)}
                         {isLeader && total > 0 && <Trophy className="inline size-3.5 ml-1 text-amber-500" />}
                       </div>
@@ -449,7 +449,7 @@ function RatingCell({
           className="w-full rounded-md text-sm font-bold text-center border-2 px-1 py-1"
           style={{
             backgroundColor: bg, color: text,
-            borderColor: isSuggested ? "#3B82F6" : isPending ? "#F59E0B" : "transparent",
+            borderColor: isSuggested ? "#3B82F6" : isPending ? "#b45309" : "transparent",
             borderStyle: isPending ? "dashed" : "solid",
           }}
         >
@@ -462,7 +462,7 @@ function RatingCell({
         </select>
         <div className="text-center text-[9px]">
           {isSuggested && <span className="text-primary">✨ Sugerido</span>}
-          {!isSuggested && isPending && <span className="text-amber-400">Pendiente</span>}
+          {!isSuggested && isPending && <span className="text-amber-700">Pendiente</span>}
           {!isPending && !isSuggested && rating?.pta && (
             <span className="text-muted-foreground tabular-nums">PTA: {rating.pta.toFixed(2)}</span>
           )}
@@ -532,7 +532,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: McpeSetup; cycleId: string; 
 
   return (
     <div className="space-y-5">
-      <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 p-4">
+      <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
         <div className="flex gap-3">
           <Info className="size-5 shrink-0 text-primary mt-0.5" />
           <div className="text-sm">
@@ -553,7 +553,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: McpeSetup; cycleId: string; 
             const pct = maxPta > 0 ? (s.ptaTotal / maxPta) * 100 : 0;
             const lowAttract = s.ptaTotal < maxPta * 0.6;
             const isTop3 = i < 3;
-            const medalColor = i === 0 ? "#F59E0B" : i === 1 ? "#94A3B8" : "#fbbf24";
+            const medalColor = i === 0 ? "#b45309" : i === 1 ? "#64748b" : "#b45309";
             return (
               <div key={s.id} className="flex items-start gap-3 rounded-lg border p-3">
                 <div className="flex size-9 items-center justify-center rounded-full font-bold text-sm shrink-0" style={isTop3 ? { backgroundColor: medalColor, color: "white" } : { backgroundColor: "transparent", color: "#4B5563" }}>
@@ -562,7 +562,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: McpeSetup; cycleId: string; 
                 <div className="flex-1 min-w-0 space-y-1.5">
                   <div className="flex items-center gap-2 flex-wrap">
                     <Badge variant="outline" className="font-mono text-[10px]">{s.eCode}</Badge>
-                    {lowAttract && <Badge variant="outline" className="text-[10px] bg-transparent text-amber-300 border-amber-500/30">Bajo atractivo</Badge>}
+                    {lowAttract && <Badge variant="outline" className="text-[10px] bg-transparent text-amber-700 border-amber-500/30">Bajo atractivo</Badge>}
                     <span className="text-xs text-muted-foreground ml-auto">Aparece en {s.totalAppearances} matrices · {s.olpLinks.length} OLP(s)</span>
                   </div>
                   <p className="text-sm leading-snug">{s.text}</p>
@@ -571,7 +571,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: McpeSetup; cycleId: string; 
                       className="absolute top-0 bottom-0 left-0 transition-all duration-700 rounded-full"
                       style={{
                         width: `${pct}%`,
-                        background: `linear-gradient(to right, #4ade80, #F59E0B)`,
+                        background: `linear-gradient(to right, #1e7f4f, #b45309)`,
                       }}
                     />
                   </div>
@@ -629,7 +629,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: McpeSetup; cycleId: string; 
                     <span className="font-bold">{i + 1}.</span>
                     <Badge variant="outline" className="font-mono text-[10px]">{s.eCode}</Badge>
                     <span className="tabular-nums">{s.ptaTotal.toFixed(2)}</span>
-                    {moved && <span className="text-[10px] text-amber-400">(antes #{originalIdx + 1})</span>}
+                    {moved && <span className="text-[10px] text-amber-700">(antes #{originalIdx + 1})</span>}
                   </li>
                 );
               })}

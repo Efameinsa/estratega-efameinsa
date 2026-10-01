@@ -17,7 +17,7 @@ import { Label } from "@/components/ui/label";
 
 type Step = "ORG" | "INVITE" | "CYCLE" | "DONE";
 
-const COLORS = ["#a78bfa", "#34d399", "#7F77DD", "#D85A30", "#D4537E", "#BA7517"];
+const COLORS = ["#c43028", "#34d399", "#185fa5", "#D85A30", "#D4537E", "#BA7517"];
 
 const STEP_META: { key: Step; label: string }[] = [
   { key: "ORG", label: "Organización" },
@@ -58,7 +58,7 @@ function OnboardingContent() {
   const [orgId, setOrgId] = useState("");
   const [orgName, setOrgName] = useState("");
   const [orgDesc, setOrgDesc] = useState("");
-  const [orgColor, setOrgColor] = useState("#a78bfa");
+  const [orgColor, setOrgColor] = useState("#c43028");
 
   // Invite state
   const [inviteCode, setInviteCode] = useState("");
@@ -182,7 +182,7 @@ function OnboardingContent() {
             <>
               <Loader2
                 className="size-8 animate-spin mx-auto mb-4"
-                style={{ color: "#a78bfa" }}
+                style={{ color: "#c43028" }}
               />
               <h2 className="text-lg font-medium mb-1">Procesando tu invitación...</h2>
               <p className="text-sm text-muted-foreground">Esto solo toma un momento</p>
@@ -225,7 +225,7 @@ function OnboardingContent() {
                       )}
                       style={
                         isDone || isActive
-                          ? { backgroundColor: "#a78bfa" }
+                          ? { backgroundColor: "#c43028" }
                           : undefined
                       }
                     >
@@ -400,7 +400,7 @@ function OnboardingContent() {
                 className="rounded-lg px-3 py-2.5 text-[12px] mb-5"
                 style={{
                   backgroundColor: "transparent",
-                  color: "#a78bfa",
+                  color: "#c43028",
                   borderLeft: "3px solid #60a5fa",
                 }}
               >
@@ -577,7 +577,7 @@ function OnboardingContent() {
                       className={cn(
                         "w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-medium flex-shrink-0",
                         item.done
-                          ? "bg-transparent0 text-white"
+                          ? "bg-emerald-600 text-white"
                           : "bg-muted text-muted-foreground border border-border"
                       )}
                     >

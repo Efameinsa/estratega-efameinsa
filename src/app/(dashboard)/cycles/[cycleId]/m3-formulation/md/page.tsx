@@ -19,10 +19,10 @@ import {
 } from "lucide-react";
 
 const MATRIX_INFO = {
-  foda_cruzado: { label: "FODA", color: "#60a5fa" },
-  peyea: { label: "PEYEA", color: "#8B5CF6" },
-  bcg: { label: "BCG", color: "#F59E0B" },
-  ie: { label: "IE", color: "#4ade80" },
+  foda_cruzado: { label: "FODA", color: "#185fa5" },
+  peyea: { label: "PEYEA", color: "#2c2e35" },
+  bcg: { label: "BCG", color: "#b45309" },
+  ie: { label: "IE", color: "#1e7f4f" },
   ge: { label: "GE", color: "#F43F5E" },
 } as const;
 
@@ -106,7 +106,7 @@ export default function MdPage() {
         </div>
         <div className="rounded-xl border border-amber-200/60 bg-transparent p-5">
           <div className="flex gap-3">
-            <AlertTriangle className="size-5 shrink-0 text-amber-400 mt-0.5" />
+            <AlertTriangle className="size-5 shrink-0 text-amber-700 mt-0.5" />
             <div>
               <p className="font-medium mb-1">Sin estrategias retenidas</p>
               <p className="text-sm text-muted-foreground mb-3">
@@ -201,7 +201,7 @@ function Paso1({ setup, cycleId, onNext }: { setup: MdSetup; cycleId: string; on
 
   return (
     <div className="space-y-5">
-      <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 p-4">
+      <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
         <div className="flex gap-3">
           <Info className="size-5 shrink-0 text-primary mt-0.5" />
           <div className="text-sm">
@@ -217,7 +217,7 @@ function Paso1({ setup, cycleId, onNext }: { setup: MdSetup; cycleId: string; on
 
       {matricesPending.length > 0 && (
         <div className="rounded-md border border-amber-200/60 bg-transparent p-3 text-sm flex gap-2">
-          <AlertTriangle className="size-4 shrink-0 text-amber-400 mt-0.5" />
+          <AlertTriangle className="size-4 shrink-0 text-amber-700 mt-0.5" />
           <div>
             <p>Estas trabajando con estrategias de algunas matrices. Para un analisis mas completo, considera terminar:</p>
             <div className="flex gap-2 flex-wrap mt-1">
@@ -250,7 +250,7 @@ function Paso1({ setup, cycleId, onNext }: { setup: MdSetup; cycleId: string; on
             onChange={(e) => setThreshold(Math.max(1, Math.min(5, parseInt(e.target.value) || 3)))}
             className="w-16 rounded-md border-2 border-input bg-muted/40 px-2 py-1 text-sm font-bold text-center focus:bg-background"
           />
-          <Badge variant="outline" className="bg-transparent text-emerald-300 border-emerald-500/30">Recomendado: 3</Badge>
+          <Badge variant="outline" className="bg-transparent text-emerald-700 border-emerald-500/30">Recomendado: 3</Badge>
           <span className="text-xs text-muted-foreground ml-auto">
             Minimo de matrices que deben recomendar una estrategia para que pase al siguiente modulo
           </span>
@@ -259,7 +259,7 @@ function Paso1({ setup, cycleId, onNext }: { setup: MdSetup; cycleId: string; on
 
       {/* Tabla de retenidas */}
       <div>
-        <h3 className="text-sm font-semibold mb-2 text-emerald-300">Retenidas ({overThreshold.length})</h3>
+        <h3 className="text-sm font-semibold mb-2 text-emerald-700">Retenidas ({overThreshold.length})</h3>
         <ConsolidatedTable
           items={overThreshold} threshold={threshold}
           editingId={editingId}
@@ -302,9 +302,9 @@ function Paso1({ setup, cycleId, onNext }: { setup: MdSetup; cycleId: string; on
 
 function FlowCard({ label, value, description, highlight }: { label: string; value: number; description: string; highlight?: boolean }) {
   return (
-    <Card style={highlight ? { borderColor: "#4ade80", borderWidth: 2 } : undefined}>
+    <Card style={highlight ? { borderColor: "#1e7f4f", borderWidth: 2 } : undefined}>
       <CardContent className="p-4 text-center">
-        <div className={`text-3xl font-bold tabular-nums ${highlight ? "text-emerald-400" : ""}`}>{value}</div>
+        <div className={`text-3xl font-bold tabular-nums ${highlight ? "text-emerald-700" : ""}`}>{value}</div>
         <div className="text-xs font-medium mt-1">{label}</div>
         <div className="text-[10px] text-muted-foreground mt-0.5">{description}</div>
       </CardContent>
@@ -409,7 +409,7 @@ function ConsolidatedRow({
             <>
               <p className="text-sm leading-snug">{item.text}</p>
               {item.origins.length > 1 && (
-                <Badge variant="outline" className="text-[10px] mt-1 bg-transparent text-amber-300 border-amber-500/30">
+                <Badge variant="outline" className="text-[10px] mt-1 bg-transparent text-amber-700 border-amber-500/30">
                   {item.origins.length} fusionadas
                 </Badge>
               )}
@@ -431,7 +431,7 @@ function ConsolidatedRow({
           </td>
         ))}
         <td className="p-2 text-center align-top">
-          <span className={`font-bold tabular-nums ${retained ? "text-emerald-300" : ""}`}>{item.totalAppearances}</span>
+          <span className={`font-bold tabular-nums ${retained ? "text-emerald-700" : ""}`}>{item.totalAppearances}</span>
         </td>
         <td className="p-2 align-top text-[10px]">
           {item.olpLinks.length > 0
@@ -523,7 +523,7 @@ function Paso2({ setup, cycleId, onBack, onNext }: { setup: MdSetup; cycleId: st
 
   return (
     <div className="space-y-5">
-      <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 p-4">
+      <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
         <div className="flex gap-3">
           <Info className="size-5 shrink-0 text-primary mt-0.5" />
           <div className="text-sm">
@@ -539,7 +539,7 @@ function Paso2({ setup, cycleId, onBack, onNext }: { setup: MdSetup; cycleId: st
 
       {setup.olps.length === 0 ? (
         <div className="rounded-md border border-amber-200/60 bg-transparent p-4 text-sm flex gap-2">
-          <AlertTriangle className="size-4 shrink-0 text-amber-400 mt-0.5" />
+          <AlertTriangle className="size-4 shrink-0 text-amber-700 mt-0.5" />
           <div>
             <p>No hay OLPs definidos. Define OLPs antes de vincular.</p>
             <Link href={`/cycles/${cycleId}/m3-formulation/olp`}><Button size="sm" className="mt-2">Ir a OLP</Button></Link>
@@ -594,7 +594,7 @@ function Paso2({ setup, cycleId, onBack, onNext }: { setup: MdSetup; cycleId: st
                     })}
                     <td className="p-2 text-center text-xs font-bold tabular-nums">
                       {linkedCount === 0 ? (
-                        <span className="text-amber-400" title="Sin OLPs - revisar relevancia">{linkedCount}</span>
+                        <span className="text-amber-700" title="Sin OLPs - revisar relevancia">{linkedCount}</span>
                       ) : linkedCount}
                     </td>
                   </tr>
@@ -606,7 +606,7 @@ function Paso2({ setup, cycleId, onBack, onNext }: { setup: MdSetup; cycleId: st
                   const n = linksByOlp[o.id] ?? 0;
                   return (
                     <td key={o.id} className="p-2 text-center">
-                      <span className={`font-bold tabular-nums ${n === 0 ? "text-amber-400" : ""}`}>{n}</span>
+                      <span className={`font-bold tabular-nums ${n === 0 ? "text-amber-700" : ""}`}>{n}</span>
                     </td>
                   );
                 })}
@@ -621,13 +621,13 @@ function Paso2({ setup, cycleId, onBack, onNext }: { setup: MdSetup; cycleId: st
       <div className="space-y-1">
         {retained.filter((c) => c.olpLinks.length === 0).map((c) => (
           <div key={c.id} className="rounded-md border border-amber-200/60 bg-transparent p-2 text-xs flex gap-2">
-            <AlertTriangle className="size-3.5 shrink-0 text-amber-400 mt-0.5" />
+            <AlertTriangle className="size-3.5 shrink-0 text-amber-700 mt-0.5" />
             <span><strong>{c.eCode}</strong> no aporta a ningun OLP. ¿Es relevante?</span>
           </div>
         ))}
         {setup.olps.filter((o) => !linksByOlp[o.id]).map((o) => (
           <div key={o.id} className="rounded-md border border-amber-200/60 bg-transparent p-2 text-xs flex gap-2">
-            <AlertTriangle className="size-3.5 shrink-0 text-amber-400 mt-0.5" />
+            <AlertTriangle className="size-3.5 shrink-0 text-amber-700 mt-0.5" />
             <span><strong>{o.olpCode}</strong> ({o.description}) no recibe contribucion de ninguna estrategia retenida.</span>
           </div>
         ))}
@@ -671,7 +671,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: MdSetup; cycleId: string; on
         </CardHeader>
         <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
           <div className="rounded border p-3">
-            <div className="text-2xl font-bold text-emerald-400">{retained.length}</div>
+            <div className="text-2xl font-bold text-emerald-700">{retained.length}</div>
             <div className="text-xs text-muted-foreground">retenidas para MCPE</div>
           </div>
           <div className="rounded border p-3">
@@ -691,13 +691,13 @@ function Paso3({ setup, cycleId, onBack }: { setup: MdSetup; cycleId: string; on
 
       {/* Lista de retenidas */}
       <div>
-        <h3 className="text-sm font-semibold mb-2 text-emerald-300">Estrategias retenidas</h3>
+        <h3 className="text-sm font-semibold mb-2 text-emerald-700">Estrategias retenidas</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {retained.map((c) => (
             <div key={c.id} className="rounded-lg border border-emerald-500/30 bg-transparent p-3 space-y-1.5">
               <div className="flex items-center gap-2">
                 <Badge variant="outline" className="font-mono text-[10px]">{c.eCode}</Badge>
-                <Badge variant="outline" className="text-[10px]" style={{ color: "#4ade80", borderColor: "rgba(22,163,74,0.4)" }}>
+                <Badge variant="outline" className="text-[10px]" style={{ color: "#1e7f4f", borderColor: "rgba(22,163,74,0.4)" }}>
                   {c.totalAppearances} matrices
                 </Badge>
               </div>
@@ -720,7 +720,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: MdSetup; cycleId: string; on
       {/* Diagnostico */}
       {isOk ? (
         <div className="rounded-md border border-emerald-200/60 bg-transparent p-3 text-sm">
-          <Check className="inline size-4 mr-1 text-emerald-400" />
+          <Check className="inline size-4 mr-1 text-emerald-700" />
           <strong>Tu conjunto de estrategias retenidas esta balanceado:</strong>
           <ul className="text-xs text-muted-foreground mt-1 space-y-0.5 pl-4 list-disc">
             <li>{retained.length} estrategias seleccionadas (recomendado: 4-7)</li>
@@ -730,7 +730,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: MdSetup; cycleId: string; on
         </div>
       ) : (
         <div className="rounded-md border border-amber-200/60 bg-transparent p-3 text-sm">
-          <AlertTriangle className="inline size-4 mr-1 text-amber-400" />
+          <AlertTriangle className="inline size-4 mr-1 text-amber-700" />
           <strong>Observaciones:</strong>
           <ul className="text-xs text-muted-foreground mt-1 space-y-0.5 pl-4 list-disc">
             {observations.map((o, i) => <li key={i}>{o}</li>)}

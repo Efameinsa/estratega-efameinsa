@@ -121,7 +121,7 @@ export function exportPolicyManualPdf(ctx: ExportContext) {
   }
 
   // 1. PORTADA
-  doc.setFillColor(24, 95, 165); // #60a5fa
+  doc.setFillColor(24, 95, 165); // #185fa5
   doc.rect(0, 0, pageW, pageH, "F");
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
@@ -534,18 +534,18 @@ export function exportPolicyManualHtml(ctx: ExportContext) {
 <title>Manual de Políticas · ${escape(ctx.organization.name)}</title>
 <style>
   body { font-family: system-ui, sans-serif; max-width: 900px; margin: 40px auto; padding: 0 24px; color: #1e1f21; line-height: 1.55; }
-  header.cover { background: ${ctx.organization.color || "#60a5fa"}; color: white; padding: 64px 32px; border-radius: 16px; margin-bottom: 32px; }
+  header.cover { background: ${ctx.organization.color || "#185fa5"}; color: white; padding: 64px 32px; border-radius: 16px; margin-bottom: 32px; }
   header.cover h1 { font-size: 2.6rem; margin: 0 0 12px; letter-spacing: -0.02em; }
   header.cover .meta { font-size: 0.95rem; opacity: 0.85; margin-top: 16px; }
   section.category { margin: 48px 0; border-left: 4px solid var(--cat-color); padding-left: 20px; }
   section.category h2 { color: var(--cat-color); margin-bottom: 6px; }
   .cat-desc { color: #6b7280; font-size: 0.9rem; margin-top: 0; }
   article.policy { background: #f9fafb; border-radius: 12px; padding: 20px 24px; margin: 16px 0; }
-  article.policy.mandatory { background: #fffbeb; border-left: 4px solid #fbbf24; }
+  article.policy.mandatory { background: #fffbeb; border-left: 4px solid #b45309; }
   article.policy header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
   .code { font-family: ui-monospace, monospace; font-size: 0.8rem; color: #6b7280; }
   article.policy h3 { margin: 0; font-size: 1.15rem; }
-  .badge { background: #fbbf24; color: white; padding: 2px 8px; border-radius: 999px; font-size: 0.7rem; font-weight: 600; }
+  .badge { background: #b45309; color: white; padding: 2px 8px; border-radius: 999px; font-size: 0.7rem; font-weight: 600; }
   article.policy h4 { margin: 16px 0 4px; font-size: 0.85rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; }
   dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 12px 0 0; }
   dt { font-weight: 600; color: #6b7280; font-size: 0.85rem; }

@@ -236,7 +236,7 @@ function CalendarView({
 
   return (
     <div className="space-y-4">
-      <Card className="border-primary/25 bg-primary/10/40">
+      <Card className="border-primary/25 bg-primary/5">
         <CardContent className="py-3 text-left text-sm text-primary">
           <strong>Calendario formal de revisiones.</strong> Las revisiones periódicas son
           lo que mantiene vivo el plan. Cada tipo tiene su enfoque y participantes.
@@ -269,7 +269,7 @@ function CalendarView({
       {/* Banners */}
       {nextReview && isSameDay(nextReview.scheduledAt, today) && (
         <Card className="border-amber-500/30 bg-transparent">
-          <CardContent className="flex items-center justify-between gap-3 py-3 text-sm text-amber-300">
+          <CardContent className="flex items-center justify-between gap-3 py-3 text-sm text-amber-700">
             <div>
               <strong>Revisión programada para hoy:</strong> {nextReview.title}
             </div>
@@ -667,7 +667,7 @@ function CalendarConfigForm({
                   }
                   className={cn(
                     "relative inline-block h-5 w-9 rounded-full transition",
-                    cfg?.active ? "bg-transparent0" : "bg-muted-foreground/30",
+                    cfg?.active ? "bg-emerald-600" : "bg-muted-foreground/30",
                   )}
                 >
                   <span
@@ -1201,7 +1201,7 @@ function ReviewRoom({
                 <strong>Presidente</strong>
                 {review.presidentSignedAt && review.presidentSignedName ? (
                   <div className="text-xs">
-                    <CheckCircle2 className="mr-1 inline size-3.5 text-emerald-400" />
+                    <CheckCircle2 className="mr-1 inline size-3.5 text-emerald-700" />
                     Firmado por {review.presidentSignedName}
                     <div className="text-[10px] text-muted-foreground">
                       {new Date(review.presidentSignedAt).toLocaleString("es-PE")}
@@ -1217,7 +1217,7 @@ function ReviewRoom({
                 <strong>Secretario</strong>
                 {review.secretarySignedAt && review.secretarySignedName ? (
                   <div className="text-xs">
-                    <CheckCircle2 className="mr-1 inline size-3.5 text-emerald-400" />
+                    <CheckCircle2 className="mr-1 inline size-3.5 text-emerald-700" />
                     Firmado por {review.secretarySignedName}
                     <div className="text-[10px] text-muted-foreground">
                       {new Date(review.secretarySignedAt).toLocaleString("es-PE")}
@@ -1231,7 +1231,7 @@ function ReviewRoom({
               </div>
             </div>
             {review.actSigned && (
-              <p className="text-xs text-emerald-300">
+              <p className="text-xs text-emerald-700">
                 Acta inmutable. Para modificar se requiere acta complementaria.
               </p>
             )}

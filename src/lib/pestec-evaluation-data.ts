@@ -226,37 +226,37 @@ export const PESTEC_VARIABLES: PestecVariableData[] = [
   {
     key: "politico", letra: "P", nombre: "Politico",
     descripcion: "Fuerzas politicas, gubernamentales y legales que afectan al sector",
-    color: "#60a5fa", colorLight: "transparent", icono: "landmark",
+    color: "#185fa5", colorLight: "transparent", icono: "landmark",
     subVariables: P_VARS,
   },
   {
     key: "economico", letra: "E", nombre: "Economico",
     descripcion: "Variables macroeconomicas, financieras y de mercado",
-    color: "#34d399", colorLight: "transparent", icono: "trending-up",
+    color: "#1e7f4f", colorLight: "transparent", icono: "trending-up",
     subVariables: E_VARS,
   },
   {
     key: "social", letra: "S", nombre: "Social",
     descripcion: "Factores demograficos, culturales y de estilo de vida",
-    color: "#fbbf24", colorLight: "transparent", icono: "users",
+    color: "#b45309", colorLight: "transparent", icono: "users",
     subVariables: S_VARS,
   },
   {
     key: "tecnologico", letra: "T", nombre: "Tecnologico",
     descripcion: "Innovacion, digitalizacion e infraestructura tecnologica",
-    color: "#a78bfa", colorLight: "transparent", icono: "cpu",
+    color: "#8B1510", colorLight: "transparent", icono: "cpu",
     subVariables: T_VARS,
   },
   {
     key: "ecologico", letra: "Ec", nombre: "Ecologico",
     descripcion: "Medio ambiente, sostenibilidad y regulacion ambiental",
-    color: "#2dd4bf", colorLight: "transparent", icono: "leaf",
+    color: "#0f766e", colorLight: "transparent", icono: "leaf",
     subVariables: Ec_VARS,
   },
   {
     key: "competitivo", letra: "C", nombre: "Competitivo",
     descripcion: "Estructura competitiva del sector, fuerzas de Porter",
-    color: "#f472b6", colorLight: "transparent", icono: "swords",
+    color: "#be185d", colorLight: "transparent", icono: "swords",
     subVariables: C_VARS,
   },
 ];
@@ -265,6 +265,6 @@ export const PESTEC_EVIDENCE_CHIPS = COMMON_CHIPS;
 
 // Color config for O/A type — dark theme: sin fondo claro, solo borde + texto
 export const OA_CONFIG = {
-  O: { label: "Oportunidad", bg: "transparent", border: "#7aa8e0", text: "#9ec2ec" },
-  A: { label: "Amenaza", bg: "transparent", border: "#e08a8a", text: "#ee9c9c" },
+  O: { label: "Oportunidad", bg: "transparent", border: "#7aa8e0", text: "#185fa5" },
+  A: { label: "Amenaza", bg: "transparent", border: "#b3261e", text: "#b3261e" },
 } as const;

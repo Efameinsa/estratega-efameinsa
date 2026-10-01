@@ -47,11 +47,11 @@ const FORCE_ICONS: Record<string, React.ElementType> = {
 const FORCE_STYLES: Record<string, {
   color: string; bg: string; border: string; badgeBg: string; colorHex: string;
 }> = {
-  rivalidad:   { color: "text-rose-400 dark:text-rose-400",   bg: "bg-transparent0/10",   border: "border-rose-500/20 hover:border-rose-500/40",   badgeBg: "bg-transparent0",   colorHex: "#E11D48" },
-  entrantes:   { color: "text-amber-400 dark:text-amber-400", bg: "bg-transparent0/10",  border: "border-amber-500/20 hover:border-amber-500/40", badgeBg: "bg-transparent0",  colorHex: "#fbbf24" },
-  sustitutos:  { color: "text-purple-400 dark:text-purple-400", bg: "bg-transparent0/10", border: "border-purple-500/20 hover:border-purple-500/40", badgeBg: "bg-transparent0", colorHex: "#a78bfa" },
-  compradores: { color: "text-primary dark:text-primary",   bg: "bg-primary/100/10",   border: "border-primary/150/20 hover:border-primary/150/40",   badgeBg: "bg-primary/100",   colorHex: "#a78bfa" },
-  proveedores: { color: "text-teal-400 dark:text-teal-400",   bg: "bg-transparent0/10",   border: "border-teal-500/20 hover:border-teal-500/40",   badgeBg: "bg-transparent0",   colorHex: "#22d3ee" },
+  rivalidad:   { color: "text-rose-700 dark:text-rose-700",   bg: "bg-rose-500/10",   border: "border-rose-500/20 hover:border-rose-500/40",   badgeBg: "bg-rose-600",   colorHex: "#E11D48" },
+  entrantes:   { color: "text-amber-700 dark:text-amber-700", bg: "bg-amber-500/10",  border: "border-amber-500/20 hover:border-amber-500/40", badgeBg: "bg-amber-600",  colorHex: "#b45309" },
+  sustitutos:  { color: "text-stone-700 dark:text-stone-700", bg: "bg-stone-500/10", border: "border-stone-500/20 hover:border-stone-500/40", badgeBg: "bg-stone-600", colorHex: "#57534e" },
+  compradores: { color: "text-primary dark:text-primary",   bg: "bg-primary/10",   border: "border-primary/20 hover:border-primary/40",   badgeBg: "bg-primary",   colorHex: "#8B1510" },
+  proveedores: { color: "text-teal-700 dark:text-teal-700",   bg: "bg-teal-500/10",   border: "border-teal-500/20 hover:border-teal-500/40",   badgeBg: "bg-teal-600",   colorHex: "#0e7490" },
 };
 
 // ---------------------------------------------------------------------------
@@ -163,7 +163,7 @@ function ForceCard({
               {evaluatedCount}/{subfactorCount} subfactores
             </span>
             {saved && (
-              <span className="text-[11px] font-medium text-green-400 dark:text-green-400">
+              <span className="text-[11px] font-medium text-green-700 dark:text-green-700">
                 Guardada
               </span>
             )}
@@ -290,10 +290,10 @@ function ForcePanel({
 
       {/* Methodological note */}
       <div className="flex items-start gap-2 rounded-lg border p-3"
-        style={{ borderColor: "#fbbf24", backgroundColor: "transparent" }}
+        style={{ borderColor: "#b45309", backgroundColor: "transparent" }}
       >
-        <Info className="size-4 shrink-0 mt-0.5" style={{ color: "#fbbf24" }} />
-        <p className="text-[12px]" style={{ color: "#f0c283" }}>
+        <Info className="size-4 shrink-0 mt-0.5" style={{ color: "#b45309" }} />
+        <p className="text-[12px]" style={{ color: "#b45309" }}>
           Desliza hacia la derecha para indicar <strong>mayor presion</strong> sobre el sector.
           Mayor presion = menor atractividad = tiende a generar Amenazas en la MEFE.
         </p>
@@ -344,19 +344,19 @@ function ForcePanel({
       <div className="flex items-center gap-3">
         <button type="button" onClick={onSave} disabled={saving}
           className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-medium text-white transition-all cursor-pointer disabled:opacity-50"
-          style={{ backgroundColor: "#a78bfa" }}
+          style={{ backgroundColor: "#8B1510" }}
         >
           <Save className="size-3.5" />
           Guardar fuerza
         </button>
         <button type="button"
           className="inline-flex items-center gap-1.5 rounded-lg border px-4 py-2 text-[13px] font-medium transition-all cursor-pointer"
-          style={{ borderColor: "#a78bfa", color: "#a78bfa" }}
+          style={{ borderColor: "#8B1510", color: "#8B1510" }}
           onClick={() => toast.info("La asistencia de IA estara disponible proximamente.")}
         >
           <span className="relative flex size-2">
-            <span className="absolute inline-flex size-full animate-ping rounded-full opacity-75" style={{ backgroundColor: "#a78bfa" }} />
-            <span className="relative inline-flex size-2 rounded-full" style={{ backgroundColor: "#a78bfa" }} />
+            <span className="absolute inline-flex size-full animate-ping rounded-full opacity-75" style={{ backgroundColor: "#8B1510" }} />
+            <span className="relative inline-flex size-2 rounded-full" style={{ backgroundColor: "#8B1510" }} />
           </span>
           <Sparkles className="size-3.5" />
           Profundizar con IA
@@ -375,10 +375,10 @@ function ForcePanel({
           </div>
 
           <div className="flex items-start gap-2 rounded-lg border p-3"
-            style={{ borderColor: "#a78bfa", backgroundColor: "transparent" }}
+            style={{ borderColor: "#8B1510", backgroundColor: "transparent" }}
           >
-            <Info className="size-4 shrink-0 mt-0.5" style={{ color: "#a78bfa" }} />
-            <p className="text-[12px]" style={{ color: "#9ec2ec" }}>
+            <Info className="size-4 shrink-0 mt-0.5" style={{ color: "#8B1510" }} />
+            <p className="text-[12px]" style={{ color: "#185fa5" }}>
               Estos factores se agregan a la variable C (Competitivo) del PESTEC y luego a la MEFE.
               Solo deberas asignar el peso cuando estes en la pantalla de MEFE.
             </p>
@@ -394,14 +394,14 @@ function ForcePanel({
                 <div key={s.subfactorId}
                   className="rounded-xl border p-3.5 transition-all"
                   style={{
-                    borderColor: isAccepted ? "#34d399" : isRejected ? "var(--color-border-tertiary)" : (isO ? "#a78bfa" : "#fca5a5"),
+                    borderColor: isAccepted ? "#1e7f4f" : isRejected ? "var(--color-border-tertiary)" : (isO ? "#1e7f4f" : "#b3261e"),
                     backgroundColor: isAccepted ? "transparent" : "transparent",
                     opacity: isRejected ? 0.4 : 1,
                   }}
                 >
                   <div className="flex items-start gap-2.5">
                     <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium text-white shrink-0 mt-0.5"
-                      style={{ backgroundColor: isO ? "#a78bfa" : "#fca5a5" }}
+                      style={{ backgroundColor: isO ? "#1e7f4f" : "#b3261e" }}
                     >
                       {isO ? "Oportunidad" : "Amenaza"}
                     </span>
@@ -415,14 +415,14 @@ function ForcePanel({
 
                   <div className="flex items-center gap-2 mt-3">
                     {isAccepted ? (
-                      <span className="inline-flex items-center gap-1 text-[12px] font-medium" style={{ color: "#34d399" }}>
+                      <span className="inline-flex items-center gap-1 text-[12px] font-medium" style={{ color: "#1e7f4f" }}>
                         <Check className="size-3.5" /> Aceptado — ira a la MEFE
                       </span>
                     ) : isRejected ? (
                       <button type="button"
                         onClick={() => onReactivateFactor(s.subfactorId)}
                         className="text-[12px] font-medium cursor-pointer"
-                        style={{ color: "#a78bfa" }}
+                        style={{ color: "#8B1510" }}
                       >
                         Reactivar
                       </button>
@@ -431,7 +431,7 @@ function ForcePanel({
                         <button type="button"
                           onClick={() => onAcceptFactor(s)}
                           className="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-[12px] font-medium text-white cursor-pointer"
-                          style={{ backgroundColor: "#a78bfa" }}
+                          style={{ backgroundColor: "#8B1510" }}
                         >
                           <Check className="size-3" /> Aceptar → MEFE
                         </button>
@@ -583,7 +583,7 @@ export default function PorterPage() {
       <div className="space-y-2">
         <div className="flex items-center gap-3">
           <div className="flex size-12 items-center justify-center rounded-2xl" style={{ backgroundColor: "transparent" }}>
-            <Shield className="size-6" style={{ color: "#f0abfc" }} />
+            <Shield className="size-6" style={{ color: "#8B1510" }} />
           </div>
           <div>
             <h1 className="text-2xl font-medium tracking-tight">Cinco Fuerzas de Porter</h1>

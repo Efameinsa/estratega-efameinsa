@@ -187,7 +187,7 @@ function ViewSwitcher({
               <Icon className="size-4" />
               {v.label}
               {v.count != null && v.count > 0 && (
-                <Badge className="bg-transparent0 text-[10px]">{v.count}</Badge>
+                <Badge className="bg-primary text-[10px] text-white">{v.count}</Badge>
               )}
             </button>
           );
@@ -238,7 +238,7 @@ function InboxView({
     <div className="space-y-4">
       {critical.length > 0 && (
         <Card className="border-red-500/30 bg-transparent">
-          <CardContent className="flex items-start gap-2 py-3 text-sm text-red-300">
+          <CardContent className="flex items-start gap-2 py-3 text-sm text-red-700">
             <AlertCircle className="mt-0.5 size-5" />
             <div>
               <strong>Tienes {critical.length} alertas críticas que requieren atención inmediata.</strong>
@@ -263,8 +263,8 @@ function InboxView({
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <MetricCard label="Total activas" value={counts.total} />
-        <MetricCard label="Críticas" value={counts.critica} color="#f87171" />
-        <MetricCard label="Importantes" value={counts.importante} color="#fbbf24" />
+        <MetricCard label="Críticas" value={counts.critica} color="#b3261e" />
+        <MetricCard label="Importantes" value={counts.importante} color="#b45309" />
         <MetricCard label="Sin asignar" value={counts.sinAsignar} color="#A8A29E" />
       </div>
 
@@ -273,13 +273,13 @@ function InboxView({
         <FilterPill
           active={filter === "critica"}
           label={`Críticas (${counts.critica})`}
-          color="#f87171"
+          color="#b3261e"
           onClick={() => setFilter("critica")}
         />
         <FilterPill
           active={filter === "importante"}
           label={`Importantes (${counts.importante})`}
-          color="#fbbf24"
+          color="#b45309"
           onClick={() => setFilter("importante")}
         />
         <FilterPill
@@ -368,8 +368,8 @@ function FilterPill({
         active ? "text-white shadow-sm" : "text-muted-foreground hover:text-foreground",
       )}
       style={{
-        borderColor: active ? color ?? "#94a3b8" : "transparent",
-        backgroundColor: active ? color ?? "#94a3b8" : "rgba(0,0,0,0.04)",
+        borderColor: active ? color ?? "#64748b" : "transparent",
+        backgroundColor: active ? color ?? "#64748b" : "rgba(0,0,0,0.04)",
       }}
     >
       {label}
@@ -400,7 +400,7 @@ function AlertCardInbox({
   const Icon = TYPE_ICONS[alert.type] ?? AlertCircle;
   const prio = PRIORITY_COLORS[alert.priority as Priority];
   const status = STATUS_COLORS[alert.status as AlertStatus];
-  const borderColor = alert.priority === "alta" ? "#f87171" : "rgba(0,0,0,0.08)";
+  const borderColor = alert.priority === "alta" ? "#b3261e" : "rgba(0,0,0,0.08)";
 
   return (
     <Card style={{ borderLeftColor: borderColor, borderLeftWidth: 4 }}>
@@ -450,7 +450,7 @@ function AlertCardInbox({
               <span>{alert.assignee.name}</span>
             </div>
           ) : (
-            <Badge variant="outline" className="border-amber-400 text-[10px] text-amber-300">
+            <Badge variant="outline" className="border-amber-400 text-[10px] text-amber-700">
               Sin asignar
             </Badge>
           )}
@@ -502,7 +502,7 @@ function RulesView({ setup, cycleId }: { setup: SetupData; cycleId: string }) {
 
   return (
     <div className="space-y-4">
-      <Card className="border-primary/25 bg-primary/10/40">
+      <Card className="border-primary/25 bg-primary/5">
         <CardContent className="py-3 text-left text-sm text-primary">
           Las reglas vienen pre-configuradas con buenas prácticas. Ajusta umbrales o desactiva
           las que no necesites.
@@ -612,7 +612,7 @@ function RuleCard({
                 onClick={() => onToggle(!rule.active)}
                 className={cn(
                   "relative inline-block h-5 w-9 rounded-full transition",
-                  rule.active ? "bg-transparent0" : "bg-muted-foreground/30",
+                  rule.active ? "bg-emerald-600" : "bg-muted-foreground/30",
                 )}
               >
                 <span
@@ -805,18 +805,18 @@ function HistoryView({ cycleId }: { cycleId: string }) {
         <MetricCard
           label="Resueltas"
           value={stats.byStatus["resuelta"] ?? 0}
-          color="#4ade80"
+          color="#1e7f4f"
         />
         <MetricCard
           label="Ignoradas"
           value={stats.byStatus["ignorada"] ?? 0}
           color="#a8a29e"
         />
-        <MetricCard label="Reactivadas" value={stats.reactivatedCount} color="#c084fc" />
+        <MetricCard label="Reactivadas" value={stats.reactivatedCount} color="#a14a3f" />
         <MetricCard
           label="Tiempo prom. resol."
           value={stats.avgResolutionDays}
-          color="#38bdf8"
+          color="#0369a1"
         />
       </div>
 

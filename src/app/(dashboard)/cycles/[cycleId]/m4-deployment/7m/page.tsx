@@ -273,7 +273,7 @@ function Step1({
 
   return (
     <div className="space-y-6">
-      <Card className="border-primary/25 bg-primary/10/40">
+      <Card className="border-primary/25 bg-primary/5">
         <CardContent className="py-4 text-left text-sm text-primary">
           <strong className="block">Identifica los recursos para ejecutar tu plan.</strong>
           <span className="text-primary/80">
@@ -284,7 +284,7 @@ function Step1({
       </Card>
 
       <Card className="border-emerald-500/30 bg-transparent">
-        <CardContent className="py-4 text-left text-sm text-emerald-300">
+        <CardContent className="py-4 text-left text-sm text-emerald-700">
           <strong>Necesidades pre-calculadas automáticamente.</strong> Origen:{" "}
           {setup.ocps.length} OCPs, {setup.structure?.nodes.length ?? 0} áreas en la
           estructura, {setup.strategies.length + setup.consolidated.length} estrategias.
@@ -395,7 +395,7 @@ function Step1({
                             </td>
                             <td className="px-2 py-2 text-[10px]">
                               {n.origin === "auto_detected" ? (
-                                <span className="text-emerald-400">⚡ Auto</span>
+                                <span className="text-emerald-700">⚡ Auto</span>
                               ) : (
                                 <span className="text-muted-foreground">Manual</span>
                               )}
@@ -422,7 +422,7 @@ function Step1({
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Las necesidades marcadas con <span className="text-emerald-400">⚡ Auto</span> vienen del
+        Las necesidades marcadas con <span className="text-emerald-700">⚡ Auto</span> vienen del
         análisis de tus OCPs y estrategias. Puedes editar montos, agregar necesidades manuales o
         eliminar las que no apliquen.
       </p>
@@ -690,7 +690,7 @@ function Step2({
       {/* Alertas */}
       {alerts.length > 0 && (
         <Card className="border-amber-500/30 bg-transparent">
-          <CardContent className="space-y-1 py-3 text-xs text-amber-300">
+          <CardContent className="space-y-1 py-3 text-xs text-amber-700">
             {alerts.map((a, i) => (
               <div key={i} className="flex items-start gap-2">
                 <AlertTriangle className="mt-0.5 size-3.5 shrink-0" />
@@ -775,8 +775,8 @@ function MetricBlock({
         <div
           className={cn(
             "mt-1 text-xl font-semibold",
-            tone === "ok" && "text-emerald-300",
-            tone === "warn" && "text-amber-300",
+            tone === "ok" && "text-emerald-700",
+            tone === "warn" && "text-amber-700",
           )}
         >
           {value}
@@ -1198,7 +1198,7 @@ function Step3({
         </div>
       </div>
 
-      <Card className="border-primary/25 bg-primary/10/40">
+      <Card className="border-primary/25 bg-primary/5">
         <CardContent className="py-4 text-left text-sm text-primary">
           <strong>Plan integral de recursos listo.</strong> Tu organización requiere{" "}
           <strong>{formatMoneyShort(totalEstimated)} USD</strong> de inversión y{" "}
@@ -1300,10 +1300,10 @@ function Step3({
                     <td className="px-2 py-2 text-right">
                       {formatMoneyShort(total)}
                     </td>
-                    <td className="px-2 py-2 text-right text-emerald-300">
+                    <td className="px-2 py-2 text-right text-emerald-700">
                       {formatMoneyShort(secured)}
                     </td>
-                    <td className="px-2 py-2 text-right text-amber-300">
+                    <td className="px-2 py-2 text-right text-amber-700">
                       {formatMoneyShort(gap)}
                     </td>
                     <td className="px-2 py-2 text-center">
@@ -1323,10 +1323,10 @@ function Step3({
                 <td className="px-3 py-2">TOTAL</td>
                 <td className="px-2 py-2 text-right">{setup.needs.length}</td>
                 <td className="px-2 py-2 text-right">{formatMoneyShort(totalEstimated)}</td>
-                <td className="px-2 py-2 text-right text-emerald-300">
+                <td className="px-2 py-2 text-right text-emerald-700">
                   {formatMoneyShort(totalSecured)}
                 </td>
-                <td className="px-2 py-2 text-right text-amber-300">
+                <td className="px-2 py-2 text-right text-amber-700">
                   {formatMoneyShort(totalGap)}
                 </td>
                 <td />
@@ -1340,7 +1340,7 @@ function Step3({
       {criticalGaps.length > 0 && (
         <Card className="border-rose-500/30 bg-transparent">
           <CardHeader>
-            <CardTitle className="text-left text-base text-rose-300">
+            <CardTitle className="text-left text-base text-rose-700">
               Brechas críticas ({criticalGaps.length})
             </CardTitle>
           </CardHeader>
@@ -1361,7 +1361,7 @@ function Step3({
                     </Badge>
                     <span>{g.description}</span>
                   </div>
-                  <span className="font-semibold text-rose-300">
+                  <span className="font-semibold text-rose-700">
                     Brecha: {formatMoneyShort(g.gap)} USD
                   </span>
                 </div>
@@ -1392,8 +1392,8 @@ function Step3({
         <CardContent className="flex items-start gap-3 py-4 text-left text-sm">
           {totalGap === 0 && setup.needs.length > 0 ? (
             <>
-              <CheckCircle2 className="mt-0.5 size-5 text-emerald-400" />
-              <span className="text-emerald-300">
+              <CheckCircle2 className="mt-0.5 size-5 text-emerald-700" />
+              <span className="text-emerald-700">
                 <strong>Plan de recursos completo.</strong> Todas las necesidades están
                 aseguradas. Listo para presentar al directorio e integrarse al Plan Estratégico
                 Integral.
@@ -1401,8 +1401,8 @@ function Step3({
             </>
           ) : (
             <>
-              <AlertTriangle className="mt-0.5 size-5 text-amber-400" />
-              <span className="text-amber-300">
+              <AlertTriangle className="mt-0.5 size-5 text-amber-700" />
+              <span className="text-amber-700">
                 <strong>Plan con brechas pendientes.</strong> Revisa las brechas críticas y
                 asegura financiamiento antes de cerrar M4.
               </span>
@@ -1425,7 +1425,7 @@ function Step3({
         </CardContent>
       </Card>
 
-      <Card className="border-primary/25 bg-primary/10/30">
+      <Card className="border-primary/25 bg-primary/5">
         <CardContent className="py-4 text-sm text-left text-primary">
           <strong className="block">¿Qué sigue?</strong>
           Con tus recursos definidos, has completado M4 · Implementación. El siguiente paso

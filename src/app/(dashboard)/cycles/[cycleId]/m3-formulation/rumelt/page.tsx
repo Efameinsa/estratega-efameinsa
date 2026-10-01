@@ -25,12 +25,12 @@ const CRITERION_ICONS: Record<RumeltCriterion, React.ElementType> = {
 const CRITERION_ORDER: RumeltCriterion[] = ["consistencia", "consonancia", "ventaja", "factibilidad"];
 
 const VERDICT_INFO = {
-  aprobada: { label: "Aprobada", color: "#4ade80", bg: "rgba(22,163,74,0.10)", border: "rgba(22,163,74,0.40)", icon: "✓" },
-  en_revision: { label: "En revision", color: "#F59E0B", bg: "rgba(245,158,11,0.10)", border: "rgba(245,158,11,0.40)", icon: "!" },
-  rechazada: { label: "Rechazada", color: "#f87171", bg: "rgba(220,38,38,0.10)", border: "rgba(220,38,38,0.40)", icon: "✗" },
-  pendiente: { label: "Pendiente", color: "#9a91b8", bg: "rgba(107,114,128,0.08)", border: "rgba(107,114,128,0.30)", icon: "—" },
-  reformulada: { label: "Reformulada", color: "#8B5CF6", bg: "rgba(139,92,246,0.10)", border: "rgba(139,92,246,0.40)", icon: "↻" },
-  aprobada_manual: { label: "Aprobada manual", color: "#4ade80", bg: "rgba(22,163,74,0.10)", border: "rgba(22,163,74,0.40)", icon: "✓" },
+  aprobada: { label: "Aprobada", color: "#1e7f4f", bg: "rgba(22,163,74,0.10)", border: "rgba(22,163,74,0.40)", icon: "✓" },
+  en_revision: { label: "En revision", color: "#b45309", bg: "rgba(245,158,11,0.10)", border: "rgba(245,158,11,0.40)", icon: "!" },
+  rechazada: { label: "Rechazada", color: "#b3261e", bg: "rgba(220,38,38,0.10)", border: "rgba(220,38,38,0.40)", icon: "✗" },
+  pendiente: { label: "Pendiente", color: "#6b6b6b", bg: "rgba(107,114,128,0.08)", border: "rgba(107,114,128,0.30)", icon: "—" },
+  reformulada: { label: "Reformulada", color: "#2c2e35", bg: "rgba(44, 46, 53,0.10)", border: "rgba(44, 46, 53,0.40)", icon: "↻" },
+  aprobada_manual: { label: "Aprobada manual", color: "#1e7f4f", bg: "rgba(22,163,74,0.10)", border: "rgba(22,163,74,0.40)", icon: "✓" },
 } as const;
 
 type VerdictKey = keyof typeof VERDICT_INFO;
@@ -73,7 +73,7 @@ export default function RumeltPage() {
         </div>
         <div className="rounded-xl border border-amber-200/60 bg-transparent p-5">
           <div className="flex gap-3">
-            <AlertTriangle className="size-5 shrink-0 text-amber-400 mt-0.5" />
+            <AlertTriangle className="size-5 shrink-0 text-amber-700 mt-0.5" />
             <div>
               <p className="font-medium mb-1">Sin estrategias para evaluar</p>
               <p className="text-sm text-muted-foreground mb-3">
@@ -161,7 +161,7 @@ function Paso1({ setup, cycleId, onNext }: { setup: RumeltSetup; cycleId: string
 
   return (
     <div className="space-y-5">
-      <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 p-4">
+      <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
         <div className="flex gap-3">
           <Info className="size-5 shrink-0 text-primary mt-0.5" />
           <div className="text-sm">
@@ -311,7 +311,7 @@ function StrategyEvaluator({
               <RefreshCw className="size-4 mr-1.5" /> Reformular {strategy.eCode}
             </Button>
           ) : (
-            <Card className="border-2 border-purple-500/30">
+            <Card className="border-2 border-rose-500/30">
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm">Reformular {strategy.eCode}</CardTitle>
               </CardHeader>
@@ -391,14 +391,14 @@ function CriterionCard({
           <button
             type="button"
             onClick={() => onPass(justification)}
-            className={`flex-1 rounded-md py-2 text-sm font-medium transition-all border-2 ${passes === true ? "bg-transparent text-emerald-300 border-emerald-500" : "border-input hover:border-emerald-400 text-muted-foreground"}`}
+            className={`flex-1 rounded-md py-2 text-sm font-medium transition-all border-2 ${passes === true ? "bg-transparent text-emerald-700 border-emerald-500" : "border-input hover:border-emerald-400 text-muted-foreground"}`}
           >
             ✓ Pasa
           </button>
           <button
             type="button"
             onClick={() => onFail(justification)}
-            className={`flex-1 rounded-md py-2 text-sm font-medium transition-all border-2 ${passes === false ? "bg-transparent text-rose-300 border-rose-500" : "border-input hover:border-rose-400 text-muted-foreground"}`}
+            className={`flex-1 rounded-md py-2 text-sm font-medium transition-all border-2 ${passes === false ? "bg-transparent text-rose-700 border-rose-500" : "border-input hover:border-rose-400 text-muted-foreground"}`}
           >
             ✗ No pasa
           </button>
@@ -423,7 +423,7 @@ function CriterionCard({
         {/* Sugerencia automatica si no pasa */}
         {passes === false && criterionEval?.suggestion && (
           <div className="rounded-md border border-amber-200/60 bg-transparent p-2 text-xs flex gap-2">
-            <Sparkles className="size-3.5 shrink-0 text-amber-400 mt-0.5" />
+            <Sparkles className="size-3.5 shrink-0 text-amber-700 mt-0.5" />
             <span><strong>Sugerencia del sistema:</strong> {criterionEval.suggestion}</span>
           </div>
         )}
@@ -520,8 +520,8 @@ function Paso2({ setup, cycleId: _cycleId, onBack, onNext }: { setup: RumeltSetu
                       const passes = cri?.passes;
                       return (
                         <td key={c} className="p-2 text-center">
-                          {passes === true && <span className="text-emerald-400 font-bold">✓</span>}
-                          {passes === false && <span className="text-rose-400 font-bold">✗</span>}
+                          {passes === true && <span className="text-emerald-700 font-bold">✓</span>}
+                          {passes === false && <span className="text-rose-700 font-bold">✗</span>}
                           {passes === null && <span className="text-muted-foreground">—</span>}
                           {passes === undefined && <span className="text-muted-foreground">—</span>}
                         </td>
@@ -613,7 +613,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: RumeltSetup; cycleId: string
       {/* Aprobadas */}
       {aprobadas.length > 0 && (
         <div>
-          <h3 className="text-sm font-semibold mb-2 text-emerald-300">A · Estrategias aprobadas ({aprobadas.length})</h3>
+          <h3 className="text-sm font-semibold mb-2 text-emerald-700">A · Estrategias aprobadas ({aprobadas.length})</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {aprobadas.map((s) => (
               <DecisionCard key={s.id} strategy={s} verdict="aprobada" evaluation={setup.evalsMap[s.id] ?? null} />
@@ -625,7 +625,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: RumeltSetup; cycleId: string
       {/* En revision */}
       {enRevision.length > 0 && (
         <div>
-          <h3 className="text-sm font-semibold mb-2 text-amber-300">B · En revision ({enRevision.length})</h3>
+          <h3 className="text-sm font-semibold mb-2 text-amber-700">B · En revision ({enRevision.length})</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {enRevision.map((s) => (
               <DecisionCard
@@ -642,7 +642,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: RumeltSetup; cycleId: string
       {/* Contingencia */}
       {rechazadas.length > 0 && (
         <div>
-          <h3 className="text-sm font-semibold mb-2 text-rose-300">C · En contingencia ({rechazadas.length})</h3>
+          <h3 className="text-sm font-semibold mb-2 text-rose-700">C · En contingencia ({rechazadas.length})</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {rechazadas.map((s) => {
               const e = setup.evalsMap[s.id];
@@ -722,8 +722,8 @@ function DecisionCard({
       )}
       {(onApproveManual || onMoveContingency) && (
         <div className="flex gap-2 pt-1">
-          {onApproveManual && <Button size="sm" variant="outline" onClick={onApproveManual} className="text-emerald-300">Aprobar manualmente</Button>}
-          {onMoveContingency && <Button size="sm" variant="outline" onClick={onMoveContingency} className="text-rose-300">A contingencia</Button>}
+          {onApproveManual && <Button size="sm" variant="outline" onClick={onApproveManual} className="text-emerald-700">Aprobar manualmente</Button>}
+          {onMoveContingency && <Button size="sm" variant="outline" onClick={onMoveContingency} className="text-rose-700">A contingencia</Button>}
         </div>
       )}
     </div>

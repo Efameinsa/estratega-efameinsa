@@ -62,9 +62,9 @@ interface MefiFactor {
 
 function MefiStatusBadge({ status }: { status: string }) {
   const config: Record<string, { label: string; bg: string; border: string; text: string }> = {
-    en_construccion: { label: "En construccion", bg: "transparent", border: "#fbbf24", text: "#f0c283" },
-    lista_para_ajuste: { label: "Lista para ajuste", bg: "transparent", border: "#a78bfa", text: "#9ec2ec" },
-    finalizada: { label: "Finalizada", bg: "transparent", border: "#34d399", text: "#85c9a8" },
+    en_construccion: { label: "En construccion", bg: "transparent", border: "#b45309", text: "#b45309" },
+    lista_para_ajuste: { label: "Lista para ajuste", bg: "transparent", border: "#8B1510", text: "#8B1510" },
+    finalizada: { label: "Finalizada", bg: "transparent", border: "#1e7f4f", text: "#1e7f4f" },
   };
   const c = config[status] ?? config.en_construccion;
 
@@ -120,7 +120,7 @@ function AddFactorForm({
   }
 
   return (
-    <Card className="border-2" style={{ borderColor: "#a78bfa" }}>
+    <Card className="border-2" style={{ borderColor: "#8B1510" }}>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-[14px]">Agregar factor manualmente</CardTitle>
@@ -284,7 +284,7 @@ export default function MefiPage() {
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="flex size-12 items-center justify-center rounded-2xl" style={{ backgroundColor: "transparent" }}>
-            <TrendingUp className="size-6" style={{ color: "#a78bfa" }} />
+            <TrendingUp className="size-6" style={{ color: "#8B1510" }} />
           </div>
           <div>
             <h1 className="text-2xl font-medium tracking-tight">Matriz MEFI</h1>
@@ -323,7 +323,7 @@ export default function MefiPage() {
             disabled={!isWeightValid || hasTooFew || factorCount > 20 || finalizeMutation.isPending}
             onClick={() => finalizeMutation.mutate({ cycleId })}
             className="gap-1.5 text-white"
-            style={{ backgroundColor: "#a78bfa" }}
+            style={{ backgroundColor: "#8B1510" }}
           >
             <Lock className="size-3.5" /> Finalizar MEFI
           </Button>
@@ -344,28 +344,28 @@ export default function MefiPage() {
             </span>
             <div className="flex items-center gap-3">
               {isWeightValid ? (
-                <span className="inline-flex items-center gap-1 text-[13px] font-medium" style={{ color: "#34d399" }}>
+                <span className="inline-flex items-center gap-1 text-[13px] font-medium" style={{ color: "#1e7f4f" }}>
                   <Check className="size-4" /> Validado (1.00)
                 </span>
               ) : totalWeight > 1 ? (
-                <span className="text-[13px] font-medium" style={{ color: "#fca5a5" }}>
+                <span className="text-[13px] font-medium" style={{ color: "#b3261e" }}>
                   {totalWeight.toFixed(2)} / 1.00 — Excede por {(totalWeight - 1).toFixed(2)}
                 </span>
               ) : (
-                <span className="text-[13px] font-medium" style={{ color: "#fbbf24" }}>
+                <span className="text-[13px] font-medium" style={{ color: "#b45309" }}>
                   {totalWeight.toFixed(2)} / 1.00 — Faltan {(1 - totalWeight).toFixed(2)}
                 </span>
               )}
             </div>
           </div>
           <div className="h-2 w-full overflow-hidden rounded-full"
-            style={{ backgroundColor: "var(--color-border-tertiary, rgba(167,139,250,0.14))" }}
+            style={{ backgroundColor: "var(--color-border-tertiary, rgba(139, 21, 16,0.14))" }}
           >
             <div
               className="h-full rounded-full transition-all duration-300"
               style={{
                 width: `${Math.min(totalWeight * 100, 100)}%`,
-                backgroundColor: isWeightValid ? "#34d399" : totalWeight > 1 ? "#fca5a5" : "#a78bfa",
+                backgroundColor: isWeightValid ? "#1e7f4f" : totalWeight > 1 ? "#b3261e" : "#8B1510",
               }}
             />
           </div>
@@ -376,12 +376,12 @@ export default function MefiPage() {
               {factorCount} factores ({summary?.fortalezas ?? 0} F · {summary?.debilidades ?? 0} D)
             </span>
             {hasTooManyWarning && factorCount <= 20 && (
-              <span className="inline-flex items-center gap-1" style={{ color: "#fbbf24" }}>
+              <span className="inline-flex items-center gap-1" style={{ color: "#b45309" }}>
                 <AlertTriangle className="size-3" /> Se recomienda maximo 15 factores
               </span>
             )}
             {factorCount > 20 && (
-              <span className="inline-flex items-center gap-1" style={{ color: "#fca5a5" }}>
+              <span className="inline-flex items-center gap-1" style={{ color: "#b3261e" }}>
                 <AlertTriangle className="size-3" /> Maximo 20 factores permitidos
               </span>
             )}
@@ -442,7 +442,7 @@ export default function MefiPage() {
                       {f.area ? (
                         <span
                           className="inline-flex size-6 items-center justify-center rounded text-[10px] font-medium text-white"
-                          style={{ backgroundColor: "#a78bfa" }}
+                          style={{ backgroundColor: "#8B1510" }}
                         >
                           {f.area}
                         </span>
@@ -455,7 +455,7 @@ export default function MefiPage() {
                         className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium"
                         style={{
                           backgroundColor: "transparent",
-                          color: isStrength ? "#a8cc8d" : "#ee9c9c",
+                          color: isStrength ? "#4d7c0f" : "#b3261e",
                         }}
                       >
                         {isStrength ? "Fortaleza" : "Debilidad"}
@@ -473,7 +473,7 @@ export default function MefiPage() {
                         />
                       )}
                       {f.weight > 0.20 && (
-                        <span className="text-[10px]" style={{ color: "#fbbf24" }}>alto</span>
+                        <span className="text-[10px]" style={{ color: "#b45309" }}>alto</span>
                       )}
                     </TableCell>
                     <TableCell>
@@ -524,14 +524,14 @@ export default function MefiPage() {
                 <TableCell>
                   <span
                     className="text-[13px] font-medium"
-                    style={{ color: isWeightValid ? "#34d399" : "#fca5a5" }}
+                    style={{ color: isWeightValid ? "#1e7f4f" : "#b3261e" }}
                   >
                     {totalWeight.toFixed(2)}
                   </span>
                 </TableCell>
                 <TableCell className="text-[12px] text-muted-foreground">—</TableCell>
                 <TableCell className="text-right">
-                  <span className="text-[15px] font-medium" style={{ color: "#a78bfa" }}>
+                  <span className="text-[15px] font-medium" style={{ color: "#8B1510" }}>
                     {ppt.toFixed(2)}
                   </span>
                 </TableCell>
@@ -547,11 +547,11 @@ export default function MefiPage() {
         <div
           className="rounded-xl border p-4"
           style={{
-            borderColor: ppt >= 2.5 ? "#34d399" : "#fca5a5",
+            borderColor: ppt >= 2.5 ? "#1e7f4f" : "#b3261e",
             backgroundColor: "transparent",
           }}
         >
-          <p className="text-[13px] font-medium" style={{ color: ppt >= 2.5 ? "#85c9a8" : "#ee9c9c" }}>
+          <p className="text-[13px] font-medium" style={{ color: ppt >= 2.5 ? "#1e7f4f" : "#b3261e" }}>
             PPT = {ppt.toFixed(2)} — {ppt >= 2.5
               ? "La organizacion tiene una posicion interna relativamente fuerte."
               : "La organizacion responde debilmente a sus factores internos. Predominan las debilidades."

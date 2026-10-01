@@ -65,12 +65,12 @@ const ROLES = [
 ] as const;
 
 const ROLE_COLORS: Record<string, string> = {
-  ADMIN: "bg-transparent text-red-300 dark:bg-transparent dark:text-red-400",
-  ALTA_DIRECCION: "bg-transparent text-purple-300 dark:bg-transparent dark:text-purple-400",
+  ADMIN: "bg-transparent text-red-700 dark:bg-transparent dark:text-red-700",
+  ALTA_DIRECCION: "bg-transparent text-rose-700 dark:bg-transparent dark:text-rose-700",
   GERENTE: "bg-primary/15 text-primary dark:bg-primary/10 dark:text-primary",
-  JEFE_PROYECTO: "bg-transparent text-teal-300 dark:bg-transparent dark:text-teal-400",
-  ANALISTA: "bg-transparent text-yellow-300 dark:bg-transparent dark:text-yellow-400",
-  MIEMBRO_EQUIPO: "bg-transparent text-foreground dark:bg-transparent dark:text-gray-300",
+  JEFE_PROYECTO: "bg-transparent text-teal-700 dark:bg-transparent dark:text-teal-700",
+  ANALISTA: "bg-transparent text-yellow-700 dark:bg-transparent dark:text-yellow-700",
+  MIEMBRO_EQUIPO: "bg-transparent text-foreground dark:bg-transparent dark:text-gray-700",
   SOLO_LECTURA: "bg-transparent text-muted-foreground dark:bg-transparent dark:text-muted-foreground",
 };
 

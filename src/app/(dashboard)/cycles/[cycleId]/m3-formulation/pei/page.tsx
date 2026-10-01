@@ -340,7 +340,7 @@ function IdentitySection({ data, cycleId }: { data: PeiData; cycleId: string }) 
         {data.m1.vision ? (
           <div>
             <h3 className="text-xs uppercase tracking-wide text-muted-foreground mb-1">Vision</h3>
-            <blockquote className="text-base italic border-l-4 border-primary/150 pl-3 py-1 text-foreground/90">
+            <blockquote className="text-base italic border-l-4 border-primary/40 pl-3 py-1 text-foreground/90">
               "{data.m1.vision.text}"
               {data.m1.vision.timeHorizon && <span className="text-xs text-muted-foreground not-italic block mt-1">Horizonte: {data.m1.vision.timeHorizon}</span>}
             </blockquote>
@@ -449,10 +449,10 @@ function DiagnosisSection({ data, cycleId: _cycleId }: { data: PeiData; cycleId:
           <CardTitle className="text-sm">FODA Consolidado</CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-          <FodaPreview title="Fortalezas" items={data.m2.foda.fortalezas.slice(0, 5)} color="#4ade80" />
-          <FodaPreview title="Oportunidades" items={data.m2.foda.oportunidades.slice(0, 5)} color="#60a5fa" />
+          <FodaPreview title="Fortalezas" items={data.m2.foda.fortalezas.slice(0, 5)} color="#1e7f4f" />
+          <FodaPreview title="Oportunidades" items={data.m2.foda.oportunidades.slice(0, 5)} color="#185fa5" />
           <FodaPreview title="Debilidades" items={data.m2.foda.debilidades.slice(0, 5)} color="#F43F5E" />
-          <FodaPreview title="Amenazas" items={data.m2.foda.amenazas.slice(0, 5)} color="#F59E0B" />
+          <FodaPreview title="Amenazas" items={data.m2.foda.amenazas.slice(0, 5)} color="#b45309" />
         </CardContent>
       </Card>
     </div>
@@ -491,7 +491,7 @@ function OlpsSection({ data, cycleId: _cycleId }: { data: PeiData; cycleId: stri
               <Badge variant="outline" className="font-mono text-[10px] shrink-0">{o.olpCode}</Badge>
               {o.bscPerspective && <Badge variant="outline" className="text-[10px]">{o.bscPerspective}</Badge>}
               <span className="text-[10px] text-muted-foreground ml-auto">
-                Cobertura: <strong className={o.coverage === 0 ? "text-amber-300" : "text-foreground"}>{o.coverage} estrategia(s)</strong>
+                Cobertura: <strong className={o.coverage === 0 ? "text-amber-700" : "text-foreground"}>{o.coverage} estrategia(s)</strong>
               </span>
             </div>
             <p className="text-sm leading-snug">{o.description}</p>
@@ -502,7 +502,7 @@ function OlpsSection({ data, cycleId: _cycleId }: { data: PeiData; cycleId: stri
               {o.targetYear && ` · ${o.targetYear}`}
             </div>
             {o.coverage === 0 && (
-              <p className="text-[11px] text-amber-300 italic mt-1">⚠ OLP huerfano (sin estrategias)</p>
+              <p className="text-[11px] text-amber-700 italic mt-1">⚠ OLP huerfano (sin estrategias)</p>
             )}
           </div>
         ))}
@@ -552,15 +552,15 @@ function StrategiesSection({ data, cycleId: _cycleId }: { data: PeiData; cycleId
                     <td className="p-2 text-xs leading-snug">
                       {s.text}
                       <div className="flex gap-1 flex-wrap mt-1">
-                        {s.isEjemplar && <Badge variant="outline" className="text-[9px] bg-transparent text-emerald-300 border-emerald-500/30">🍃 Promueve valores</Badge>}
-                        {s.ethicsStatus === "aprobada_con_mitigantes" && <Badge variant="outline" className="text-[9px] bg-transparent text-amber-300 border-amber-500/30">🛡 Con mitigante</Badge>}
+                        {s.isEjemplar && <Badge variant="outline" className="text-[9px] bg-transparent text-emerald-700 border-emerald-500/30">🍃 Promueve valores</Badge>}
+                        {s.ethicsStatus === "aprobada_con_mitigantes" && <Badge variant="outline" className="text-[9px] bg-transparent text-amber-700 border-amber-500/30">🛡 Con mitigante</Badge>}
                       </div>
                     </td>
                     <td className="p-2 text-xs">
                       {def ? <Badge variant="outline" className="text-[10px]" style={{ color: GROUP_INFO[def.group].color, borderColor: GROUP_INFO[def.group].border }}>{def.label}</Badge> : <span className="text-muted-foreground italic">—</span>}
                     </td>
                     <td className="p-2 text-[10px]">
-                      {s.olpLinks.length === 0 ? <span className="text-amber-400">—</span> : s.olpLinks.map((l, i) => {
+                      {s.olpLinks.length === 0 ? <span className="text-amber-700">—</span> : s.olpLinks.map((l, i) => {
                         const olp = data.m3.olps.find((o) => o.id === l.olpId);
                         return olp ? <span key={l.id} className="inline-block font-mono px-1 py-0.5 rounded bg-primary/10 text-primary mr-0.5">{olp.olpCode}</span> : null;
                       })}
@@ -589,7 +589,7 @@ function MitigantsSection({ data }: { data: PeiData }) {
       <CardContent className="space-y-2">
         {data.m3.mitigants.length === 0 ? (
           <div className="rounded-md border border-emerald-200/60 bg-transparent p-3 text-sm">
-            <Check className="inline size-4 mr-1 text-emerald-400" />
+            <Check className="inline size-4 mr-1 text-emerald-700" />
             Ninguna estrategia requirio mitigantes eticos. Tu portafolio paso los filtros sin observaciones.
           </div>
         ) : data.m3.mitigants.map((m, i) => (

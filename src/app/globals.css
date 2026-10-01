@@ -5,6 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-app-bg: var(--app-bg);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter), "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
@@ -55,103 +56,114 @@
 }
 
 /* ===========================================================================
- * Estratega · Tema único negro + morado liquid glass (inspirado en Educanet)
- * Aplicado a toda la app — landing, auth, dashboard.
+ * Estratega · Tema de marca Efameinsa (el mismo del CRM, 29-09).
+ * Contenido claro sobre gris cálido #f5f3f2, tarjetas blancas con borde suave,
+ * granate de marca para lo principal y barra lateral casi negra.
+ * Antes era un tema negro + morado «liquid glass»; el morado no es de la marca.
  * =========================================================================*/
 :root {
-  /* Surfaces */
-  --background: #07060d;
-  --foreground: #f4f1fb;
-  --card: #110f1a;
-  --card-foreground: #f4f1fb;
-  --popover: #14111f;
-  --popover-foreground: #f4f1fb;
+  /* Identidad Efameinsa (mismos valores que el CRM) */
+  --efameinsa-granate: #7e1210;
+  --efameinsa-carbon: #2c2e35;
+  --efameinsa-gris: #6b6b6b;
 
-  /* Primary — morado vibrante */
-  --primary: #a78bfa;
-  --primary-foreground: #0a0814;
+  /* Fondo del área de trabajo: gris cálido con sesgo sutil al granate,
+     distinto del blanco de tarjetas y popovers. */
+  --app-bg: #f5f3f2;
 
-  /* Secondary — morado más oscuro/translúcido */
-  --secondary: #1c1530;
-  --secondary-foreground: #cdbefb;
+  --background: #ffffff;
+  --foreground: var(--efameinsa-carbon);
+  --card: #ffffff;
+  --card-foreground: var(--efameinsa-carbon);
+  --popover: #ffffff;
+  --popover-foreground: var(--efameinsa-carbon);
 
-  /* Muted */
-  --muted: #181425;
-  --muted-foreground: #9a91b8;
+  --primary: var(--efameinsa-granate);
+  --primary-foreground: #ffffff;
 
-  /* Accent — violeta intenso */
-  --accent: #2a1f47;
-  --accent-foreground: #d6c8fc;
+  --secondary: #f5f3f3;
+  --secondary-foreground: var(--efameinsa-carbon);
 
-  /* Destructive */
-  --destructive: #e2557a;
+  --muted: #f5f3f3;
+  --muted-foreground: var(--efameinsa-gris);
 
-  /* Borders & inputs */
-  --border: rgba(167, 139, 250, 0.12);
-  --input: rgba(167, 139, 250, 0.16);
-  --ring: #a78bfa;
+  --accent: #f3eeed;
+  --accent-foreground: var(--efameinsa-carbon);
 
-  /* Chart colors — paleta violeta */
-  --chart-1: #a78bfa;
-  --chart-2: #c4b5fd;
-  --chart-3: #7c3aed;
-  --chart-4: #f0abfc;
-  --chart-5: #818cf8;
+  --destructive: #b3261e;
+
+  --border: #e8e4e3;
+  --input: #e2dedd;
+  --ring: var(--efameinsa-granate);
+
+  --chart-1: var(--efameinsa-granate);
+  --chart-2: var(--efameinsa-carbon);
+  --chart-3: var(--efameinsa-gris);
+  --chart-4: #b3261e;
+  --chart-5: #d9d4d4;
 
   --radius: 0.75rem;
 
-  /* Sidebar — más oscuro que el background */
-  --sidebar: #060410;
-  --sidebar-foreground: #9a91b8;
-  --sidebar-primary: #a78bfa;
-  --sidebar-primary-foreground: #0a0814;
-  --sidebar-accent: #1a1430;
-  --sidebar-accent-foreground: #f4f1fb;
-  --sidebar-border: rgba(167, 139, 250, 0.08);
-  --sidebar-ring: #a78bfa;
+  /* Barra lateral: casi negra, el ítem activo en granate (igual que el CRM) */
+  --sidebar: #16171a;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: var(--efameinsa-granate);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #262830;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #262830;
+  --sidebar-ring: var(--efameinsa-granate);
 }
 
-/* `.dark` se mantiene como alias del mismo tema para no romper `dark:` utilities */
+/* `.dark` ya no se pone en el <html>. Queda como tema carbón + granate para
+ * las superficies oscuras a propósito: las páginas de acceso (login,
+ * registro, invitación, onboarding) y la portada pública. Así las utilidades
+ * `dark:` de los componentes siguen funcionando dentro de esas pantallas. */
 .dark {
-  --background: #07060d;
-  --foreground: #f4f1fb;
-  --card: #110f1a;
-  --card-foreground: #f4f1fb;
-  --popover: #14111f;
-  --popover-foreground: #f4f1fb;
+  --background: #1f1a18;
+  --foreground: #ffffff;
+  --card: #26201e;
+  --card-foreground: #ffffff;
+  --popover: #26201e;
+  --popover-foreground: #ffffff;
 
-  --primary: #a78bfa;
-  --primary-foreground: #0a0814;
+  /* Granate aclarado: el #7e1210 no se lee como texto sobre carbón.
+     Los botones igual salen con el degradado granate de --brand-gradient. */
+  --primary: #d9443b;
+  --primary-foreground: #ffffff;
 
-  --secondary: #1c1530;
-  --secondary-foreground: #cdbefb;
+  --secondary: rgba(255, 255, 255, 0.08);
+  --secondary-foreground: #ffffff;
 
-  --muted: #181425;
-  --muted-foreground: #9a91b8;
+  --muted: rgba(255, 255, 255, 0.06);
+  --muted-foreground: rgba(255, 255, 255, 0.62);
 
-  --accent: #2a1f47;
-  --accent-foreground: #d6c8fc;
+  --accent: rgba(255, 255, 255, 0.1);
+  --accent-foreground: #ffffff;
 
-  --destructive: #e2557a;
+  --destructive: #f07a72;
 
-  --border: rgba(167, 139, 250, 0.12);
-  --input: rgba(167, 139, 250, 0.16);
-  --ring: #a78bfa;
+  --border: rgba(255, 255, 255, 0.14);
+  --input: rgba(255, 255, 255, 0.16);
+  --ring: #c43028;
 
-  --chart-1: #a78bfa;
-  --chart-2: #c4b5fd;
-  --chart-3: #7c3aed;
-  --chart-4: #f0abfc;
-  --chart-5: #818cf8;
+  --chart-1: #c43028;
+  --chart-2: #ffffff;
+  --chart-3: #a8a29e;
+  --chart-4: #f07a72;
+  --chart-5: #57534e;
 
-  --sidebar: #060410;
-  --sidebar-foreground: #9a91b8;
-  --sidebar-primary: #a78bfa;
-  --sidebar-primary-foreground: #0a0814;
-  --sidebar-accent: #1a1430;
-  --sidebar-accent-foreground: #f4f1fb;
-  --sidebar-border: rgba(167, 139, 250, 0.08);
-  --sidebar-ring: #a78bfa;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.75);
+  --color-text-tertiary: rgba(255, 255, 255, 0.55);
+  --color-border-tertiary: rgba(255, 255, 255, 0.14);
+
+  --glass-bg: 31 26 24;
+  --glass-bg-alpha: 0.55;
+  --glass-border: 255 255 255;
+  --glass-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.7);
+
+  color-scheme: dark;
 }
 
 @keyframes dashMove {
@@ -160,42 +172,43 @@
 }
 
 /* ---------------------------------------------------------------------------
- * Liquid Glass system — aplicado globalmente.
- * Stored as RGB triplets to compose alpha at usage site.
+ * Superficies y luces de marca.
+ * Guardados como tripletes RGB para componer la transparencia donde se usan.
  * -------------------------------------------------------------------------*/
-:root,
-.dark {
-  --landing-bg: 7 6 13;
-  --landing-fg: 244 241 251;
-  --glass-bg: 32 24 55;
-  --glass-bg-alpha: 0.45;
-  --glass-border: 196 181 253;
+:root {
+  --landing-bg: 31 26 24;      /* carbón cálido del login del CRM */
+  --landing-fg: 255 255 255;
+  /* Vidrio en claro: blanco casi opaco con borde carbón tenue */
+  --glass-bg: 255 255 255;
+  --glass-bg-alpha: 0.92;
+  --glass-border: 44 46 53;
   --glass-blur: 28px;
-  --glass-saturation: 180%;
-  --glow-violet: 167 139 250;
-  --glow-purple: 139 92 246;
-  --glow-fuchsia: 217 70 239;
-  --glow-blue: 167 139 250;  /* alias retro-compat, ahora morado */
-  --glow-cyan: 167 139 250;  /* alias retro-compat */
+  --glass-saturation: 160%;
+  --glass-shadow: 0 1px 2px rgb(44 46 53 / 0.05), 0 8px 24px -16px rgb(44 46 53 / 0.25);
+  /* Luces: granate de marca y sus tonos (antes violeta/púrpura/fucsia) */
+  --glow-violet: 139 21 16;
+  --glow-purple: 94 13 11;
+  --glow-fuchsia: 196 48 40;
+  --glow-blue: 139 21 16;  /* alias retro-compat, ahora granate */
+  --glow-cyan: 139 21 16;  /* alias retro-compat */
   --halo-intensity: 0.32;
 
-  /* Tokens de texto/bordes usados por matrices y módulos (PESTEC, FODA, etc.)
-   * mapeados al tema morado para que la jerarquía visual sea coherente.
-   * Antes estaban indefinidos → texto blanco brillante con mucho contraste. */
-  --color-text-primary: #cbb9f5;
-  --color-text-secondary: #a698c7;
-  --color-text-tertiary: #8d83a8;
-  --color-text-disabled: #4a4360;
-  --color-border-primary: rgba(167, 139, 250, 0.35);
-  --color-border-secondary: rgba(167, 139, 250, 0.22);
-  --color-border-tertiary: rgba(167, 139, 250, 0.18);
-  --color-primary: #a78bfa;
-  --color-primary-hover: #b89bff;
-  --color-surface-1: rgba(167, 139, 250, 0.05);
-  --color-surface-2: rgba(167, 139, 250, 0.09);
-  --color-surface-3: rgba(167, 139, 250, 0.13);
+  /* Tokens de texto/bordes usados por matrices y módulos (PESTEC, FODA, etc.) */
+  --color-text-primary: var(--efameinsa-carbon);
+  --color-text-secondary: #55565c;
+  --color-text-tertiary: var(--efameinsa-gris);
+  --color-text-disabled: #b5b0ae;
+  --color-border-primary: #d6d0ce;
+  --color-border-secondary: #e2dedd;
+  --color-border-tertiary: #e8e4e3;
+  --color-primary: var(--efameinsa-granate);
+  --color-primary-hover: #a51b15;
+  --color-surface-1: rgba(44, 46, 53, 0.025);
+  --color-surface-2: rgba(44, 46, 53, 0.045);
+  --color-surface-3: rgba(44, 46, 53, 0.07);
 }
 
+/* La portada pública conserva un fondo oscuro, ahora carbón + granate */
 .landing-shell {
   background: rgb(var(--landing-bg));
   color: rgb(var(--landing-fg));
@@ -210,32 +223,30 @@
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   border: 1px solid rgb(var(--glass-border) / 0.1);
-  box-shadow:
-    inset 0 1px 0 rgb(var(--glass-border) / 0.08),
-    0 0 0 1px rgb(var(--glass-border) / 0.04),
-    0 12px 40px -12px rgb(0 0 0 / 0.55);
+  box-shadow: var(--glass-shadow);
 }
 
 .glass-strong {
   position: relative;
   background: rgb(var(--glass-bg) / 0.55);
-  backdrop-filter: blur(44px) saturate(200%);
-  -webkit-backdrop-filter: blur(44px) saturate(200%);
+  backdrop-filter: blur(44px) saturate(160%);
+  -webkit-backdrop-filter: blur(44px) saturate(160%);
   border: 1px solid rgb(var(--glass-border) / 0.14);
-  box-shadow:
-    inset 0 1px 0 rgb(var(--glass-border) / 0.14),
-    0 24px 70px -12px rgb(var(--glow-violet) / 0.28);
+  box-shadow: var(--glass-shadow);
 }
 
 .glass-subtle {
-  background: rgb(var(--landing-bg) / 0.7);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid rgb(var(--glass-border) / 0.08);
+  background: rgb(var(--glass-bg) / 0.9);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-bottom: 1px solid var(--border);
 }
 
-.glass::before,
-.glass-strong::before {
+/* Reflejo de vidrio solo en superficies oscuras (en claro ensucia el borde) */
+.dark .glass::before,
+.dark .glass-strong::before,
+.landing-shell .glass::before,
+.landing-shell .glass-strong::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -243,10 +254,10 @@
   padding: 1px;
   background: linear-gradient(
     180deg,
-    rgb(var(--glass-border) / 0.22) 0%,
+    rgb(255 255 255 / 0.22) 0%,
     transparent 35%,
     transparent 70%,
-    rgb(var(--glow-violet) / 0.22) 100%
+    rgb(196 48 40 / 0.3) 100%
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -254,7 +265,18 @@
   pointer-events: none;
 }
 
-/* ---------- Halos / orbs decorativos ---------- */
+.landing-shell .glass,
+.landing-shell .glass-strong {
+  background: rgb(31 26 24 / 0.55);
+  border-color: rgb(255 255 255 / 0.12);
+  box-shadow: 0 24px 70px -20px rgb(0 0 0 / 0.6);
+}
+.landing-shell .glass-subtle {
+  background: rgb(var(--landing-bg) / 0.7);
+  border-bottom-color: rgb(255 255 255 / 0.08);
+}
+
+/* ---------- Halos / luces decorativas (granate) ---------- */
 .bg-halo-top {
   background: radial-gradient(
     ellipse 65% 45% at 50% -10%,
@@ -287,42 +309,12 @@
   );
 }
 
-/* App shell — usado por el dashboard para tener el mismo fondo que la landing */
+/* App shell — fondo del área de trabajo (el #f5f3f2 del CRM), sin luces */
 .app-shell {
-  background: rgb(var(--landing-bg));
-  color: rgb(var(--landing-fg));
+  background: var(--app-bg);
+  color: var(--foreground);
   position: relative;
   overflow: hidden;
-}
-
-.app-shell::before,
-.app-shell::after {
-  content: '';
-  position: absolute;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.app-shell::before {
-  inset: -10% 30% auto -10%;
-  height: 60vh;
-  background: radial-gradient(
-    ellipse at 0% 0%,
-    rgb(var(--glow-violet) / 0.18),
-    transparent 60%
-  );
-  filter: blur(40px);
-}
-
-.app-shell::after {
-  inset: auto -10% -20% 30%;
-  height: 60vh;
-  background: radial-gradient(
-    ellipse at 100% 100%,
-    rgb(var(--glow-fuchsia) / 0.12),
-    transparent 60%
-  );
-  filter: blur(50px);
 }
 
 .text-shimmer-landing {
@@ -330,7 +322,7 @@
     100deg,
     rgb(var(--landing-fg)) 0%,
     rgb(var(--landing-fg) / 0.55) 35%,
-    rgb(var(--glow-violet)) 50%,
+    rgb(var(--glow-fuchsia)) 50%,
     rgb(var(--landing-fg) / 0.55) 65%,
     rgb(var(--landing-fg)) 100%
   );
@@ -391,10 +383,21 @@
   }
   html {
     @apply font-sans;
-    color-scheme: dark;
+    color-scheme: light;
+    /* Deslizadores, casillas y radios nativos en granate (antes azul por defecto) */
+    accent-color: var(--primary);
   }
 
-  /* Scrollbars — tema violeta */
+  /* Tailwind v4 quitó el cursor de mano de los botones: todo lo clicable
+     tiene que verse clicable (misma regla que el CRM). */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  select:not(:disabled),
+  summary {
+    cursor: pointer;
+  }
+
+  /* Scrollbars — neutros, como el CRM */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -403,54 +406,55 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(167, 139, 250, 0.18);
+    background: rgba(44, 46, 53, 0.18);
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(167, 139, 250, 0.35);
+    background: rgba(44, 46, 53, 0.32);
+  }
+  .dark ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.18);
   }
 }
 
 
 /* ===========================================================================
- * Refresco visual 2026 — mismo ADN negro + violeta, más profundidad y color.
+ * Estados semánticos y superficies (valores para fondo claro).
  * =========================================================================*/
-:root,
-.dark {
+:root {
   /* Estados semánticos (reemplazan verdes/rojos/ámbar sueltos en las páginas) */
-  --success: #4ade80;
-  --warning: #fbbf24;
-  --danger: #f87171;
-  --info: #60a5fa;
+  --success: #1e7f4f;
+  --warning: #b45309;
+  --danger: #b3261e;
+  --info: #185fa5;
   /* Semáforo del BSC: una sola fuente */
-  --semaforo-verde: #4ade80;
-  --semaforo-ambar: #fbbf24;
-  --semaforo-rojo: #f87171;
-  --semaforo-sin-dato: #6b6485;
+  --semaforo-verde: #1e7f4f;
+  --semaforo-ambar: #d97706;
+  --semaforo-rojo: #b3261e;
+  --semaforo-sin-dato: #a8a29e;
   /* Superficies */
-  --surface-raised: #181426;
-  --surface-sunken: #0c0a14;
-  /* Variables que usaban M2 sin estar definidas (caían a grises claros) */
-  --color-background-secondary: rgba(167, 139, 250, 0.06);
-  --color-background-primary: #110f1a;
-  --color-border-success: rgba(74, 222, 128, 0.45);
-  --color-border-danger: rgba(248, 113, 113, 0.45);
-  --color-border-warning: rgba(251, 191, 36, 0.45);
-  --chart-grid: rgba(167, 139, 250, 0.14);
-  --chart-axis: #9a91b8;
-  --brand-gradient: linear-gradient(135deg, #a78bfa 0%, #c084fc 55%, #f0abfc 100%);
+  --surface-raised: #ffffff;
+  --surface-sunken: #f5f3f3;
+  /* Variables que usaba M2 */
+  --color-background-secondary: #f5f3f3;
+  --color-background-primary: #ffffff;
+  --color-border-success: rgba(30, 127, 79, 0.45);
+  --color-border-danger: rgba(179, 38, 30, 0.45);
+  --color-border-warning: rgba(180, 83, 9, 0.45);
+  --chart-grid: #e8e4e3;
+  --chart-axis: #6b6b6b;
+  --brand-gradient: linear-gradient(180deg, #a51b15 0%, #7e1210 100%);
 }
 
-/* Tarjetas: borde con brillo sutil arriba y fondo con leve degradado */
+/* Tarjetas: blancas con borde suave y una sombra mínima (como el CRM) */
 [data-slot="card"] {
-  background-image: linear-gradient(180deg, rgb(167 139 250 / 0.045), transparent 40%);
-  box-shadow: inset 0 1px 0 rgb(196 181 253 / 0.06), 0 8px 30px -18px rgb(0 0 0 / 0.7);
+  box-shadow: 0 1px 2px rgb(44 46 53 / 0.04);
 }
 
-/* Botón principal con degradado de marca */
+/* Botón principal: granate de marca con leve degradado, igual que el CRM */
 [data-slot="button"].bg-primary {
   background-image: var(--brand-gradient);
-  box-shadow: 0 6px 20px -8px rgb(167 139 250 / 0.55);
+  box-shadow: 0 6px 16px -10px rgb(126 18 16 / 0.6), inset 0 1px 0 rgb(255 255 255 / 0.12);
 }
 [data-slot="button"].bg-primary:hover {
   filter: brightness(1.08);
@@ -464,9 +468,63 @@
   color: transparent;
 }
 
-/* Tablas: cabeceras y filas alternas legibles en oscuro */
+/* Tablas: cabecera gris cálido y fila con realce suave */
 [data-slot="table-header"] { background: var(--surface-sunken); }
-[data-slot="table-row"]:hover { background: rgb(167 139 250 / 0.05); }
+[data-slot="table-row"]:hover { background: rgb(126 18 16 / 0.03); }
 
 /* Selección de texto con el color de marca */
-::selection { background: rgb(167 139 250 / 0.35); color: #fff; }
+::selection { background: rgb(126 18 16 / 0.18); color: inherit; }
+
+/* ===========================================================================
+ * PANTALLAS DE ACCESO (login, registro, invitación, onboarding).
+ * El mismo fondo del login del CRM: carbón cálido con dos luces granate que
+ * se mueven muy despacio, una retícula tenue y los anillos del isotipo
+ * girando a un costado. Puro CSS; con «reducir movimiento» queda quieto.
+ * =========================================================================*/
+.fondo-acceso {
+  background: #1f1a18;
+}
+.fondo-acceso-luz-a {
+  animation: acceso-luz-a 22s ease-in-out infinite alternate;
+}
+.fondo-acceso-luz-b {
+  animation: acceso-luz-b 26s ease-in-out infinite alternate;
+}
+.fondo-acceso-anillo {
+  animation: acceso-girar 80s linear infinite;
+}
+.acceso-entrar {
+  animation: acceso-entrar 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.acceso-aviso {
+  animation: acceso-aviso 250ms ease-out both;
+}
+@keyframes acceso-girar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes acceso-luz-a {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(6vw, 4vh) scale(1.08); }
+}
+@keyframes acceso-luz-b {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(-5vw, -6vh) scale(1.1); }
+}
+@keyframes acceso-entrar {
+  from { opacity: 0; transform: translateY(18px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes acceso-aviso {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fondo-acceso-luz-a,
+  .fondo-acceso-luz-b,
+  .fondo-acceso-anillo,
+  .acceso-entrar,
+  .acceso-aviso {
+    animation: none;
+  }
+}

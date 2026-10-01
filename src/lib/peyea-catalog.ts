@@ -215,9 +215,9 @@ export const QUADRANT_INFO: Record<
   PeyeaVectorResult["quadrant"],
   { label: string; color: string; bg: string; border: string; description: string }
 > = {
-  agresivo: { label: "Agresivo", color: "#4ade80", bg: "rgba(22, 163, 74, 0.08)", border: "rgba(22, 163, 74, 0.35)", description: "Tu empresa es solida en una industria atractiva. Es momento de expandir y consolidar liderazgo." },
-  conservador: { label: "Conservador", color: "#8B5CF6", bg: "rgba(139, 92, 246, 0.08)", border: "rgba(139, 92, 246, 0.35)", description: "Tu empresa es solida pero el sector es turbulento. Crece con cautela y diversifica con prudencia." },
-  competitivo: { label: "Competitivo", color: "#F59E0B", bg: "rgba(245, 158, 11, 0.08)", border: "rgba(245, 158, 11, 0.35)", description: "El sector es atractivo pero tu posicion es debil. Compite duro o alianza para reforzarte." },
+  agresivo: { label: "Agresivo", color: "#1e7f4f", bg: "rgba(22, 163, 74, 0.08)", border: "rgba(22, 163, 74, 0.35)", description: "Tu empresa es solida en una industria atractiva. Es momento de expandir y consolidar liderazgo." },
+  conservador: { label: "Conservador", color: "#2c2e35", bg: "rgba(44, 46, 53, 0.08)", border: "rgba(44, 46, 53, 0.35)", description: "Tu empresa es solida pero el sector es turbulento. Crece con cautela y diversifica con prudencia." },
+  competitivo: { label: "Competitivo", color: "#b45309", bg: "rgba(245, 158, 11, 0.08)", border: "rgba(245, 158, 11, 0.35)", description: "El sector es atractivo pero tu posicion es debil. Compite duro o alianza para reforzarte." },
   defensivo: { label: "Defensivo", color: "#F43F5E", bg: "rgba(244, 63, 94, 0.08)", border: "rgba(244, 63, 94, 0.35)", description: "Posicion debil en sector adverso. Reduce, reestructura o desinvierte antes de que sea tarde." },
 };
 
@@ -225,10 +225,10 @@ export const DIMENSION_INFO: Record<
   PeyeaDimension,
   { label: string; color: string; bg: string; border: string; question: string }
 > = {
-  FF: { label: "Fuerza Financiera", color: "#4ade80", bg: "rgba(22, 163, 74, 0.08)", border: "rgba(22, 163, 74, 0.35)", question: "¿Que tan solida esta tu empresa financieramente?" },
+  FF: { label: "Fuerza Financiera", color: "#1e7f4f", bg: "rgba(22, 163, 74, 0.08)", border: "rgba(22, 163, 74, 0.35)", question: "¿Que tan solida esta tu empresa financieramente?" },
   VC: { label: "Ventaja Competitiva", color: "#F43F5E", bg: "rgba(244, 63, 94, 0.08)", border: "rgba(244, 63, 94, 0.35)", question: "¿Que tan fuerte es tu posicion vs competidores?" },
-  EE: { label: "Estabilidad del Entorno", color: "#FB923C", bg: "rgba(251, 146, 60, 0.08)", border: "rgba(251, 146, 60, 0.35)", question: "¿Que tan estable o turbulento es el sector?" },
-  FI: { label: "Fuerza de la Industria", color: "#60a5fa", bg: "rgba(37, 99, 235, 0.08)", border: "rgba(37, 99, 235, 0.35)", question: "¿Que tan atractiva y potente es la industria?" },
+  EE: { label: "Estabilidad del Entorno", color: "#c2410c", bg: "rgba(251, 146, 60, 0.08)", border: "rgba(251, 146, 60, 0.35)", question: "¿Que tan estable o turbulento es el sector?" },
+  FI: { label: "Fuerza de la Industria", color: "#185fa5", bg: "rgba(37, 99, 235, 0.08)", border: "rgba(37, 99, 235, 0.35)", question: "¿Que tan atractiva y potente es la industria?" },
 };
 
 export const ORIGIN_LABEL: Record<PeyeaOrigin, string> = {

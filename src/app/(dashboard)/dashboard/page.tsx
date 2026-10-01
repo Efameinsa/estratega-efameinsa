@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { colorDeMarca } from "@/lib/pm";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -236,10 +237,10 @@ interface CycleData {
 }
 
 const DIM_META: Record<string, { label: string; color: string }> = {
-  resultados_economicos: { label: "Financiera", color: "#4ade80" },
-  posicion_mercado: { label: "Clientes", color: "#60a5fa" },
-  como_opera_empresa: { label: "Procesos", color: "#fbbf24" },
-  personas_cultura: { label: "Aprendizaje", color: "#a78bfa" },
+  resultados_economicos: { label: "Financiera", color: "#1e7f4f" },
+  posicion_mercado: { label: "Clientes", color: "#185fa5" },
+  como_opera_empresa: { label: "Procesos", color: "#b45309" },
+  personas_cultura: { label: "Aprendizaje", color: "#8B1510" },
 };
 
 const CYCLE_STATUS: Record<string, string> = {
@@ -325,28 +326,28 @@ function WorkDashboard({ cycle }: { cycle: CycleData }) {
               value={`${data.plan.percentage}%`}
               hint={`${Object.values(data.plan.modules).filter((m) => m.status === "COMPLETADO").length} de 5 módulos completos`}
               ring={data.plan.percentage}
-              color="#a78bfa"
+              color="#8B1510"
             />
             <StatCard
               label="Cumplimiento BSC"
               value={data.bsc.kpis ? `${data.bsc.globalPct}%` : "—"}
               hint={data.bsc.kpis ? `${data.bsc.kpis} KPIs · periodo ${data.bsc.period}` : "Aún sin KPIs"}
               ring={data.bsc.globalPct}
-              color="#4ade80"
+              color="#1e7f4f"
             />
             <StatCard
               label="Ejecución del portafolio"
               value={`${data.portfolio.progress}%`}
               hint={`${data.portfolio.projects} proyectos · ${data.portfolio.done}/${data.portfolio.tasks} tareas`}
               ring={data.portfolio.progress}
-              color="#60a5fa"
+              color="#185fa5"
             />
             <StatCard
               label="Tareas vencidas"
               value={String(data.portfolio.overdue)}
               hint={data.portfolio.overdue ? "Requieren atención" : "Todo al día"}
               ring={data.portfolio.tasks ? Math.round((data.portfolio.overdue / data.portfolio.tasks) * 100) : 0}
-              color={data.portfolio.overdue ? "#f87171" : "#94a3b8"}
+              color={data.portfolio.overdue ? "#b3261e" : "#64748b"}
             />
           </div>
 
@@ -457,7 +458,7 @@ function WorkDashboard({ cycle }: { cycle: CycleData }) {
                     return (
                       <li key={t.id}>
                         <Link href={`/projects/${t.project.id}/list?task=${t.id}`} className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent/40">
-                          <span className="size-2 shrink-0 rounded-full" style={{ background: t.project.color ?? "#a78bfa" }} />
+                          <span className="size-2 shrink-0 rounded-full" style={{ background: colorDeMarca(t.project.color) ?? "#8B1510" }} />
                           <span className="min-w-0 flex-1">
                             <span className="block truncate">{t.summary}</span>
                             <span className="block truncate text-xs text-muted-foreground">{t.project.name}</span>

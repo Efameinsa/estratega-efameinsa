@@ -118,7 +118,7 @@ export function exportDashboardExcel(ctx: DashboardExportContext) {
 
 export async function exportDashboardPng(element: HTMLElement, name: string) {
   const dataUrl = await toPng(element, {
-    backgroundColor: "rgba(167, 139, 250, 0.08)",
+    backgroundColor: "rgba(139, 21, 16, 0.08)",
     pixelRatio: 2,
   });
   const res = await fetch(dataUrl);

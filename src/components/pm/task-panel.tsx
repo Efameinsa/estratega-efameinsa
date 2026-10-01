@@ -120,7 +120,7 @@ function TaskPanelBody({ taskId }: { taskId: string }) {
           size="sm"
           variant={done ? "secondary" : "outline"}
           onClick={() => toggle.mutate({ id: task.id, done: !done })}
-          className={cn(done && "text-green-400")}
+          className={cn(done && "text-green-700")}
         >
           <CheckCircle2 className="size-4" />
           {done ? "Completada" : "Marcar como completada"}
@@ -165,7 +165,7 @@ function TaskPanelBody({ taskId }: { taskId: string }) {
 
           {/* Título */}
           <div className="flex items-start gap-2">
-            {milestone && <Diamond className="mt-2 size-5 shrink-0 text-amber-300" fill="currentColor" />}
+            {milestone && <Diamond className="mt-2 size-5 shrink-0 text-amber-700" fill="currentColor" />}
             <textarea
               value={title ?? task.summary}
               rows={1}
@@ -223,7 +223,7 @@ function TaskPanelBody({ taskId }: { taskId: string }) {
                 <div className="flex w-40 items-center gap-2">
                   <ProgressBar
                     value={((task.timeSpent ?? 0) / task.estimateHours) * 100}
-                    color={(task.timeSpent ?? 0) > task.estimateHours ? "#f87171" : undefined}
+                    color={(task.timeSpent ?? 0) > task.estimateHours ? "#b3261e" : undefined}
                   />
                   <span className="text-xs text-muted-foreground">
                     {Math.round(((task.timeSpent ?? 0) / task.estimateHours) * 100)}%
@@ -315,7 +315,7 @@ function Subtasks({ task, onChanged }: { task: Detail; onChanged: () => void }) 
             <span className="text-xs text-muted-foreground">
               {doneCount}/{task.children.length}
             </span>
-            <ProgressBar value={(doneCount / task.children.length) * 100} className="max-w-32" color="#4ade80" />
+            <ProgressBar value={(doneCount / task.children.length) * 100} className="max-w-32" color="#1e7f4f" />
           </>
         )}
       </div>
@@ -327,7 +327,7 @@ function Subtasks({ task, onChanged }: { task: Detail; onChanged: () => void }) 
               <button
                 type="button"
                 onClick={() => toggle.mutate({ id: c.id, done: !cDone })}
-                className={cn("shrink-0", cDone ? "text-green-400" : "text-muted-foreground hover:text-foreground")}
+                className={cn("shrink-0", cDone ? "text-green-700" : "text-muted-foreground hover:text-foreground")}
                 aria-label={cDone ? "Reabrir subtarea" : "Completar subtarea"}
               >
                 {cDone ? <CheckCircle2 className="size-4" /> : <Circle className="size-4" />}
@@ -411,7 +411,7 @@ function Dependencies({ task, onChanged }: { task: Detail; onChanged: () => void
 
   const Row = ({ id, linkId, number, summary, doneCat }: { id: string; linkId: string; number: number; summary: string; doneCat: boolean }) => (
     <div className="group flex items-center gap-2 px-3 py-1.5 text-sm hover:bg-accent/30">
-      {doneCat ? <CheckCircle2 className="size-4 text-green-400" /> : <Lock className="size-3.5 text-amber-300" />}
+      {doneCat ? <CheckCircle2 className="size-4 text-green-700" /> : <Lock className="size-3.5 text-amber-700" />}
       <button type="button" className="min-w-0 flex-1 truncate text-left" onClick={() => openTask(id)}>
         <span className="mr-1.5 font-mono text-xs text-muted-foreground">
           {ws.project.key}-{number}
@@ -599,7 +599,7 @@ export function EvidenceCard({
             <Download className="size-3.5" />
           </a>
           {onRemove && (
-            <button type="button" onClick={onRemove} className="text-muted-foreground hover:text-red-400" aria-label="Eliminar evidencia">
+            <button type="button" onClick={onRemove} className="text-muted-foreground hover:text-red-700" aria-label="Eliminar evidencia">
               <Trash2 className="size-3.5" />
             </button>
           )}
@@ -745,7 +745,7 @@ function TimeTracking({ task, onChanged }: { task: Detail; onChanged: () => void
         <Button size="sm" variant="ghost" onClick={() => setShowManual((v) => !v)}>
           <Timer className="size-4" /> Registrar manualmente
         </Button>
-        {timer && !runningHere && <span className="text-xs text-amber-300">Hay un cronómetro corriendo en otra tarea</span>}
+        {timer && !runningHere && <span className="text-xs text-amber-700">Hay un cronómetro corriendo en otra tarea</span>}
       </div>
       {showManual && (
         <div className="flex flex-wrap items-end gap-2 rounded-lg border p-3">
@@ -787,7 +787,7 @@ function TimeTracking({ task, onChanged }: { task: Detail; onChanged: () => void
                 <span className="min-w-0 flex-1 truncate text-muted-foreground">{t.notes}</span>
                 <span className="text-xs text-muted-foreground">{friendlyDate(t.date)}</span>
                 {t.userId === meId && (
-                  <button type="button" onClick={() => del.mutate({ id: t.id })} className="text-muted-foreground opacity-0 hover:text-red-400 group-hover:opacity-100" aria-label="Borrar registro">
+                  <button type="button" onClick={() => del.mutate({ id: t.id })} className="text-muted-foreground opacity-0 hover:text-red-700 group-hover:opacity-100" aria-label="Borrar registro">
                     <Trash2 className="size-3.5" />
                   </button>
                 )}
@@ -862,7 +862,7 @@ function Conversation({ task, onChanged }: { task: Detail; onChanged: () => void
                     <span className="font-medium">{u?.name ?? "Usuario"}</span>{" "}
                     <span className="text-muted-foreground">{formatDistanceToNow(new Date(c.createdAt), { locale: es, addSuffix: true })}</span>
                     {c.authorId === meId && (
-                      <button type="button" onClick={() => del.mutate({ id: c.id })} className="ml-2 text-muted-foreground opacity-0 hover:text-red-400 group-hover:opacity-100">
+                      <button type="button" onClick={() => del.mutate({ id: c.id })} className="ml-2 text-muted-foreground opacity-0 hover:text-red-700 group-hover:opacity-100">
                         Eliminar
                       </button>
                     )}

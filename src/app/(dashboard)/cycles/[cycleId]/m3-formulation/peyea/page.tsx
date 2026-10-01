@@ -335,7 +335,7 @@ function Paso1({
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div className="lg:col-span-2 space-y-4">
         {/* Caja informativa azul */}
-        <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 dark:border-primary/40 dark:bg-primary/10 p-4">
+        <div className="rounded-xl border border-primary/15 bg-primary/5 dark:border-primary/40 dark:bg-primary/10 p-4">
           <div className="flex gap-3">
             <Info className="size-5 shrink-0 text-primary mt-0.5" />
             <div className="text-sm">
@@ -514,7 +514,7 @@ function VariableRow({
   let badgeColor: { color: string; bg: string; border: string };
   if (item.origin === "peyea") {
     badgeText = "Especifica de PEYEA";
-    badgeColor = { color: "#9a91b8", bg: "rgba(107,114,128,0.08)", border: "rgba(107,114,128,0.3)" };
+    badgeColor = { color: "#6b6b6b", bg: "rgba(107,114,128,0.08)", border: "rgba(107,114,128,0.3)" };
   } else if (isModified) {
     badgeText = "Modificada manualmente";
     badgeColor = { color: "#B45309", bg: "rgba(245,158,11,0.1)", border: "rgba(245,158,11,0.4)" };
@@ -526,7 +526,7 @@ function VariableRow({
     badgeColor = { color: "#B45309", bg: "rgba(245,158,11,0.08)", border: "rgba(245,158,11,0.3)" };
   } else {
     badgeText = "Pendiente";
-    badgeColor = { color: "#9a91b8", bg: "transparent", border: "rgba(107,114,128,0.3)" };
+    badgeColor = { color: "#6b6b6b", bg: "transparent", border: "rgba(107,114,128,0.3)" };
   }
 
   return (
@@ -536,7 +536,7 @@ function VariableRow({
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-sm font-medium">{item.name}</span>
             {isLinked && <LinkIcon className="size-3 text-primary" />}
-            {isModified && <Pencil className="size-3 text-amber-400" />}
+            {isModified && <Pencil className="size-3 text-amber-700" />}
           </div>
           {item.hint && (
             <div className="text-[11px] text-muted-foreground mt-0.5">{item.hint}</div>
@@ -585,7 +585,7 @@ function VectorPreview({ vector }: { vector: ReturnType<typeof computeVector> | 
   if (!vector) return null;
   const info = QUADRANT_INFO[vector.quadrant];
   return (
-    <Card className="border-primary/25/60">
+    <Card className="border-primary/15">
       <CardHeader className="pb-3">
         <CardTitle className="text-sm flex items-center gap-2">
           <Target className="size-4 text-primary" />
@@ -688,7 +688,7 @@ function Paso2({
 
         {showAlerts && (
           <div className="rounded-md border border-amber-200/60 bg-transparent dark:border-amber-900/30 dark:bg-transparent p-3 text-xs flex gap-2">
-            <AlertTriangle className="size-4 shrink-0 text-amber-400 mt-0.5" />
+            <AlertTriangle className="size-4 shrink-0 text-amber-700 mt-0.5" />
             <div>
               {vector.magnitude < 1.0 && (
                 <p>Tu vector esta cerca del centro. La postura recomendada es debil. Considera reforzar tu posicion antes de movimientos arriesgados.</p>
@@ -802,7 +802,7 @@ function Paso3({
                   key={s.code}
                   className={`rounded-lg border p-3 cursor-pointer transition-all ${
                     isRetained
-                      ? "border-primary/40 bg-primary/10/40 dark:bg-primary/10"
+                      ? "border-primary/40 bg-primary/5 dark:bg-primary/10"
                       : "hover:border-foreground/30"
                   }`}
                 >

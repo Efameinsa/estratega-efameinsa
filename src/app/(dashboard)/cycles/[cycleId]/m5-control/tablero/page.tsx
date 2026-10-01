@@ -209,7 +209,7 @@ function TableroInner() {
     return (
       <Card className="border-amber-500/30 bg-transparent">
         <CardContent className="flex flex-col items-start gap-3 py-8 text-left">
-          <AlertTriangle className="h-6 w-6 text-amber-400" />
+          <AlertTriangle className="h-6 w-6 text-amber-700" />
           <div>
             <p className="font-semibold">Aún no has diseñado tus indicadores</p>
             <p className="text-sm text-muted-foreground">
@@ -533,7 +533,7 @@ function GlobalMetric({
     <div
       className={cn(
         "rounded-lg border px-4 py-3",
-        highlight && "border-primary/25 bg-primary/10/40",
+        highlight && "border-primary/25 bg-primary/5",
       )}
     >
       <div className="text-xs text-muted-foreground">{label}</div>
@@ -610,9 +610,9 @@ function ModeDimensions({
 
       {topCritical && (
         <Card className="border-red-500/30 bg-transparent">
-          <CardContent className="flex flex-wrap items-center justify-between gap-3 py-3 text-sm text-red-300">
+          <CardContent className="flex flex-wrap items-center justify-between gap-3 py-3 text-sm text-red-700">
             <div className="flex items-start gap-2">
-              <AlertCircle className="mt-0.5 size-5 text-red-400" />
+              <AlertCircle className="mt-0.5 size-5 text-red-700" />
               <div>
                 <strong>1 KPI crítico requiere acción inmediata:</strong>{" "}
                 {topCritical.code} — {topCritical.name}.{" "}
@@ -658,11 +658,11 @@ function DimensionQuadrant({
             {dim.label}
           </CardTitle>
           <div className="flex items-center gap-1 text-xs">
-            <span className="inline-block size-2 rounded-full bg-transparent0" />
+            <span className="inline-block size-2 rounded-full" style={{ background: "var(--semaforo-verde)" }} />
             <span style={{ color: dim.color }}>{counts.verde}</span>
-            <span className="ml-2 inline-block size-2 rounded-full bg-transparent0" />
+            <span className="ml-2 inline-block size-2 rounded-full" style={{ background: "var(--semaforo-ambar)" }} />
             <span style={{ color: dim.color }}>{counts.ambar}</span>
-            <span className="ml-2 inline-block size-2 rounded-full bg-transparent0" />
+            <span className="ml-2 inline-block size-2 rounded-full" style={{ background: "var(--semaforo-rojo)" }} />
             <span style={{ color: dim.color }}>{counts.rojo}</span>
           </div>
         </div>
@@ -718,7 +718,7 @@ function KpiMiniCard({
               <Plug className="mr-0.5 size-2.5" />
             </Badge>
           ) : (
-            <Badge className="border-amber-500/30 bg-transparent text-[10px] text-amber-300">
+            <Badge className="border-amber-500/30 bg-transparent text-[10px] text-amber-700">
               <HandMetal className="mr-0.5 size-2.5" />
             </Badge>
           )}
@@ -753,9 +753,9 @@ function KpiMiniCard({
         {kpi.trendDirection && (
           <div className="flex items-center gap-0.5 text-[10px]">
             {kpi.trendDirection === "up" ? (
-              <ArrowUp className="size-3 text-emerald-400" />
+              <ArrowUp className="size-3 text-emerald-700" />
             ) : kpi.trendDirection === "down" ? (
-              <ArrowDown className="size-3 text-rose-400" />
+              <ArrowDown className="size-3 text-rose-700" />
             ) : (
               <Minus className="size-3 text-muted-foreground" />
             )}
@@ -871,12 +871,12 @@ function ModeMap({
     const sem = src?.semaforo ?? "sin_dato";
     const strokeColor =
       sem === "rojo"
-        ? "#f87171"
+        ? "#b3261e"
         : sem === "ambar"
-        ? "#F59E0B"
+        ? "#b45309"
         : sem === "verde"
-        ? "#4ade80"
-        : "#94A3B8";
+        ? "#1e7f4f"
+        : "#64748b";
     return {
       id: r.id,
       source: r.sourceKpiId,
@@ -938,7 +938,7 @@ function ModeMap({
               zoomOnScroll
               zoomOnPinch
             >
-              <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="rgba(167,139,250,0.14)" />
+              <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="rgba(139, 21, 16,0.14)" />
               <Controls showInteractive={false} />
             </ReactFlow>
           </div>
@@ -957,13 +957,13 @@ function ModeMap({
         <Card>
           <CardContent className="py-3 text-left text-xs">
             <strong className="block">Flechas e impacto</strong>
-            Verdes: flujo positivo. Ámbar: alerta. <span className="text-rose-400 font-semibold">Rojas: flujo bloqueado</span>{" "}
+            Verdes: flujo positivo. Ámbar: alerta. <span className="text-rose-700 font-semibold">Rojas: flujo bloqueado</span>{" "}
             por problema upstream.
           </CardContent>
         </Card>
         <Card className="border-rose-500/30 bg-transparent">
           <CardContent className="py-3 text-left text-xs">
-            <strong className="block text-rose-300">Punto crítico</strong>
+            <strong className="block text-rose-700">Punto crítico</strong>
             {snapshots.some((s) => s.semaforo === "rojo")
               ? `${snapshots.filter((s) => s.semaforo === "rojo").length} KPIs en rojo están bloqueando el flujo hacia las dimensiones superiores.`
               : "Sin puntos críticos identificados."}
@@ -1104,7 +1104,7 @@ function ModeList({
                       {k.source === "educanet" ? (
                         <Plug className="mx-auto size-3.5 text-primary" />
                       ) : (
-                        <HandMetal className="mx-auto size-3.5 text-amber-400" />
+                        <HandMetal className="mx-auto size-3.5 text-amber-700" />
                       )}
                     </td>
                     <td className="px-2 py-2 text-right font-semibold">
@@ -1124,9 +1124,9 @@ function ModeList({
                     </td>
                     <td className="px-2 py-2 text-center">
                       {k.trendDirection === "up" ? (
-                        <ArrowUp className="mx-auto size-3.5 text-emerald-400" />
+                        <ArrowUp className="mx-auto size-3.5 text-emerald-700" />
                       ) : k.trendDirection === "down" ? (
-                        <ArrowDown className="mx-auto size-3.5 text-rose-400" />
+                        <ArrowDown className="mx-auto size-3.5 text-rose-700" />
                       ) : (
                         <Minus className="mx-auto size-3 text-muted-foreground" />
                       )}
@@ -1179,7 +1179,7 @@ function SyncFooter({
           <span>{educanet} sincronizados desde EduCaNet</span>
         </div>
         <div className="flex items-center gap-1">
-          <HandMetal className="size-3 text-amber-400" />
+          <HandMetal className="size-3 text-amber-700" />
           <span>{manual} de carga manual</span>
         </div>
         {minutesAgo != null && (
@@ -1295,7 +1295,7 @@ function KpiDrillDown({
                 "border-0",
                 kpi.source === "educanet"
                   ? "bg-primary/15 text-primary"
-                  : "bg-transparent text-amber-300",
+                  : "bg-transparent text-amber-700",
               )}
             >
               {kpi.source === "educanet" ? (
@@ -1367,7 +1367,7 @@ function KpiDrillDown({
                   {kpi.periods[0]?.metaGreen != null && (
                     <ReferenceLine
                       y={kpi.periods[0].metaGreen}
-                      stroke="#4ade80"
+                      stroke="#1e7f4f"
                       strokeDasharray="3 3"
                       label={{ value: "Meta", position: "right", fontSize: 10 }}
                     />
@@ -1375,7 +1375,7 @@ function KpiDrillDown({
                   {kpi.periods[0]?.metaAmber != null && (
                     <ReferenceLine
                       y={kpi.periods[0].metaAmber}
-                      stroke="#F59E0B"
+                      stroke="#b45309"
                       strokeDasharray="3 3"
                     />
                   )}

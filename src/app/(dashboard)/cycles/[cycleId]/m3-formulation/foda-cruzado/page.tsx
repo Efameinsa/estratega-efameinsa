@@ -58,9 +58,9 @@ interface FodaSetup {
 }
 
 const CROSS_INFO: Record<CrossType, { label: string; color: string; bg: string; border: string; subtitle: string; placeholder: string }> = {
-  FO: { label: "Estrategias FO · Ofensivas", color: "#4ade80", bg: "rgba(22,163,74,0.06)", border: "rgba(22,163,74,0.35)", subtitle: "Usar fortalezas para aprovechar oportunidades", placeholder: "Ej. Aprovechar nuestra red logistica (F2) para entrar al canal moderno (O3)..." },
-  FA: { label: "Estrategias FA · Defensivas", color: "#F59E0B", bg: "rgba(245,158,11,0.06)", border: "rgba(245,158,11,0.35)", subtitle: "Usar fortalezas para neutralizar amenazas", placeholder: "Ej. Usar nuestra solidez financiera (F1) para resistir la guerra de precios (A2)..." },
-  DO: { label: "Estrategias DO · Adaptativas", color: "#60a5fa", bg: "rgba(37,99,235,0.06)", border: "rgba(37,99,235,0.35)", subtitle: "Superar debilidades aprovechando oportunidades", placeholder: "Ej. Tercerizar fabricacion (D1) aprovechando proveedores especializados emergentes (O2)..." },
+  FO: { label: "Estrategias FO · Ofensivas", color: "#1e7f4f", bg: "rgba(22,163,74,0.06)", border: "rgba(22,163,74,0.35)", subtitle: "Usar fortalezas para aprovechar oportunidades", placeholder: "Ej. Aprovechar nuestra red logistica (F2) para entrar al canal moderno (O3)..." },
+  FA: { label: "Estrategias FA · Defensivas", color: "#b45309", bg: "rgba(245,158,11,0.06)", border: "rgba(245,158,11,0.35)", subtitle: "Usar fortalezas para neutralizar amenazas", placeholder: "Ej. Usar nuestra solidez financiera (F1) para resistir la guerra de precios (A2)..." },
+  DO: { label: "Estrategias DO · Adaptativas", color: "#185fa5", bg: "rgba(37,99,235,0.06)", border: "rgba(37,99,235,0.35)", subtitle: "Superar debilidades aprovechando oportunidades", placeholder: "Ej. Tercerizar fabricacion (D1) aprovechando proveedores especializados emergentes (O2)..." },
   DA: { label: "Estrategias DA · Supervivencia", color: "#F43F5E", bg: "rgba(244,63,94,0.06)", border: "rgba(244,63,94,0.35)", subtitle: "Minimizar debilidades ante amenazas", placeholder: "Ej. Reducir SKU de baja rotacion (D3) ante caida de la demanda (A4)..." },
 };
 
@@ -74,7 +74,7 @@ const STRATEGY_TYPES = [
 
 const HORIZON_LABEL: Record<string, string> = { corto: "Corto plazo", mediano: "Mediano plazo", largo: "Largo plazo" };
 const PRIORITY_INFO: Record<string, { label: string; color: string; bg: string; border: string }> = {
-  alta:  { label: "Alta",  color: "#f87171", bg: "rgba(244,63,94,0.1)",   border: "rgba(244,63,94,0.4)" },
+  alta:  { label: "Alta",  color: "#b3261e", bg: "rgba(244,63,94,0.1)",   border: "rgba(244,63,94,0.4)" },
   media: { label: "Media", color: "#B45309", bg: "rgba(245,158,11,0.1)", border: "rgba(245,158,11,0.4)" },
   baja:  { label: "Baja",  color: "#15803D", bg: "rgba(22,163,74,0.1)",  border: "rgba(22,163,74,0.4)" },
 };
@@ -108,7 +108,7 @@ export default function FodaCruzadoPage() {
         </div>
         <div className="rounded-xl border border-amber-200/60 bg-transparent dark:border-amber-900/40 dark:bg-transparent p-5">
           <div className="flex gap-3">
-            <AlertTriangle className="size-5 shrink-0 text-amber-400 mt-0.5" />
+            <AlertTriangle className="size-5 shrink-0 text-amber-700 mt-0.5" />
             <div>
               <p className="font-medium mb-1">FODA Consolidado vacio</p>
               <p className="text-sm text-muted-foreground mb-3">
@@ -198,7 +198,7 @@ function Stepper({ paso, setPaso }: { paso: 1 | 2 | 3; setPaso: (p: 1 | 2 | 3) =
 function Paso1({ setup, onNext, cycleId }: { setup: FodaSetup; onNext: () => void; cycleId: string }) {
   return (
     <div className="space-y-5">
-      <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 dark:border-primary/40 dark:bg-primary/10 p-4">
+      <div className="rounded-xl border border-primary/15 bg-primary/5 dark:border-primary/40 dark:bg-primary/10 p-4">
         <div className="flex gap-3">
           <Info className="size-5 shrink-0 text-primary mt-0.5" />
           <div className="text-sm">
@@ -223,10 +223,10 @@ function Paso1({ setup, onNext, cycleId }: { setup: FodaSetup; onNext: () => voi
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <FodaListCard title="Fortalezas (F)" items={setup.fortalezas} color="#4ade80" />
-        <FodaListCard title="Oportunidades (O)" items={setup.oportunidades} color="#60a5fa" />
+        <FodaListCard title="Fortalezas (F)" items={setup.fortalezas} color="#1e7f4f" />
+        <FodaListCard title="Oportunidades (O)" items={setup.oportunidades} color="#185fa5" />
         <FodaListCard title="Debilidades (D)" items={setup.debilidades} color="#F43F5E" />
-        <FodaListCard title="Amenazas (A)" items={setup.amenazas} color="#F59E0B" />
+        <FodaListCard title="Amenazas (A)" items={setup.amenazas} color="#b45309" />
       </div>
 
       <div className="flex flex-wrap gap-2 pt-2">
@@ -801,7 +801,7 @@ function Paso3({ setup, cycleId, onBack }: { setup: FodaSetup; cycleId: string; 
                       <td className="p-2 text-xs text-muted-foreground">{s.horizon ? HORIZON_LABEL[s.horizon] : "—"}</td>
                       <td className="p-2">{pInfo ? <Badge variant="outline" style={{ color: pInfo.color, borderColor: pInfo.border }}>{pInfo.label}</Badge> : <span className="text-xs text-muted-foreground">—</span>}</td>
                       <td className="p-2">
-                        <button onClick={() => setStatus.mutate({ id: s.id, status: isRet ? "descartada" : "retenida" })} className={`text-xs px-2 py-0.5 rounded ${isRet ? "bg-transparent text-emerald-300 hover:bg-transparent" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}>
+                        <button onClick={() => setStatus.mutate({ id: s.id, status: isRet ? "descartada" : "retenida" })} className={`text-xs px-2 py-0.5 rounded ${isRet ? "bg-transparent text-emerald-700 hover:bg-transparent" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}>
                           {isRet ? "Retenida" : "Descartada"}
                         </button>
                       </td>
@@ -830,12 +830,12 @@ function Paso3({ setup, cycleId, onBack }: { setup: FodaSetup; cycleId: string; 
           )}
           {alertas.map((a, i) => (
             <div key={i} className="flex gap-2 items-start rounded-md border border-amber-200/60 bg-transparent dark:border-amber-900/30 dark:bg-transparent p-2.5">
-              <AlertTriangle className="size-4 shrink-0 text-amber-400 mt-0.5" />
+              <AlertTriangle className="size-4 shrink-0 text-amber-700 mt-0.5" />
               <span className="text-xs leading-relaxed">{a}</span>
             </div>
           ))}
           {unused.length > 0 && (
-            <div className="flex gap-2 items-start rounded-md border border-primary/25/60 bg-primary/10 dark:border-primary/30 dark:bg-primary/10 p-2.5">
+            <div className="flex gap-2 items-start rounded-md border border-primary/15 bg-primary/10 dark:border-primary/30 dark:bg-primary/10 p-2.5">
               <Info className="size-4 shrink-0 text-primary mt-0.5" />
               <div className="text-xs leading-relaxed">
                 <span className="font-medium">{unused.length} elemento(s) sin cruzar:</span>{" "}

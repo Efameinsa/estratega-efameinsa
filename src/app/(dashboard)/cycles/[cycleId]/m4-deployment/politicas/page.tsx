@@ -278,7 +278,7 @@ export default function PoliciesPage() {
       {noStrategies && noMitigants && (
         <Card className="border-amber-500/30 bg-transparent">
           <CardContent className="flex items-start gap-3 py-4 text-left">
-            <AlertTriangle className="mt-0.5 h-5 w-5 text-amber-400" />
+            <AlertTriangle className="mt-0.5 h-5 w-5 text-amber-700" />
             <div className="text-sm">
               <strong>Sin estrategias retenidas ni mitigantes éticos.</strong> Para generar
               sugerencias automáticas primero define estrategias en M3 · Estrategias y
@@ -289,7 +289,7 @@ export default function PoliciesPage() {
       )}
 
       {noOcps && (
-        <Card className="border-primary/25 bg-primary/10/40">
+        <Card className="border-primary/25 bg-primary/5">
           <CardContent className="py-3 text-left text-xs text-primary">
             <strong>Sugerencia:</strong> aún no defines OCPs en M4 · OCP por Área. Las políticas
             funcionarán sin ellos, pero la vinculación con objetivos anuales será más rica si
@@ -488,7 +488,7 @@ function Step1({
 
   return (
     <div className="space-y-6">
-      <Card className="border-primary/25 bg-primary/10/40">
+      <Card className="border-primary/25 bg-primary/5">
         <CardContent className="py-4 text-left text-sm text-primary">
           <strong className="block">Define las reglas que guiarán la ejecución.</strong>
           <span className="text-primary/80">
@@ -512,7 +512,7 @@ function Step1({
         <CategoryPill
           active={filterCategory === "all"}
           label={`Todas (${policies.length})`}
-          color="#94a3b8"
+          color="#64748b"
           onClick={() => setFilterCategory("all")}
         />
         {POLICY_CATEGORIES.map((c) => (
@@ -647,7 +647,7 @@ function PolicyCardStep1({
             <div className="flex flex-wrap items-center gap-2">
               <span className="font-mono text-xs text-muted-foreground">{policy.code}</span>
               {isMandatory ? (
-                <Badge className="border-amber-500 bg-transparent text-amber-300">
+                <Badge className="border-amber-500 bg-transparent text-amber-700">
                   <Lock className="mr-1 size-3" /> Obligatoria · mitigante ético
                 </Badge>
               ) : policy.origin === "suggested" ? (
@@ -666,7 +666,7 @@ function PolicyCardStep1({
                 </span>
               )}
               {isAccepted && (
-                <Badge variant="outline" className="border-emerald-400 text-emerald-300">
+                <Badge variant="outline" className="border-emerald-400 text-emerald-700">
                   <CheckCircle2 className="mr-1 size-3" /> Aceptada
                 </Badge>
               )}
@@ -716,7 +716,7 @@ function PolicyCardStep1({
         </div>
 
         {policy.ethicsMitigant && (
-          <div className="rounded-md border border-amber-500/30 bg-transparent px-3 py-2 text-xs text-amber-300">
+          <div className="rounded-md border border-amber-500/30 bg-transparent px-3 py-2 text-xs text-amber-700">
             <strong>Mitigante ético origen:</strong> {policy.ethicsMitigant.text.slice(0, 200)}
             {policy.ethicsMitigant.text.length > 200 ? "…" : ""}
           </div>
@@ -836,7 +836,7 @@ function Step2({
                   isCurrent
                     ? "border-primary bg-primary/10 ring-1 ring-primary/30"
                     : isConfirmed
-                    ? "border-emerald-500/30 bg-transparent text-emerald-300"
+                    ? "border-emerald-500/30 bg-transparent text-emerald-700"
                     : "border-border bg-muted/30 hover:bg-muted/60",
                 )}
               >
@@ -850,7 +850,7 @@ function Step2({
       </div>
 
       {!editingId && (
-        <Card className="border-primary/25 bg-primary/10/40">
+        <Card className="border-primary/25 bg-primary/5">
           <CardContent className="py-3 text-left text-sm text-primary">
             Estás creando una política personalizada. Completa los campos y guarda para
             empezar a vincularla con estrategias, OCPs y valores.
@@ -860,7 +860,7 @@ function Step2({
 
       {isMandatory && (
         <Card className="border-amber-400 bg-transparent">
-          <CardContent className="flex items-start gap-2 py-3 text-xs text-amber-300">
+          <CardContent className="flex items-start gap-2 py-3 text-xs text-amber-700">
             <Lock className="mt-0.5 size-4" />
             <span>
               Esta política es <strong>obligatoria</strong> porque deriva de un mitigante
@@ -910,7 +910,7 @@ function Step2({
               placeholder="Política de precios y descuentos"
             />
             {possibleDuplicates.length > 0 && (
-              <p className="text-xs text-amber-300">
+              <p className="text-xs text-amber-700">
                 ⚠️ Posible duplicado con: {possibleDuplicates.join(", ")}
               </p>
             )}
@@ -925,7 +925,7 @@ function Step2({
               placeholder="Mantener una estructura de precios que preserve el margen objetivo..."
             />
             {vague && (
-              <p className="text-xs text-amber-300">
+              <p className="text-xs text-amber-700">
                 ⚠️ Considera verbos imperativos: "Mantener", "Garantizar", "Requerir" en lugar
                 de "tratar de" o "intentar".
               </p>
@@ -984,7 +984,7 @@ function Step2({
             <Card className="border-amber-500/30 bg-transparent">
               <CardContent className="py-3 text-left text-xs">
                 <strong className="block">Mitigante ético origen</strong>
-                <p className="mt-1 text-amber-300">{current.ethicsMitigant.text}</p>
+                <p className="mt-1 text-amber-700">{current.ethicsMitigant.text}</p>
               </CardContent>
             </Card>
           )}
@@ -1038,7 +1038,7 @@ function Step2({
                 placeholder="Porcentaje de campañas alineadas al posicionamiento"
               />
               {genericIndicator && (
-                <p className="text-xs text-amber-300">
+                <p className="text-xs text-amber-700">
                   ⚠️ Considera un indicador medible: porcentaje, número o frecuencia.
                 </p>
               )}
@@ -1108,7 +1108,7 @@ function Step2({
             form.indicator &&
             !vague &&
             !genericIndicator && (
-              <div className="flex items-start gap-2 rounded-md border border-emerald-500/30 bg-transparent px-3 py-2 text-xs text-emerald-300">
+              <div className="flex items-start gap-2 rounded-md border border-emerald-500/30 bg-transparent px-3 py-2 text-xs text-emerald-700">
                 <CheckCircle2 className="mt-0.5 size-4" />
                 <span>
                   Política coherente: vinculada con{" "}
@@ -1120,7 +1120,7 @@ function Step2({
             )}
 
           {!hasLinks && form.name && form.enunciado && (
-            <div className="flex items-start gap-2 rounded-md border border-amber-500/30 bg-transparent px-3 py-2 text-xs text-amber-300">
+            <div className="flex items-start gap-2 rounded-md border border-amber-500/30 bg-transparent px-3 py-2 text-xs text-amber-700">
               <AlertTriangle className="mt-0.5 size-4" />
               <span>
                 Esta política no está vinculada con ninguna estrategia, OCP o valor. ¿Para qué
@@ -1349,7 +1349,7 @@ function Step3({
 
       {emptyCategories.length > 0 && (
         <Card className="border-amber-500/30 bg-transparent">
-          <CardContent className="space-y-2 py-4 text-xs text-amber-300 text-left">
+          <CardContent className="space-y-2 py-4 text-xs text-amber-700 text-left">
             <strong>Categorías sin políticas:</strong>
             <ul className="ml-4 list-disc space-y-1">
               {emptyCategories.map((c) => (
@@ -1366,7 +1366,7 @@ function Step3({
       {contradictions.length > 0 && (
         <Card className="border-amber-500/30 bg-transparent">
           <CardHeader>
-            <CardTitle className="text-left text-base text-amber-300">
+            <CardTitle className="text-left text-base text-amber-700">
               Posibles contradicciones detectadas ({contradictions.length})
             </CardTitle>
           </CardHeader>
@@ -1383,7 +1383,7 @@ function Step3({
                   <div className="font-medium">
                     {a.code} ↔ {b.code}
                   </div>
-                  <p className="mt-1 text-amber-300">{c.description}</p>
+                  <p className="mt-1 text-amber-700">{c.description}</p>
                   <p className="mt-1 text-muted-foreground">
                     "{a.name}" ↔ "{b.name}"
                   </p>
@@ -1428,7 +1428,7 @@ function Step3({
                       {row.cells.map((on, i) => (
                         <td key={i} className="px-2 py-2 text-center">
                           {on ? (
-                            <CheckCircle2 className="mx-auto size-3.5 text-emerald-400" />
+                            <CheckCircle2 className="mx-auto size-3.5 text-emerald-700" />
                           ) : (
                             <span className="text-muted-foreground/40">·</span>
                           )}
@@ -1476,16 +1476,16 @@ function Step3({
         <CardContent className="flex items-start gap-3 py-4 text-left text-sm">
           {contradictions.length === 0 && confirmed.length > 0 ? (
             <>
-              <CheckCircle2 className="mt-0.5 size-5 text-emerald-400" />
-              <span className="text-emerald-300">
+              <CheckCircle2 className="mt-0.5 size-5 text-emerald-700" />
+              <span className="text-emerald-700">
                 <strong>Marco normativo coherente.</strong> No se detectaron contradicciones
                 entre políticas. Listo para integrarse al Plan Estratégico Integral.
               </span>
             </>
           ) : (
             <>
-              <AlertTriangle className="mt-0.5 size-5 text-amber-400" />
-              <span className="text-amber-300">
+              <AlertTriangle className="mt-0.5 size-5 text-amber-700" />
+              <span className="text-amber-700">
                 <strong>Marco con observaciones.</strong> Revisa los puntos detectados antes
                 de exportar.
               </span>
@@ -1511,7 +1511,7 @@ function Step3({
         </CardContent>
       </Card>
 
-      <Card className="border-primary/25 bg-primary/10/30">
+      <Card className="border-primary/25 bg-primary/5">
         <CardContent className="py-4 text-sm text-left text-primary">
           <strong className="block">¿Qué sigue?</strong>
           En el próximo módulo (Estructura Organizacional) definirás cómo se organizan las

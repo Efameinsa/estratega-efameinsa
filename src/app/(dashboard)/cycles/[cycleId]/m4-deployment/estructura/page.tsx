@@ -229,7 +229,7 @@ function StructurePageInner() {
 
       {noOcps && (
         <Card className="border-amber-500/30 bg-transparent">
-          <CardContent className="py-3 text-left text-xs text-amber-300">
+          <CardContent className="py-3 text-left text-xs text-amber-700">
             Para mejores resultados, define primero tus OCPs en M4. El sistema usará esa
             información para sugerir las áreas necesarias.
           </CardContent>
@@ -364,7 +364,7 @@ function Step1({
 
   return (
     <div className="space-y-6">
-      <Card className="border-primary/25 bg-primary/10/40">
+      <Card className="border-primary/25 bg-primary/5">
         <CardContent className="py-4 text-left text-sm text-primary">
           <strong className="block">La estructura sigue a la estrategia.</strong>
           <span className="text-primary/80">
@@ -376,12 +376,12 @@ function Step1({
 
       <Card className="border-2 border-emerald-500/30 bg-transparent">
         <CardHeader>
-          <CardTitle className="text-left text-base text-emerald-300">
+          <CardTitle className="text-left text-base text-emerald-700">
             <Sparkles className="mr-1 inline size-4" />
             Recomendación: {getStructureTypeDef(recType)?.label}
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-2 text-left text-sm text-emerald-300">
+        <CardContent className="space-y-2 text-left text-sm text-emerald-700">
           <p>{recommendation.recommendation.reason}</p>
           {recommendation.recommendation.detectedSignals.length > 0 && (
             <ul className="ml-4 list-disc text-xs">
@@ -414,7 +414,7 @@ function Step1({
                 isSelected
                   ? "border-2 ring-2 ring-primary/30"
                   : "border hover:border-primary/40",
-                isRecommended && !isSelected && "border-primary/30 bg-primary/10/30",
+                isRecommended && !isSelected && "border-primary/30 bg-primary/5",
               )}
               style={
                 isSelected
@@ -423,7 +423,7 @@ function Step1({
               }
             >
               {isRecommended && (
-                <Badge className="absolute right-3 top-3 border-emerald-500 bg-transparent0 text-white">
+                <Badge className="absolute right-3 top-3 border-emerald-600 bg-emerald-600 text-white">
                   <Sparkles className="mr-1 size-3" />
                   Recomendada
                 </Badge>
@@ -603,8 +603,8 @@ function Step2({
           r.relationType === "transversal"
             ? { stroke: "#BA7517", strokeDasharray: "6 4" }
             : r.relationType === "reporta_funcional"
-            ? { stroke: "#a78bfa", strokeDasharray: "3 3" }
-            : { stroke: "#94A3B8" },
+            ? { stroke: "#8B1510", strokeDasharray: "3 3" }
+            : { stroke: "#64748b" },
         type: "smoothstep",
       })),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -710,7 +710,7 @@ function Step2({
 
       {!isFullscreen && (
         <Card className="border-emerald-500/30 bg-transparent">
-          <CardContent className="py-3 text-left text-xs text-emerald-300">
+          <CardContent className="py-3 text-left text-xs text-emerald-700">
             <strong>Organigrama generado automáticamente.</strong> El sistema construyó la
             estructura {structure.type} basándose en tus estrategias, OCPs y mitigantes éticos.
             Revisa, edita o agrega lo que falte. Todo es modificable.
@@ -776,7 +776,7 @@ function Step2({
             fitView
             proOptions={{ hideAttribution: true }}
           >
-            <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="rgba(167,139,250,0.14)" />
+            <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="rgba(139, 21, 16,0.14)" />
             <Controls />
             <MiniMap nodeColor={(n) => getNodeTypeDef((n.data as { nodeType: string }).nodeType)?.color ?? "#64748b"} />
           </ReactFlow>
@@ -1038,7 +1038,7 @@ function NodeEditor({
                       "rounded-full border px-2 py-0.5 text-[11px] transition",
                       isOn
                         ? p.mandatory
-                          ? "border-amber-400 bg-transparent text-amber-300"
+                          ? "border-amber-400 bg-transparent text-amber-700"
                           : "border-primary bg-primary text-primary-foreground"
                         : "border-border bg-muted/20 hover:bg-muted",
                     )}
@@ -1053,7 +1053,7 @@ function NodeEditor({
         </div>
 
         {node.ocpLinks.length === 0 && node.policyLinks.length === 0 && (
-          <div className="flex items-center gap-2 rounded-md border border-amber-500/30 bg-transparent px-3 py-2 text-xs text-amber-300">
+          <div className="flex items-center gap-2 rounded-md border border-amber-500/30 bg-transparent px-3 py-2 text-xs text-amber-700">
             <AlertTriangle className="size-4" />
             Esta área no tiene OCPs ni políticas asignadas. ¿Qué hace?
           </div>
@@ -1275,7 +1275,7 @@ function Step3({
                           </div>
                           <div className="font-medium">{n.name}</div>
                           {count === 0 && (
-                            <span className="text-[10px] text-amber-300">Sin OCPs</span>
+                            <span className="text-[10px] text-amber-700">Sin OCPs</span>
                           )}
                         </td>
                         {setup.ocps.map((o) => {
@@ -1349,7 +1349,7 @@ function Step3({
                       style={{
                         width: `${pct}%`,
                         backgroundColor:
-                          l.count === 0 ? "rgba(0,0,0,0.08)" : l.count > 5 ? "#E11D48" : "#a78bfa",
+                          l.count === 0 ? "rgba(0,0,0,0.08)" : l.count > 5 ? "#E11D48" : "#8B1510",
                       }}
                     />
                   </div>
@@ -1399,11 +1399,11 @@ function Step3({
       {observations.length > 0 && (
         <Card className="border-amber-500/30 bg-transparent">
           <CardHeader>
-            <CardTitle className="text-left text-base text-amber-300">
+            <CardTitle className="text-left text-base text-amber-700">
               Observaciones del diseño ({observations.length})
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-1 text-xs text-left text-amber-300">
+          <CardContent className="space-y-1 text-xs text-left text-amber-700">
             <ul className="ml-4 list-disc space-y-1">
               {observations.slice(0, 12).map((o, i) => (
                 <li key={i}>{o}</li>
@@ -1445,7 +1445,7 @@ function Step3({
         </CardContent>
       </Card>
 
-      <Card className="border-primary/25 bg-primary/10/30">
+      <Card className="border-primary/25 bg-primary/5">
         <CardContent className="py-4 text-sm text-left text-primary">
           <strong className="block">¿Qué sigue?</strong>
           Con tu estructura definida, el próximo módulo (Recursos · 7M) te ayudará a estimar
@@ -1495,7 +1495,7 @@ function MiniOrgPreview({
         source: r.parentNodeId,
         target: r.childNodeId,
         type: "smoothstep",
-        style: { stroke: "#94A3B8" },
+        style: { stroke: "#64748b" },
       }))}
       nodeTypes={nodeTypes}
       fitView

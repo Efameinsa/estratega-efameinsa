@@ -218,7 +218,7 @@ function Paso1({
 
   return (
     <div className="space-y-5">
-      <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 dark:border-primary/40 dark:bg-primary/10 p-4">
+      <div className="rounded-xl border border-primary/15 bg-primary/5 dark:border-primary/40 dark:bg-primary/10 p-4">
         <div className="flex gap-3">
           <Info className="size-5 shrink-0 text-primary mt-0.5" />
           <div className="text-sm">
@@ -256,7 +256,7 @@ function Paso1({
               <span className="text-sm text-muted-foreground">% anual</span>
             </div>
             {state.growth !== null && (
-              <Badge variant="outline" className="text-[11px]" style={{ color: state.growth >= state.growthThreshold ? "#4ade80" : "#F59E0B", borderColor: state.growth >= state.growthThreshold ? "rgba(22,163,74,0.4)" : "rgba(245,158,11,0.4)" }}>
+              <Badge variant="outline" className="text-[11px]" style={{ color: state.growth >= state.growthThreshold ? "#1e7f4f" : "#b45309", borderColor: state.growth >= state.growthThreshold ? "rgba(22,163,74,0.4)" : "rgba(245,158,11,0.4)" }}>
                 {state.growth >= state.growthThreshold ? "Crecimiento rapido" : "Crecimiento lento"}
               </Badge>
             )}
@@ -271,7 +271,7 @@ function Paso1({
                   className="w-16 rounded-md border bg-card px-2 py-0.5 text-xs"
                 />
                 <span>%</span>
-                <Badge variant="outline" className="text-[10px] bg-transparent text-emerald-300 border-emerald-500/30">
+                <Badge variant="outline" className="text-[10px] bg-transparent text-emerald-700 border-emerald-500/30">
                   Recomendado: 5%
                 </Badge>
               </label>
@@ -297,7 +297,7 @@ function Paso1({
         <Card style={{ borderColor: "rgba(22,163,74,0.4)" }}>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm flex items-center justify-between flex-wrap gap-1">
-              <span className="text-emerald-300 dark:text-emerald-400">Posicion competitiva</span>
+              <span className="text-emerald-700 dark:text-emerald-700">Posicion competitiva</span>
               <Badge variant="outline" className="text-[10px] font-normal">
                 {state.positionSource === "manual"
                   ? "Manual"
@@ -317,12 +317,12 @@ function Paso1({
                 value={state.position !== null ? state.position.toFixed(1) : ""}
                 onChange={(e) => update({ position: e.target.value === "" ? null : parseFloat(e.target.value), positionSource: "manual" })}
                 placeholder="—"
-                className="w-24 rounded-md border-2 border-input bg-muted/40 dark:bg-input/30 px-3 py-2 text-2xl font-bold text-emerald-300 dark:text-emerald-400 tabular-nums focus:outline-none focus:bg-background focus:ring-2 focus:ring-ring/30"
+                className="w-24 rounded-md border-2 border-input bg-muted/40 dark:bg-input/30 px-3 py-2 text-2xl font-bold text-emerald-700 dark:text-emerald-700 tabular-nums focus:outline-none focus:bg-background focus:ring-2 focus:ring-ring/30"
               />
               <span className="text-sm text-muted-foreground">/ 4.0</span>
             </div>
             {state.position !== null && (
-              <Badge variant="outline" className="text-[11px]" style={{ color: state.position >= state.positionThreshold ? "#4ade80" : "#F59E0B", borderColor: state.position >= state.positionThreshold ? "rgba(22,163,74,0.4)" : "rgba(245,158,11,0.4)" }}>
+              <Badge variant="outline" className="text-[11px]" style={{ color: state.position >= state.positionThreshold ? "#1e7f4f" : "#b45309", borderColor: state.position >= state.positionThreshold ? "rgba(22,163,74,0.4)" : "rgba(245,158,11,0.4)" }}>
                 {state.position >= state.positionThreshold ? "Posicion fuerte" : "Posicion debil"}
               </Badge>
             )}
@@ -336,7 +336,7 @@ function Paso1({
                   onChange={(e) => update({ positionThreshold: parseFloat(e.target.value) || 2.5 })}
                   className="w-16 rounded-md border bg-card px-2 py-0.5 text-xs"
                 />
-                <Badge variant="outline" className="text-[10px] bg-transparent text-emerald-300 border-emerald-500/30">
+                <Badge variant="outline" className="text-[10px] bg-transparent text-emerald-700 border-emerald-500/30">
                   Recomendado: 2.5
                 </Badge>
               </label>
@@ -430,7 +430,7 @@ function Paso2({
             <CardTitle className="text-sm">Coherencia con PEYEA</CardTitle>
           </CardHeader>
           <CardContent>
-            <Badge variant="outline" className="mb-2" style={{ color: coherence.aligned ? "#4ade80" : "#F59E0B", borderColor: coherence.aligned ? "rgba(22,163,74,0.4)" : "rgba(245,158,11,0.4)" }}>
+            <Badge variant="outline" className="mb-2" style={{ color: coherence.aligned ? "#1e7f4f" : "#b45309", borderColor: coherence.aligned ? "rgba(22,163,74,0.4)" : "rgba(245,158,11,0.4)" }}>
               {coherence.aligned ? "Coherente" : "Hay diferencias"}
             </Badge>
             <p className="text-xs text-muted-foreground leading-relaxed">{coherence.message}</p>
@@ -439,7 +439,7 @@ function Paso2({
 
         {nearCenter && (
           <div className="rounded-md border border-amber-200/60 bg-transparent dark:border-amber-900/30 dark:bg-transparent p-3 text-xs flex gap-2">
-            <AlertTriangle className="size-4 shrink-0 text-amber-400 mt-0.5" />
+            <AlertTriangle className="size-4 shrink-0 text-amber-700 mt-0.5" />
             <span>Tu posicion esta cerca del centro. Los resultados son sensibles a cambios pequeños. Considera revisar las variables.</span>
           </div>
         )}
@@ -486,14 +486,14 @@ function GeChart({ state, quadrant }: { state: GeState; quadrant: GeQuadrant }) 
         <ScatterChart margin={{ top: 30, right: 30, bottom: 36, left: 32 }}>
           <XAxis
             type="number" dataKey="x" domain={[1, 4]} ticks={[1, 2, 2.5, 3, 4]}
-            tick={{ fontSize: 11, fill: "#9a91b8" }} tickLine={false} axisLine={{ stroke: "rgba(167,139,250,0.14)" }}
-            label={{ value: "Posicion competitiva (debil ← → fuerte)", position: "insideBottom", offset: -14, style: { fontSize: 11, fill: "#9a91b8", textAnchor: "middle" } }}
+            tick={{ fontSize: 11, fill: "#6b6b6b" }} tickLine={false} axisLine={{ stroke: "rgba(139, 21, 16,0.14)" }}
+            label={{ value: "Posicion competitiva (debil ← → fuerte)", position: "insideBottom", offset: -14, style: { fontSize: 11, fill: "#6b6b6b", textAnchor: "middle" } }}
           />
           <YAxis
             type="number" dataKey="y" domain={[0, yMax]}
             tickFormatter={(v) => `${v}%`}
-            tick={{ fontSize: 11, fill: "#9a91b8" }} tickLine={false} axisLine={{ stroke: "rgba(167,139,250,0.14)" }}
-            label={{ value: "Crecimiento del mercado (lento ↓ ↑ rapido)", angle: -90, position: "insideLeft", offset: 0, style: { fontSize: 11, fill: "#9a91b8", textAnchor: "middle" } }}
+            tick={{ fontSize: 11, fill: "#6b6b6b" }} tickLine={false} axisLine={{ stroke: "rgba(139, 21, 16,0.14)" }}
+            label={{ value: "Crecimiento del mercado (lento ↓ ↑ rapido)", angle: -90, position: "insideLeft", offset: 0, style: { fontSize: 11, fill: "#6b6b6b", textAnchor: "middle" } }}
           />
           <ZAxis range={[400, 400]} />
 
@@ -507,8 +507,8 @@ function GeChart({ state, quadrant }: { state: GeState; quadrant: GeQuadrant }) 
           <ReferenceArea x1={xT} x2={4} y1={0} y2={yT} fill={GE_QUADRANT_INFO.IV.color} fillOpacity={0.12} stroke="none" label={{ value: "IV", position: "center", fill: GE_QUADRANT_INFO.IV.color, fontSize: 32, fontWeight: 700, opacity: 0.4 }} />
 
           {/* Lineas divisorias */}
-          <ReferenceLine x={xT} stroke="#94a3b8" strokeWidth={1.5} />
-          <ReferenceLine y={yT} stroke="#94a3b8" strokeWidth={1.5} />
+          <ReferenceLine x={xT} stroke="#64748b" strokeWidth={1.5} />
+          <ReferenceLine y={yT} stroke="#64748b" strokeWidth={1.5} />
 
           <RTooltip
             cursor={false}
@@ -524,10 +524,10 @@ function GeChart({ state, quadrant }: { state: GeState; quadrant: GeQuadrant }) 
             }
           />
 
-          <Scatter data={[{ x: state.position!, y: state.growth!, label: `Tu posición (${state.position?.toFixed(1)} · ${state.growth?.toFixed(1)} %)` }]} fill={userInfo.color} stroke="#07060d" strokeWidth={2} shape="circle">
+          <Scatter data={[{ x: state.position!, y: state.growth!, label: `Tu posición (${state.position?.toFixed(1)} · ${state.growth?.toFixed(1)} %)` }]} fill={userInfo.color} stroke="#ffffff" strokeWidth={2} shape="circle">
             <Cell key="0" />
             <LabelList dataKey="label" content={(p: { x?: number | string; y?: number | string; width?: number | string; value?: unknown }) => (
-              <text x={Number(p.x) + Number(p.width ?? 0) / 2} y={Number(p.y) - 10} textAnchor="middle" fill="#f4f1fb" fontSize={12} fontWeight={600}>
+              <text x={Number(p.x) + Number(p.width ?? 0) / 2} y={Number(p.y) - 10} textAnchor="middle" fill="#2c2e35" fontSize={12} fontWeight={600}>
                 {String(p.value ?? "")}
               </text>
             )} />
@@ -616,7 +616,7 @@ function Paso3({
       {/* Alertas */}
       {alertas.map((a, i) => (
         <div key={i} className="rounded-md border border-amber-200/60 bg-transparent dark:border-amber-900/30 dark:bg-transparent p-3 text-sm flex gap-2">
-          <AlertTriangle className="size-4 shrink-0 text-amber-400 mt-0.5" />
+          <AlertTriangle className="size-4 shrink-0 text-amber-700 mt-0.5" />
           <span className="leading-relaxed">{a}</span>
         </div>
       ))}
@@ -637,7 +637,7 @@ function Paso3({
               const isRetained = retained.has(s.code);
               const isTop3 = s.priority <= 3;
               return (
-                <label key={s.code} className={`rounded-lg border p-3 cursor-pointer transition-all ${isRetained ? "border-primary/40 bg-primary/10/40 dark:bg-primary/10" : "hover:border-foreground/30"}`} style={isTop3 ? { borderLeftWidth: 4, borderLeftColor: info.color } : undefined}>
+                <label key={s.code} className={`rounded-lg border p-3 cursor-pointer transition-all ${isRetained ? "border-primary/40 bg-primary/5 dark:bg-primary/10" : "hover:border-foreground/30"}`} style={isTop3 ? { borderLeftWidth: 4, borderLeftColor: info.color } : undefined}>
                   <div className="flex items-start gap-2">
                     <input type="checkbox" checked={isRetained} onChange={() => toggle(s.code)} className="mt-1 accent-blue-600 size-4 cursor-pointer" />
                     <div className="flex-1 min-w-0">
@@ -666,9 +666,9 @@ function Paso3({
         </CardHeader>
         <CardContent className="space-y-1.5 text-sm">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-            <MatrixSummary label="FODA Cruzado" count={matrixCounts.foda} color="#60a5fa" />
-            <MatrixSummary label="PEYEA" count={matrixCounts.peyea} color="#8B5CF6" />
-            <MatrixSummary label="IE" count={matrixCounts.ie} color="#4ade80" />
+            <MatrixSummary label="FODA Cruzado" count={matrixCounts.foda} color="#185fa5" />
+            <MatrixSummary label="PEYEA" count={matrixCounts.peyea} color="#2c2e35" />
+            <MatrixSummary label="IE" count={matrixCounts.ie} color="#1e7f4f" />
             <MatrixSummary label="GE (esta)" count={matrixCounts.ge} color={info.color} />
           </div>
           <Separator className="my-2" />

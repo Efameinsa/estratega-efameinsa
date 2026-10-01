@@ -40,6 +40,7 @@ import {
   Clock,
   ShieldCheck,
   AlertCircle,
+  Presentation,
   type LucideIcon,
 } from "lucide-react";
 
@@ -151,7 +152,7 @@ function TreeNode({
               )}
             />
           )}
-          <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--sidebar-foreground)" }}>
+          <span className="text-[11px] font-bold uppercase tracking-wider text-sidebar-foreground/45">
             {node.label}
           </span>
         </button>
@@ -182,7 +183,7 @@ function TreeNode({
       {hasChildren && (
         <ChevronRight
           className={cn(
-            "size-3.5 shrink-0 text-muted-foreground transition-transform duration-200",
+            "size-3.5 shrink-0 text-sidebar-foreground/50 transition-transform duration-200",
             open && "rotate-90"
           )}
         />
@@ -217,22 +218,21 @@ function TreeNode({
       : "hover:text-sidebar-foreground"
   );
 
-  // Inline styles for exact color control — tokens del tema morado
-  // - isActive: highlight fuerte (bg + border izquierdo) para el item seleccionado
+  // Inline styles for exact color control — tokens de marca (igual que el CRM)
+  // - isActive: highlight fuerte (fondo granate) para el item seleccionado
   // - isAncestorOfActive: highlight suave (solo color de texto) para indicar
   //   que un descendiente está activo, sin competir con el sub-item real.
   const sharedStyle: React.CSSProperties = isDisabled
     ? { color: "var(--sidebar-foreground)", opacity: 0.5, paddingLeft }
     : isActive
     ? {
-        color: "var(--sidebar-accent-foreground)",
-        backgroundColor: "var(--sidebar-accent)",
-        borderLeft: "2px solid var(--sidebar-primary)",
-        paddingLeft: paddingLeft - 2,
+        color: "var(--sidebar-primary-foreground)",
+        backgroundColor: "var(--sidebar-primary)",
+        paddingLeft,
       }
     : isAncestorOfActive
     ? { color: "var(--sidebar-accent-foreground)", paddingLeft }
-    : { color: "var(--sidebar-foreground)", paddingLeft };
+    : { color: "color-mix(in oklab, var(--sidebar-foreground) 72%, transparent)", paddingLeft };
 
   return (
     <div>
@@ -405,6 +405,8 @@ function buildCycleTree(cycleId: string): TreeNodeData[] {
             { label: "Estrategias retenidas", href: `${base}/m3-formulation/strategies`, icon: Layers },
             // 9. Plan Estratégico Integral
             { label: "Plan Estratégico Integral", href: `${base}/m3-formulation/pei`, icon: FileText },
+            // 10. Presentación a pantalla completa
+            { label: "Modo presentación", href: `${base}/presentacion`, icon: Presentation },
           ],
         },
         // M4
@@ -525,7 +527,9 @@ export function Sidebar({
             className="flex items-center justify-center rounded-md p-1.5 transition-colors hover:bg-sidebar-accent"
             title="Expandir sidebar"
           >
-            <img src="/logo-isotipo-white.png" alt="Estratega" className="size-7" />
+            <span className="flex size-8 items-center justify-center rounded-lg bg-sidebar-primary">
+              <img src="/logo-isotipo-white.png" alt="Estratega" className="size-6" />
+            </span>
           </button>
         ) : (
           <div className="relative">
@@ -533,12 +537,15 @@ export function Sidebar({
               onClick={() => setOrgDropdownOpen(!orgDropdownOpen)}
               className="flex w-full items-center gap-2.5 rounded-lg p-2 transition-colors hover:bg-sidebar-accent"
             >
-              <img src="/logo-isotipo-white.png" alt="Estratega" className="size-8 shrink-0" />
+              {/* El ícono de Estratega sobre el granate de marca */}
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-sidebar-primary shadow-[inset_0_1px_0_rgb(255_255_255/0.15)]">
+                <img src="/logo-isotipo-white.png" alt="Estratega" className="size-7" />
+              </span>
               <div className="flex-1 text-left min-w-0">
                 <span className="text-[13px] font-medium block truncate" style={{ color: "var(--sidebar-accent-foreground)" }}>
                   {orgName}
                 </span>
-                <span className="text-[10px]" style={{ color: "var(--sidebar-foreground)" }}>
+                <span className="text-[10px] font-semibold tracking-[0.18em] text-sidebar-foreground/55">
                   ESTRATEGA
                 </span>
               </div>
@@ -548,7 +555,7 @@ export function Sidebar({
             </button>
             {orgDropdownOpen && (
               <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-lg border border-sidebar-border p-1.5 shadow-lg"
-                style={{ backgroundColor: "var(--popover)" }}
+                style={{ backgroundColor: "var(--sidebar)" }}
               >
                 <div className="flex items-center gap-2 rounded-md bg-sidebar-accent p-2">
                   <img src="/logo-isotipo-white.png" alt="" className="size-5" />
@@ -654,7 +661,7 @@ function CollapsedNavItem({
       className={cn(
         "flex size-9 items-center justify-center rounded-md transition-all duration-150",
         isActive
-          ? "bg-sidebar-accent text-sidebar-primary"
+          ? "bg-sidebar-primary text-sidebar-primary-foreground"
           : "text-sidebar-foreground/60 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"
       )}
       title={label}

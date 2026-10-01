@@ -160,7 +160,7 @@ function FactorCard({
   // Border color
   let borderColor = "var(--color-border-tertiary)";
   if (isConfirmed) {
-    borderColor = tipo === "O" ? "#a78bfa" : "#fca5a5";
+    borderColor = tipo === "O" ? "#1e7f4f" : "#b3261e";
   }
 
   function handleToggleChip(chip: string) {
@@ -217,7 +217,7 @@ function FactorCard({
         </div>
         {factor.subVarType === "personalizada" && (
           <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium"
-            style={{ backgroundColor: "transparent", color: "#a78bfa", borderColor: "#a78bfa" }}
+            style={{ backgroundColor: "transparent", color: "#8B1510", borderColor: "#8B1510" }}
           >
             Personalizada
           </span>
@@ -333,7 +333,7 @@ function FactorCard({
                 )}
               </div>
               {hasNoSource && (
-                <p className="text-[10px]" style={{ color: "#fbbf24" }}>
+                <p className="text-[10px]" style={{ color: "#b45309" }}>
                   Peso ajustado por falta de fuente (-0.01)
                 </p>
               )}
@@ -365,13 +365,13 @@ function FactorCard({
             <div className="flex items-center gap-2 rounded-lg border px-3 py-2"
               style={{ borderColor: "var(--color-border-tertiary)" }}
             >
-              <TrendingUp className="size-4" style={{ color: "#a78bfa" }} />
+              <TrendingUp className="size-4" style={{ color: "#8B1510" }} />
               <span className="flex-1 text-[12px] font-medium" style={{ color: "var(--color-text-secondary)" }}>
                 Incluir en MEFE
               </span>
               <button type="button" onClick={() => setIncludeInMefe(!includeInMefe)}
                 className="relative inline-flex h-5 w-9 items-center rounded-full transition-colors cursor-pointer"
-                style={{ backgroundColor: includeInMefe ? "#a78bfa" : "var(--color-border-tertiary, rgba(167,139,250,0.14))" }}
+                style={{ backgroundColor: includeInMefe ? "#8B1510" : "var(--color-border-tertiary, rgba(139, 21, 16,0.14))" }}
               >
                 <span className="inline-block size-3.5 rounded-full bg-white transition-transform"
                   style={{ transform: includeInMefe ? "translateX(17px)" : "translateX(3px)" }}
@@ -420,7 +420,7 @@ function FactorCard({
           <div className="flex items-center gap-3 pt-1">
             <button type="button" disabled={!rating || !tipo} onClick={handleConfirm}
               className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-medium text-white transition-all disabled:opacity-40 cursor-pointer"
-              style={{ backgroundColor: "#a78bfa" }}
+              style={{ backgroundColor: "#8B1510" }}
             >
               <Check className="size-3.5" />
               {isConfirmed ? "Actualizar factor" : "Confirmar factor"}
@@ -514,8 +514,8 @@ function EnvironmentFindingsPanel({
             {/* Oportunidades */}
             <div className="space-y-2">
               <div className="flex items-center gap-1.5 mb-2">
-                <span className="size-2 rounded-full" style={{ backgroundColor: "#a78bfa" }} />
-                <span className="text-[13px] font-medium" style={{ color: "#9ec2ec" }}>
+                <span className="size-2 rounded-full" style={{ backgroundColor: "#8B1510" }} />
+                <span className="text-[13px] font-medium" style={{ color: "#185fa5" }}>
                   Oportunidades ({oportunidades.length})
                 </span>
               </div>
@@ -536,15 +536,15 @@ function EnvironmentFindingsPanel({
                       style={{ backgroundColor: "transparent" }}
                     >
                       <span className="flex size-5 shrink-0 items-center justify-center rounded text-[10px] font-medium text-white"
-                        style={{ backgroundColor: "#a78bfa" }}
+                        style={{ backgroundColor: "#8B1510" }}
                       >
                         {f.rating}
                       </span>
-                      <span className="flex-1 leading-snug" style={{ color: "#9ec2ec" }}>
+                      <span className="flex-1 leading-snug" style={{ color: "#185fa5" }}>
                         {f.description}
                       </span>
                       <span className="flex items-center gap-1 shrink-0">
-                        {f.includeInMefe && <TrendingUp className="size-3" style={{ color: "#a78bfa" }} />}
+                        {f.includeInMefe && <TrendingUp className="size-3" style={{ color: "#8B1510" }} />}
                         {hasEvidence && <Paperclip className="size-3" style={{ color: "var(--color-text-tertiary)" }} />}
                       </span>
                     </div>
@@ -557,7 +557,7 @@ function EnvironmentFindingsPanel({
             <div className="space-y-2">
               <div className="flex items-center gap-1.5 mb-2">
                 <span className="size-2 rounded-full" style={{ backgroundColor: "transparent" }} />
-                <span className="text-[13px] font-medium" style={{ color: "#ee9c9c" }}>
+                <span className="text-[13px] font-medium" style={{ color: "#b3261e" }}>
                   Amenazas ({amenazas.length})
                 </span>
               </div>
@@ -582,11 +582,11 @@ function EnvironmentFindingsPanel({
                       >
                         {f.rating}
                       </span>
-                      <span className="flex-1 leading-snug" style={{ color: "#ee9c9c" }}>
+                      <span className="flex-1 leading-snug" style={{ color: "#b3261e" }}>
                         {f.description}
                       </span>
                       <span className="flex items-center gap-1 shrink-0">
-                        {f.includeInMefe && <TrendingUp className="size-3" style={{ color: "#a78bfa" }} />}
+                        {f.includeInMefe && <TrendingUp className="size-3" style={{ color: "#8B1510" }} />}
                         {hasEvidence && <Paperclip className="size-3" style={{ color: "var(--color-text-tertiary)" }} />}
                       </span>
                     </div>
@@ -837,7 +837,7 @@ function VariableTabContent({
               {customFactors.map((f) => (
                 <span key={f.id}
                   className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] font-medium"
-                  style={{ backgroundColor: "transparent", borderColor: "#a78bfa", color: "#a78bfa" }}
+                  style={{ backgroundColor: "transparent", borderColor: "#8B1510", color: "#8B1510" }}
                 >
                   {f.description}
                   <button type="button" onClick={() => deleteMutation.mutate({ id: f.id })} className="cursor-pointer">
@@ -873,10 +873,10 @@ function VariableTabContent({
 
           {/* Methodological note */}
           <div className="flex items-start gap-2 rounded-lg border p-3"
-            style={{ borderColor: "#fbbf24", backgroundColor: "transparent" }}
+            style={{ borderColor: "#b45309", backgroundColor: "transparent" }}
           >
-            <AlertTriangle className="size-4 shrink-0 mt-0.5" style={{ color: "#fbbf24" }} />
-            <p className="text-[12px]" style={{ color: "#f0c283" }}>
+            <AlertTriangle className="size-4 shrink-0 mt-0.5" style={{ color: "#b45309" }} />
+            <p className="text-[12px]" style={{ color: "#b45309" }}>
               <strong>La calificacion (1–4) refleja como responde tu organizacion al factor externo</strong>, no que tan intenso es el factor.
               4 = respuesta superior, 1 = respuesta deficiente.
             </p>
@@ -934,7 +934,7 @@ export default function PestecPage() {
       {/* Hero */}
       <div className="flex items-center gap-3">
         <div className="flex size-12 items-center justify-center rounded-2xl" style={{ backgroundColor: "transparent" }}>
-          <Globe className="size-6" style={{ color: "#a78bfa" }} />
+          <Globe className="size-6" style={{ color: "#8B1510" }} />
         </div>
         <div>
           <h1 className="text-2xl font-medium tracking-tight">Análisis PESTEC</h1>

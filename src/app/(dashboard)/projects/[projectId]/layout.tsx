@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { cn } from "@/lib/utils";
-import { PROJECT_STATUS, BSC_PERSPECTIVES, toBscCode, projectInitials } from "@/lib/pm";
+import { PROJECT_STATUS, BSC_PERSPECTIVES, toBscCode, projectInitials, colorDeMarca } from "@/lib/pm";
 import { WorkspaceProvider } from "@/components/pm/workspace-context";
 import { TaskPanel } from "@/components/pm/task-panel";
 import { AvatarStack, friendlyDate } from "@/components/pm/primitives";
@@ -85,7 +85,7 @@ function ProjectShell({ children }: { children: React.ReactNode }) {
             )}
           </nav>
           <div className="mt-1.5 flex flex-wrap items-center gap-3">
-            <span className="flex size-8 items-center justify-center rounded-lg text-sm font-bold text-[#0a0814]" style={{ background: p.color ?? "#a78bfa" }}>
+            <span className="flex size-8 items-center justify-center rounded-lg text-sm font-bold text-white" style={{ background: colorDeMarca(p.color) ?? "#8B1510" }}>
               {projectInitials(p)}
             </span>
             <h1 className="min-w-0 flex-1 truncate text-xl font-semibold tracking-tight" title={p.name}>

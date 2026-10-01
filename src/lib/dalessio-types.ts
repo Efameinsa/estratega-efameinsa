@@ -47,10 +47,10 @@ export const DALESSIO_TYPES: DalessioTypeDef[] = [
 ];
 
 export const GROUP_INFO: Record<DalessioGroup, { label: string; color: string; bg: string; border: string }> = {
-  intensivas:      { label: "Intensivas",      color: "#4ade80", bg: "rgba(22,163,74,0.08)",  border: "rgba(22,163,74,0.35)" },
-  integracion:     { label: "De integracion",  color: "#60a5fa", bg: "rgba(37,99,235,0.08)",  border: "rgba(37,99,235,0.35)" },
-  diversificacion: { label: "De diversificacion", color: "#8B5CF6", bg: "rgba(139,92,246,0.08)", border: "rgba(139,92,246,0.35)" },
-  defensivas:      { label: "Defensivas",      color: "#F59E0B", bg: "rgba(245,158,11,0.08)", border: "rgba(245,158,11,0.35)" },
+  intensivas:      { label: "Intensivas",      color: "#1e7f4f", bg: "rgba(22,163,74,0.08)",  border: "rgba(22,163,74,0.35)" },
+  integracion:     { label: "De integracion",  color: "#185fa5", bg: "rgba(37,99,235,0.08)",  border: "rgba(37,99,235,0.35)" },
+  diversificacion: { label: "De diversificacion", color: "#2c2e35", bg: "rgba(44, 46, 53,0.08)", border: "rgba(44, 46, 53,0.35)" },
+  defensivas:      { label: "Defensivas",      color: "#b45309", bg: "rgba(245,158,11,0.08)", border: "rgba(245,158,11,0.35)" },
 };
 
 export function getTypeDef(key: string | null | undefined): DalessioTypeDef | null {

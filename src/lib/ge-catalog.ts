@@ -18,7 +18,7 @@ export const GE_QUADRANT_INFO: Record<
   I: {
     label: "Cuadrante I — Escenario ideal",
     subtitle: "Posicion fuerte + Mercado en crecimiento rapido",
-    color: "#4ade80",
+    color: "#1e7f4f",
     bg: "rgba(22,163,74,0.12)",
     border: "rgba(22,163,74,0.45)",
     description:
@@ -27,16 +27,16 @@ export const GE_QUADRANT_INFO: Record<
   II: {
     label: "Cuadrante II — Mercado bueno, empresa debil",
     subtitle: "Posicion debil + Mercado en crecimiento rapido",
-    color: "#8B5CF6",
-    bg: "rgba(139,92,246,0.12)",
-    border: "rgba(139,92,246,0.45)",
+    color: "#2c2e35",
+    bg: "rgba(44, 46, 53,0.12)",
+    border: "rgba(44, 46, 53,0.45)",
     description:
       "El mercado donde compites esta creciendo, pero tu posicion competitiva es debil. Tienes una decision importante: invertir agresivamente para fortalecerte, o considerar salir antes de quemar mas recursos.",
   },
   III: {
     label: "Cuadrante III — Escenario critico",
     subtitle: "Posicion debil + Mercado lento",
-    color: "#f87171",
+    color: "#b3261e",
     bg: "rgba(220,38,38,0.12)",
     border: "rgba(220,38,38,0.45)",
     description:
@@ -45,7 +45,7 @@ export const GE_QUADRANT_INFO: Record<
   IV: {
     label: "Cuadrante IV — Empresa solida en mercado maduro",
     subtitle: "Posicion fuerte + Mercado lento",
-    color: "#F59E0B",
+    color: "#b45309",
     bg: "rgba(245,158,11,0.12)",
     border: "rgba(245,158,11,0.45)",
     description:

@@ -213,7 +213,7 @@ export function OcpInitiativesPanel({
                 {sincronizado ? (
                   <div className="flex items-center gap-2">
                     <Badge variant="outline" className="gap-1 text-xs">
-                      <CheckCircle2 className="size-3 text-green-400" />
+                      <CheckCircle2 className="size-3 text-green-700" />
                       En Educanet
                     </Badge>
                     {educanetUrl && (

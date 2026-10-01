@@ -49,8 +49,8 @@ export function dueTone(d: Date | string | null | undefined, done: boolean): str
   const x = localDay(d);
   if (!x || done) return "text-muted-foreground";
   const diff = differenceInCalendarDays(x, new Date());
-  if (diff < 0) return "text-red-400";
-  if (diff <= 2) return "text-amber-300";
+  if (diff < 0) return "text-red-700";
+  if (diff <= 2) return "text-amber-700";
   return "text-muted-foreground";
 }
 
@@ -78,7 +78,7 @@ export function UserAvatar({
   }
   return (
     <span
-      className={cn("inline-flex shrink-0 items-center justify-center rounded-full font-semibold text-[#0a0814] ring-2 ring-background", className)}
+      className={cn("inline-flex shrink-0 items-center justify-center rounded-full font-semibold text-white ring-2 ring-background", className)}
       style={{ width: size, height: size, background: avatarColor(user.id), fontSize: Math.max(9, size * 0.4) }}
       title={user.name}
     >
@@ -441,11 +441,11 @@ export function ProgressBar({ value, className, color }: { value: number; classN
 }
 
 export const HEALTH_INFO: Record<string, { label: string; color: string }> = {
-  EN_CAMINO: { label: "En camino", color: "#4ade80" },
-  ATENCION: { label: "Requiere atención", color: "#fbbf24" },
-  EN_RIESGO: { label: "En riesgo", color: "#f87171" },
-  COMPLETADO: { label: "Completado", color: "#a78bfa" },
-  SIN_TAREAS: { label: "Sin tareas", color: "#94a3b8" },
+  EN_CAMINO: { label: "En camino", color: "#1e7f4f" },
+  ATENCION: { label: "Requiere atención", color: "#b45309" },
+  EN_RIESGO: { label: "En riesgo", color: "#b3261e" },
+  COMPLETADO: { label: "Completado", color: "#8B1510" },
+  SIN_TAREAS: { label: "Sin tareas", color: "#64748b" },
 };
 
 export function HealthBadge({ health }: { health: string }) {

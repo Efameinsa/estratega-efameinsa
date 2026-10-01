@@ -209,6 +209,7 @@ model StrategicCycle {
   consolidatedStrategies ConsolidatedStrategy[]
   mcpeAnalysis           McpeAnalysis? @relation("CycleMcpeAnalysis")
   matrixStates           MatrixState[]
+  presentations          Presentation[]
   rumeltEvaluations      RumeltEvaluation[]
   ethicsEvaluations      EthicsEvaluation[]
   peiDocument            PeiDocument?
@@ -2071,4 +2072,18 @@ model ReviewComment {
   timestampDuringReview DateTime @default(now())
   createdAt             DateTime @default(now())
   @@index([reviewId])
+}
+
+// PRESENTACIÓN: versiones del plan para exponer (qué láminas salen, en qué orden,
+// títulos, notas e imágenes propias). config = JSON de PresentationConfig (src/lib/presentation.ts).
+model Presentation {
+  id        String         @id @default(cuid())
+  cycleId   String
+  cycle     StrategicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  name      String
+  config    String         @default("{}")
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@index([cycleId])
 }

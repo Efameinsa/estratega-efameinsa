@@ -84,7 +84,7 @@ function CriterionCard({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <span className="flex size-6 items-center justify-center rounded-lg text-[10px] font-medium text-white"
-                style={{ backgroundColor: "#a78bfa" }}
+                style={{ backgroundColor: "#8B1510" }}
               >
                 {index + 1}
               </span>
@@ -148,14 +148,14 @@ function CriterionCard({
         {/* FCE */}
         {fce ? (
           <div className="flex items-start gap-2 rounded-lg border px-3 py-2.5 animate-in fade-in duration-300"
-            style={{ borderColor: "#a78bfa", backgroundColor: "transparent" }}
+            style={{ borderColor: "#8B1510", backgroundColor: "transparent" }}
           >
-            <Target className="size-3.5 shrink-0 mt-0.5" style={{ color: "#a78bfa" }} />
+            <Target className="size-3.5 shrink-0 mt-0.5" style={{ color: "#8B1510" }} />
             <div>
-              <span className="text-[12px] font-medium" style={{ color: "#9ec2ec" }}>
+              <span className="text-[12px] font-medium" style={{ color: "#185fa5" }}>
                 FCE → {fce.nombre}
               </span>
-              <span className="text-[11px] block" style={{ color: "#a78bfa" }}>
+              <span className="text-[11px] block" style={{ color: "#8B1510" }}>
                 Peso sugerido: {adjustedWeight.toFixed(2)}
               </span>
             </div>
@@ -225,7 +225,7 @@ export default function IndustryAttractivenessPage() {
   const totalScore = ATTRACTIVENESS_FACTORS.reduce((sum, c) => sum + (attrValues[c.id] ?? c.defaultVal), 0);
   const maxScore = ATTRACTIVENESS_FACTORS.reduce((sum, c) => sum + c.max, 0);
   const progressPct = maxScore > 0 ? (totalScore / maxScore) * 100 : 0;
-  const barColor = progressPct < 40 ? "#fca5a5" : progressPct < 70 ? "#a78bfa" : "#34d399";
+  const barColor = progressPct < 40 ? "#b3261e" : progressPct < 70 ? "#8B1510" : "#1e7f4f";
   const barLabel = progressPct < 40 ? "Bajo" : progressPct < 70 ? "Moderado" : "Alto";
 
   return (
@@ -233,7 +233,7 @@ export default function IndustryAttractivenessPage() {
       {/* Hero */}
       <div className="flex items-center gap-3">
         <div className="flex size-12 items-center justify-center rounded-2xl" style={{ backgroundColor: "transparent" }}>
-          <TrendingUp className="size-6" style={{ color: "#a78bfa" }} />
+          <TrendingUp className="size-6" style={{ color: "#8B1510" }} />
         </div>
         <div>
           <h1 className="text-2xl font-medium tracking-tight">Atractividad de la industria</h1>
@@ -248,7 +248,7 @@ export default function IndustryAttractivenessPage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
-              <BarChart3 className="size-4" style={{ color: "#a78bfa" }} />
+              <BarChart3 className="size-4" style={{ color: "#8B1510" }} />
               <span className="text-[13px] font-medium" style={{ color: "var(--color-text-secondary)" }}>
                 Puntaje total
               </span>
@@ -269,7 +269,7 @@ export default function IndustryAttractivenessPage() {
             </span>
             <Separator orientation="vertical" className="h-4" />
             <div className="flex items-center gap-1.5">
-              <Target className="size-3.5" style={{ color: "#a78bfa" }} />
+              <Target className="size-3.5" style={{ color: "#8B1510" }} />
               <span className="text-[12px] font-medium" style={{ color: "var(--color-text-secondary)" }}>
                 {fceCount} FCE
               </span>
@@ -277,7 +277,7 @@ export default function IndustryAttractivenessPage() {
           </div>
         </div>
         <div className="h-2.5 w-full overflow-hidden rounded-full"
-          style={{ backgroundColor: "var(--color-border-tertiary, rgba(167,139,250,0.14))" }}
+          style={{ backgroundColor: "var(--color-border-tertiary, rgba(139, 21, 16,0.14))" }}
         >
           <div
             className="h-full rounded-full transition-all duration-300"
@@ -300,15 +300,15 @@ export default function IndustryAttractivenessPage() {
       </div>
 
       {/* FCE Summary Panel */}
-      <div className="rounded-xl border p-4 space-y-3" style={{ borderColor: "#a78bfa", backgroundColor: "transparent" }}>
+      <div className="rounded-xl border p-4 space-y-3" style={{ borderColor: "#8B1510", backgroundColor: "transparent" }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Target className="size-4" style={{ color: "#a78bfa" }} />
-            <span className="text-[13px] font-medium" style={{ color: "#9ec2ec" }}>
+            <Target className="size-4" style={{ color: "#8B1510" }} />
+            <span className="text-[13px] font-medium" style={{ color: "#185fa5" }}>
               Factores Clave de Exito generados
             </span>
           </div>
-          <div className="flex items-center gap-3 text-[11px]" style={{ color: "#9ec2ec" }}>
+          <div className="flex items-center gap-3 text-[11px]" style={{ color: "#185fa5" }}>
             <span>{fceCount} FCE</span>
             <span>·</span>
             <span>{fceList.filter((f) => f.adjustedWeight >= 0.09).length} de alto peso</span>
@@ -324,10 +324,10 @@ export default function IndustryAttractivenessPage() {
                 className="flex items-center gap-3 rounded-lg bg-white/60 px-3 py-2.5"
               >
                 <div className="flex-1 min-w-0">
-                  <span className="text-[12px] font-medium block" style={{ color: "#9ec2ec" }}>
+                  <span className="text-[12px] font-medium block" style={{ color: "#185fa5" }}>
                     {item.fce.nombre}
                   </span>
-                  <span className="text-[10px]" style={{ color: "#a78bfa" }}>
+                  <span className="text-[10px]" style={{ color: "#8B1510" }}>
                     Desde: {item.criterioNombre} ({item.valor}) · Peso: {item.adjustedWeight.toFixed(2)}
                   </span>
                 </div>
@@ -335,7 +335,7 @@ export default function IndustryAttractivenessPage() {
             ))}
           </div>
         ) : (
-          <p className="text-[12px]" style={{ color: "#9ec2ec" }}>
+          <p className="text-[12px]" style={{ color: "#185fa5" }}>
             Mueve los sliders a valores extremos para generar FCE automaticamente.
           </p>
         )}
@@ -345,7 +345,7 @@ export default function IndustryAttractivenessPage() {
       <div className="flex items-center gap-3">
         <button type="button" onClick={handleSave} disabled={attrUpsert.isPending}
           className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-medium text-white cursor-pointer disabled:opacity-50"
-          style={{ backgroundColor: "#a78bfa" }}
+          style={{ backgroundColor: "#8B1510" }}
         >
           <Save className="size-3.5" />
           Guardar evaluacion

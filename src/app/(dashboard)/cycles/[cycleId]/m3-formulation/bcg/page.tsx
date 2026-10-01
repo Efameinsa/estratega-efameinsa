@@ -103,7 +103,7 @@ const QUADRANT_INFO: Record<
   estrella: {
     label: "Estrella",
     icon: "⭐",
-    color: "#F59E0B",
+    color: "#b45309",
     bg: "rgba(245, 158, 11, 0.08)",
     border: "rgba(245, 158, 11, 0.35)",
     estrategia:
@@ -112,9 +112,9 @@ const QUADRANT_INFO: Record<
   interrogante: {
     label: "Interrogante",
     icon: "❓",
-    color: "#8B5CF6",
-    bg: "rgba(139, 92, 246, 0.08)",
-    border: "rgba(139, 92, 246, 0.35)",
+    color: "#2c2e35",
+    bg: "rgba(44, 46, 53, 0.08)",
+    border: "rgba(44, 46, 53, 0.35)",
     estrategia:
       "Decision critica: invertir selectivamente para convertir en estrella, o desinvertir si no hay potencial claro.",
   },
@@ -659,7 +659,7 @@ function PasoConfiguracion({
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
           <CardTitle className="text-base">Datos generales</CardTitle>
           {fase1Completa && (
-            <Badge variant="outline" className="bg-transparent text-emerald-300 border-emerald-500/30 dark:bg-transparent dark:text-emerald-400 dark:border-emerald-900">
+            <Badge variant="outline" className="bg-transparent text-emerald-700 border-emerald-500/30 dark:bg-transparent dark:text-emerald-700 dark:border-emerald-900">
               <Check className="size-3 mr-1" /> Completo
             </Badge>
           )}
@@ -835,7 +835,7 @@ function CorteCard({
         <div className="text-sm font-medium leading-snug">{titulo}</div>
         <Badge
           variant="outline"
-          className="bg-transparent text-emerald-300 border-emerald-500/30 shrink-0 dark:bg-transparent dark:text-emerald-400 dark:border-emerald-900"
+          className="bg-transparent text-emerald-700 border-emerald-500/30 shrink-0 dark:bg-transparent dark:text-emerald-700 dark:border-emerald-900"
         >
           Recomendado: {recomendado}
         </Badge>
@@ -1125,7 +1125,7 @@ function ProductoCard({
 
           {/* Panel resultado en vivo */}
           {datosCompletos && calc && (
-            <div className="rounded-md bg-primary/10/70 dark:bg-primary/10 border border-primary/20 dark:border-primary/40 p-3">
+            <div className="rounded-md bg-primary/5 dark:bg-primary/10 border border-primary/20 dark:border-primary/40 p-3">
               <div className="grid grid-cols-3 gap-2 text-xs">
                 <LiveMetric
                   label="Participacion relativa"
@@ -1574,7 +1574,7 @@ function ResumenEjecutivo({
 
   const estadoConfig = {
     equilibrado: { label: "Portafolio equilibrado", color: "#14B8A6" },
-    atencion: { label: "Requiere atencion", color: "#F59E0B" },
+    atencion: { label: "Requiere atencion", color: "#b45309" },
     riesgo: { label: "Riesgo elevado", color: "#F43F5E" },
   }[diagnostico.estado];
 
@@ -1628,7 +1628,7 @@ function ResumenEjecutivo({
                 key={i}
                 className="flex gap-2 items-start text-sm rounded-md border border-amber-200/60 bg-transparent dark:border-amber-900/30 dark:bg-transparent p-3"
               >
-                <AlertCircle className="size-4 mt-0.5 shrink-0 text-amber-400" />
+                <AlertCircle className="size-4 mt-0.5 shrink-0 text-amber-700" />
                 <span className="leading-relaxed">{a}</span>
               </div>
             ))}
@@ -1709,14 +1709,14 @@ function BcgChart({
             domain={[minX, maxX]}
             ticks={xTicks}
             reversed
-            tick={{ fontSize: 11, fill: "#9a91b8" }}
+            tick={{ fontSize: 11, fill: "#6b6b6b" }}
             tickLine={false}
-            axisLine={{ stroke: "rgba(167,139,250,0.14)" }}
+            axisLine={{ stroke: "rgba(139, 21, 16,0.14)" }}
             label={{
               value: "Participacion relativa de mercado",
               position: "insideBottom",
               offset: -14,
-              style: { fontSize: 11, fill: "#9a91b8", textAnchor: "middle" },
+              style: { fontSize: 11, fill: "#6b6b6b", textAnchor: "middle" },
             }}
           />
           <YAxis
@@ -1725,15 +1725,15 @@ function BcgChart({
             domain={[minY, maxY]}
             ticks={yTicks}
             tickFormatter={(v) => `${v}%`}
-            tick={{ fontSize: 11, fill: "#9a91b8" }}
+            tick={{ fontSize: 11, fill: "#6b6b6b" }}
             tickLine={false}
-            axisLine={{ stroke: "rgba(167,139,250,0.14)" }}
+            axisLine={{ stroke: "rgba(139, 21, 16,0.14)" }}
             label={{
               value: "Tasa de crecimiento del mercado (%)",
               angle: -90,
               position: "insideLeft",
               offset: 0,
-              style: { fontSize: 11, fill: "#9a91b8", textAnchor: "middle" },
+              style: { fontSize: 11, fill: "#6b6b6b", textAnchor: "middle" },
             }}
           />
           <ZAxis type="number" dataKey="z" range={[400, 4500]} />
@@ -1779,8 +1779,8 @@ function BcgChart({
             }}
           />
 
-          <ReferenceLine x={cortoX} stroke="rgba(167,139,250,0.14)" strokeDasharray="4 4" strokeWidth={1} />
-          <ReferenceLine y={cortoY} stroke="rgba(167,139,250,0.14)" strokeDasharray="4 4" strokeWidth={1} />
+          <ReferenceLine x={cortoX} stroke="rgba(139, 21, 16,0.14)" strokeDasharray="4 4" strokeWidth={1} />
+          <ReferenceLine y={cortoY} stroke="rgba(139, 21, 16,0.14)" strokeDasharray="4 4" strokeWidth={1} />
 
           <RTooltip
             cursor={{ strokeDasharray: "3 3" }}
@@ -1806,7 +1806,7 @@ function BcgChart({
                 <LabelList
                   dataKey="nombre"
                   content={(p: { x?: number | string; y?: number | string; width?: number | string; height?: number | string; value?: unknown }) => (
-                    <text x={Number(p.x) + Number(p.width ?? 0) / 2} y={Number(p.y) + Number(p.height ?? 0) + 14} textAnchor="middle" fill="#cbc3e3" fontSize={11}>
+                    <text x={Number(p.x) + Number(p.width ?? 0) / 2} y={Number(p.y) + Number(p.height ?? 0) + 14} textAnchor="middle" fill="#a8a29e" fontSize={11}>
                       {String(p.value ?? "")}
                     </text>
                   )}

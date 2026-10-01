@@ -42,7 +42,7 @@ export const STRUCTURE_TYPES: StructureTypeDef[] = [
     description: "Doble línea de reporte (funcional + por proyecto).",
     whenToUse: "Proyectos transversales complejos, alta colaboración.",
     icon: "Grid3X3",
-    color: "#7C3AED",
+    color: "#5e0d0b",
   },
   {
     key: "por_procesos",
@@ -66,7 +66,7 @@ export const STRUCTURE_TYPES: StructureTypeDef[] = [
     description: "Combina elementos de varios tipos.",
     whenToUse: "La estrategia requiere combinar fuerzas organizacionales.",
     icon: "Puzzle",
-    color: "#A855F7",
+    color: "#8B1510",
   },
 ];
 
@@ -120,9 +120,9 @@ export type RaciRole = "R" | "A" | "C" | "I" | "S";
 export const RACI_OPTIONS: { value: RaciRole; label: string; description: string; color: string; bg: string }[] = [
   { value: "R", label: "Responsable", description: "Hace el trabajo", color: "#FFFFFF", bg: "#16A34A" },
   { value: "A", label: "Accountable", description: "Rinde cuentas", color: "#FFFFFF", bg: "#0EA5E9" },
-  { value: "C", label: "Consultado", description: "Aporta criterio antes de decidir", color: "#FFFFFF", bg: "#A855F7" },
+  { value: "C", label: "Consultado", description: "Aporta criterio antes de decidir", color: "#FFFFFF", bg: "#8B1510" },
   { value: "I", label: "Informado", description: "Solo recibe noticias", color: "#FFFFFF", bg: "#6B7280" },
-  { value: "S", label: "Apoyo", description: "Colabora con el responsable", color: "#FFFFFF", bg: "#F59E0B" },
+  { value: "S", label: "Apoyo", description: "Colabora con el responsable", color: "#FFFFFF", bg: "#b45309" },
 ];
 
 // ───────────────────────────────────────────────────────────────────────

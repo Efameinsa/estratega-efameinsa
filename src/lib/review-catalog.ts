@@ -48,8 +48,8 @@ export const REVIEW_TYPES: ReviewTypeDef[] = [
     description: "KPIs por dimensión BSC del trimestre.",
     attendees: "Comité ejecutivo (CEO + VPs)",
     duration: "2-3 horas",
-    color: "#60a5fa",
-    bg: "rgba(167, 139, 250, 0.08)",
+    color: "#185fa5",
+    bg: "rgba(139, 21, 16, 0.08)",
     icon: "CalendarRange",
   },
   {
@@ -59,8 +59,8 @@ export const REVIEW_TYPES: ReviewTypeDef[] = [
     description: "Estrategias retenidas y políticas organizacionales.",
     attendees: "Directorio + Comité ejecutivo",
     duration: "Medio día",
-    color: "#a78bfa",
-    bg: "rgba(167, 139, 250, 0.08)",
+    color: "#8B1510",
+    bg: "rgba(139, 21, 16, 0.08)",
     icon: "CalendarClock",
   },
   {
@@ -70,7 +70,7 @@ export const REVIEW_TYPES: ReviewTypeDef[] = [
     description: "OLPs y visión completa del plan. Cierre del ciclo.",
     attendees: "Directorio completo + Comité ejecutivo",
     duration: "1-2 días",
-    color: "#4ade80",
+    color: "#1e7f4f",
     bg: "transparent",
     icon: "CalendarHeart",
   },
@@ -81,7 +81,7 @@ export const REVIEW_TYPES: ReviewTypeDef[] = [
     description: "Convocada fuera del calendario regular.",
     attendees: "Definidos por la convocatoria",
     duration: "Variable",
-    color: "#f87171",
+    color: "#b3261e",
     bg: "transparent",
     icon: "AlertCircle",
   },
@@ -94,7 +94,7 @@ export function getReviewTypeDef(key: string): ReviewTypeDef | undefined {
 import { URGENCY, NEUTRAL_COLORS } from "./colors";
 
 export const STATUS_COLORS: Record<ReviewStatus, { color: string; bg: string; label: string }> = {
-  programada: { color: "#0EA5E9", bg: "rgba(167, 139, 250, 0.08)", label: "Programada" },
+  programada: { color: "#0EA5E9", bg: "rgba(139, 21, 16, 0.08)", label: "Programada" },
   en_curso: { ...NEUTRAL_COLORS.emerald, label: "En curso" },
   completada: { ...NEUTRAL_COLORS.gray, label: "Completada" },
   cancelada: { ...NEUTRAL_COLORS.red, label: "Cancelada" },

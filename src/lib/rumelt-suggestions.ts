@@ -65,13 +65,13 @@ export const CRITERION_INFO: Record<
   consistencia: {
     label: "Consistencia",
     question: "¿Es internamente coherente con tu vision, OLPs, valores y otras estrategias? ¿No genera contradicciones?",
-    color: "#8B5CF6", bg: "rgba(139,92,246,0.08)", border: "rgba(139,92,246,0.4)",
+    color: "#2c2e35", bg: "rgba(44, 46, 53,0.08)", border: "rgba(44, 46, 53,0.4)",
     icon: "puzzle",
   },
   consonancia: {
     label: "Consonancia",
     question: "¿Responde adecuadamente al entorno externo y sus tendencias? ¿Esta en sintonia con la industria, tecnologia, regulacion y sociedad?",
-    color: "#60a5fa", bg: "rgba(37,99,235,0.08)", border: "rgba(37,99,235,0.4)",
+    color: "#185fa5", bg: "rgba(37,99,235,0.08)", border: "rgba(37,99,235,0.4)",
     icon: "wind",
   },
   ventaja: {
@@ -83,7 +83,7 @@ export const CRITERION_INFO: Record<
   factibilidad: {
     label: "Factibilidad",
     question: "¿La empresa puede ejecutarla con los recursos que tiene o puede obtener? ¿Hay capital, talento, capacidad operativa y tiempo?",
-    color: "#F59E0B", bg: "rgba(245,158,11,0.08)", border: "rgba(245,158,11,0.4)",
+    color: "#b45309", bg: "rgba(245,158,11,0.08)", border: "rgba(245,158,11,0.4)",
     icon: "tools",
   },
 };

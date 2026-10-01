@@ -46,7 +46,7 @@ export function TaskList() {
       return {
         key: id,
         label: u?.name ?? "Sin asignar",
-        color: "#a78bfa",
+        color: "#8B1510",
         icon: <UserAvatar user={u ?? null} size={20} />,
         defaults: { assigneeId: id === "none" ? null : id },
         tasks: visibleTopTasks.filter((t) => (t.assigneeId ?? "none") === id),
@@ -211,7 +211,7 @@ function Row({ task, depth = 0 }: { task: Task; depth?: number }) {
             {expanded ? <ChevronDown className="size-3.5" /> : <ChevronRight className="size-3.5" />}
           </button>
           {milestone ? (
-            <Diamond className={cn("size-4 shrink-0", done ? "text-green-400" : "text-amber-300")} fill="currentColor" />
+            <Diamond className={cn("size-4 shrink-0", done ? "text-green-700" : "text-amber-700")} fill="currentColor" />
           ) : (
             <button
               type="button"
@@ -219,7 +219,7 @@ function Row({ task, depth = 0 }: { task: Task; depth?: number }) {
                 e.stopPropagation();
                 setDone(task.id, !done);
               }}
-              className={cn("shrink-0", done ? "text-green-400" : "text-muted-foreground hover:text-green-400")}
+              className={cn("shrink-0", done ? "text-green-700" : "text-muted-foreground hover:text-green-700")}
               aria-label={done ? "Reabrir" : "Completar"}
             >
               {done ? <CheckCircle2 className="size-[18px]" /> : <Circle className="size-[18px]" />}
@@ -231,7 +231,7 @@ function Row({ task, depth = 0 }: { task: Task; depth?: number }) {
           <span className={cn("truncate", done && "text-muted-foreground line-through")}>{task.summary}</span>
           {blocked && (
             <span title="Esperando a otra tarea">
-              <Lock className="size-3.5 shrink-0 text-amber-300" />
+              <Lock className="size-3.5 shrink-0 text-amber-700" />
             </span>
           )}
           <span className="ml-1 flex shrink-0 items-center gap-2 text-[11px] text-muted-foreground">

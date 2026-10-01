@@ -95,7 +95,7 @@ function CriterionCard({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <span className="flex size-6 items-center justify-center rounded-lg text-[10px] font-medium text-white"
-                style={{ backgroundColor: "#a78bfa" }}
+                style={{ backgroundColor: "#8B1510" }}
               >
                 {index + 1}
               </span>
@@ -131,7 +131,7 @@ function CriterionCard({
                   const v = parseFloat(e.target.value);
                   if (!isNaN(v) && v >= criterio.min && v <= criterio.max) onChange(v);
                 }}
-                className="w-24 rounded-lg border bg-transparent px-3 py-2 text-[14px] font-medium text-right outline-none focus:border-[#60a5fa]"
+                className="w-24 rounded-lg border bg-transparent px-3 py-2 text-[14px] font-medium text-right outline-none focus:border-[#185fa5]"
               />
               <span className="text-[14px] font-medium" style={{ color: "var(--color-text-secondary)" }}>%</span>
             </div>
@@ -141,9 +141,9 @@ function CriterionCard({
                 <button key={p.valor} type="button" onClick={() => onChange(p.valor)}
                   className="rounded-full border px-2.5 py-1 text-[11px] font-medium transition-all cursor-pointer"
                   style={{
-                    borderColor: value === p.valor ? "#a78bfa" : "var(--color-border-tertiary)",
+                    borderColor: value === p.valor ? "#8B1510" : "var(--color-border-tertiary)",
                     backgroundColor: value === p.valor ? "transparent" : "transparent",
-                    color: value === p.valor ? "#a78bfa" : "var(--color-text-secondary)",
+                    color: value === p.valor ? "#8B1510" : "var(--color-text-secondary)",
                   }}
                 >
                   {p.label}
@@ -196,14 +196,14 @@ function CriterionCard({
         {/* 4. FCE generated or "no FCE" */}
         {fce ? (
           <div className="flex items-start gap-2 rounded-lg border px-3 py-2.5 animate-in fade-in duration-300"
-            style={{ borderColor: "#a78bfa", backgroundColor: "transparent" }}
+            style={{ borderColor: "#8B1510", backgroundColor: "transparent" }}
           >
-            <Target className="size-3.5 shrink-0 mt-0.5" style={{ color: "#a78bfa" }} />
+            <Target className="size-3.5 shrink-0 mt-0.5" style={{ color: "#8B1510" }} />
             <div>
-              <span className="text-[12px] font-medium" style={{ color: "#9ec2ec" }}>
+              <span className="text-[12px] font-medium" style={{ color: "#185fa5" }}>
                 FCE → {fce.nombre}
               </span>
-              <span className="text-[11px] block" style={{ color: "#a78bfa" }}>
+              <span className="text-[11px] block" style={{ color: "#8B1510" }}>
                 Peso sugerido: {adjustedWeight.toFixed(2)}
               </span>
             </div>
@@ -258,7 +258,7 @@ function QuestionnairePanel({
   const progressPct = maxScore > 0 ? (totalScore / maxScore) * 100 : 0;
 
   // Bar color based on percentage
-  const barColor = progressPct < 40 ? "#fca5a5" : progressPct < 70 ? "#a78bfa" : "#34d399";
+  const barColor = progressPct < 40 ? "#b3261e" : progressPct < 70 ? "#8B1510" : "#1e7f4f";
   const barLabel = progressPct < 40 ? "Bajo" : progressPct < 70 ? "Moderado" : "Alto";
 
   return (
@@ -273,7 +273,7 @@ function QuestionnairePanel({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
-              <BarChart3 className="size-4" style={{ color: "#a78bfa" }} />
+              <BarChart3 className="size-4" style={{ color: "#8B1510" }} />
               <span className="text-[13px] font-medium" style={{ color: "var(--color-text-secondary)" }}>
                 Puntaje total
               </span>
@@ -294,7 +294,7 @@ function QuestionnairePanel({
             </span>
             <Separator orientation="vertical" className="h-4" />
             <div className="flex items-center gap-1.5">
-              <Target className="size-3.5" style={{ color: "#a78bfa" }} />
+              <Target className="size-3.5" style={{ color: "#8B1510" }} />
               <span className="text-[12px] font-medium" style={{ color: "var(--color-text-secondary)" }}>
                 {fceCount} FCE
               </span>
@@ -302,7 +302,7 @@ function QuestionnairePanel({
           </div>
         </div>
         <div className="h-2.5 w-full overflow-hidden rounded-full"
-          style={{ backgroundColor: "var(--color-border-tertiary, rgba(167,139,250,0.14))" }}
+          style={{ backgroundColor: "var(--color-border-tertiary, rgba(139, 21, 16,0.14))" }}
         >
           <div
             className="h-full rounded-full transition-all duration-300"
@@ -325,15 +325,15 @@ function QuestionnairePanel({
       </div>
 
       {/* FCE Summary Panel */}
-      <div className="rounded-xl border p-4 space-y-3" style={{ borderColor: "#a78bfa", backgroundColor: "transparent" }}>
+      <div className="rounded-xl border p-4 space-y-3" style={{ borderColor: "#8B1510", backgroundColor: "transparent" }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Target className="size-4" style={{ color: "#a78bfa" }} />
-            <span className="text-[13px] font-medium" style={{ color: "#9ec2ec" }}>
+            <Target className="size-4" style={{ color: "#8B1510" }} />
+            <span className="text-[13px] font-medium" style={{ color: "#185fa5" }}>
               Factores Clave de Exito generados
             </span>
           </div>
-          <div className="flex items-center gap-3 text-[11px]" style={{ color: "#9ec2ec" }}>
+          <div className="flex items-center gap-3 text-[11px]" style={{ color: "#185fa5" }}>
             <span>{fceCount} FCE</span>
             <span>·</span>
             <span>{fceList.filter((f) => f.adjustedWeight >= 0.09).length} de alto peso</span>
@@ -349,10 +349,10 @@ function QuestionnairePanel({
                 className="flex items-center gap-3 rounded-lg bg-white/60 px-3 py-2.5"
               >
                 <div className="flex-1 min-w-0">
-                  <span className="text-[12px] font-medium block" style={{ color: "#9ec2ec" }}>
+                  <span className="text-[12px] font-medium block" style={{ color: "#185fa5" }}>
                     {item.fce.nombre}
                   </span>
-                  <span className="text-[10px]" style={{ color: "#a78bfa" }}>
+                  <span className="text-[10px]" style={{ color: "#8B1510" }}>
                     Desde: {item.criterioNombre} ({item.valor}) · Peso: {item.adjustedWeight.toFixed(2)}
                   </span>
                 </div>
@@ -360,7 +360,7 @@ function QuestionnairePanel({
             ))}
           </div>
         ) : (
-          <p className="text-[12px]" style={{ color: "#9ec2ec" }}>
+          <p className="text-[12px]" style={{ color: "#185fa5" }}>
             Mueve los sliders a valores extremos para generar FCE automaticamente.
           </p>
         )}
@@ -370,7 +370,7 @@ function QuestionnairePanel({
       <div className="flex items-center gap-3">
         <button type="button" onClick={onSave} disabled={saving}
           className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-medium text-white cursor-pointer disabled:opacity-50"
-          style={{ backgroundColor: "#a78bfa" }}
+          style={{ backgroundColor: "#8B1510" }}
         >
           <Save className="size-3.5" />
           Guardar evaluacion
@@ -425,7 +425,7 @@ export default function CompetitiveAnalysisPage() {
       {/* Hero */}
       <div className="flex items-center gap-3">
         <div className="flex size-12 items-center justify-center rounded-2xl" style={{ backgroundColor: "transparent" }}>
-          <BarChart3 className="size-6" style={{ color: "#a78bfa" }} />
+          <BarChart3 className="size-6" style={{ color: "#8B1510" }} />
         </div>
         <div>
           <h1 className="text-2xl font-medium tracking-tight">Análisis Competitivo</h1>

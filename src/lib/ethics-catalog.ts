@@ -37,7 +37,7 @@ export const BLOCK_INFO: Record<EthicsBlock, { label: string; question: string; 
   derechos: {
     label: "Derechos",
     question: "¿La estrategia respeta los derechos fundamentales de los stakeholders?",
-    color: "#8B5CF6", bg: "rgba(139,92,246,0.08)", border: "rgba(139,92,246,0.40)",
+    color: "#2c2e35", bg: "rgba(44, 46, 53,0.08)", border: "rgba(44, 46, 53,0.40)",
   },
   justicia: {
     label: "Justicia",
@@ -47,15 +47,15 @@ export const BLOCK_INFO: Record<EthicsBlock, { label: string; question: string; 
   utilitarismo: {
     label: "Utilitarismo",
     question: "¿Los beneficios generados superan los daños potenciales?",
-    color: "#F59E0B", bg: "rgba(245,158,11,0.08)", border: "rgba(245,158,11,0.40)",
+    color: "#b45309", bg: "rgba(245,158,11,0.08)", border: "rgba(245,158,11,0.40)",
   },
 };
 
 export const VERDICT_INFO: Record<EthicsVerdict, { label: string; color: string; bg: string; border: string; icon: string }> = {
-  aprobada:                  { label: "Aprobada",                color: "#4ade80", bg: "rgba(22,163,74,0.10)",  border: "rgba(22,163,74,0.40)",  icon: "✓" },
-  aprobada_con_mitigantes:   { label: "Con mitigantes",          color: "#F59E0B", bg: "rgba(245,158,11,0.10)", border: "rgba(245,158,11,0.40)", icon: "🛡" },
-  requiere_mitigacion:       { label: "Requiere mitigacion",     color: "#F59E0B", bg: "rgba(245,158,11,0.10)", border: "rgba(245,158,11,0.40)", icon: "!" },
-  rechazada:                 { label: "Rechazada",               color: "#f87171", bg: "rgba(220,38,38,0.10)",  border: "rgba(220,38,38,0.40)",  icon: "✗" },
+  aprobada:                  { label: "Aprobada",                color: "#1e7f4f", bg: "rgba(22,163,74,0.10)",  border: "rgba(22,163,74,0.40)",  icon: "✓" },
+  aprobada_con_mitigantes:   { label: "Con mitigantes",          color: "#b45309", bg: "rgba(245,158,11,0.10)", border: "rgba(245,158,11,0.40)", icon: "🛡" },
+  requiere_mitigacion:       { label: "Requiere mitigacion",     color: "#b45309", bg: "rgba(245,158,11,0.10)", border: "rgba(245,158,11,0.40)", icon: "!" },
+  rechazada:                 { label: "Rechazada",               color: "#b3261e", bg: "rgba(220,38,38,0.10)",  border: "rgba(220,38,38,0.40)",  icon: "✗" },
 };
 
 export function principlesByBlock(block: EthicsBlock): PrincipleDef[] {

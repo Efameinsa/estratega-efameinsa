@@ -53,13 +53,13 @@ const AREA_ICONS: Record<string, React.ElementType> = {
 const AREA_STYLES: Record<string, {
   color: string; bg: string; border: string; badgeBg: string;
 }> = {
-  A: { color: "text-primary dark:text-primary", bg: "bg-primary/100/10", border: "border-primary/150/20 hover:border-primary/150/40", badgeBg: "bg-primary/100" },
-  M: { color: "text-rose-400 dark:text-rose-400", bg: "bg-transparent0/10", border: "border-rose-500/20 hover:border-rose-500/40", badgeBg: "bg-transparent0" },
-  O: { color: "text-amber-400 dark:text-amber-400", bg: "bg-transparent0/10", border: "border-amber-500/20 hover:border-amber-500/40", badgeBg: "bg-transparent0" },
-  F: { color: "text-green-400 dark:text-green-400", bg: "bg-transparent0/10", border: "border-green-500/20 hover:border-green-500/40", badgeBg: "bg-transparent0" },
-  H: { color: "text-purple-400 dark:text-purple-400", bg: "bg-transparent0/10", border: "border-purple-500/20 hover:border-purple-500/40", badgeBg: "bg-transparent0" },
-  I: { color: "text-cyan-400 dark:text-cyan-400", bg: "bg-transparent0/10", border: "border-cyan-500/20 hover:border-cyan-500/40", badgeBg: "bg-transparent0" },
-  T: { color: "text-indigo-400 dark:text-indigo-400", bg: "bg-transparent0/10", border: "border-indigo-500/20 hover:border-indigo-500/40", badgeBg: "bg-transparent0" },
+  A: { color: "text-primary dark:text-primary", bg: "bg-primary/10", border: "border-primary/20 hover:border-primary/40", badgeBg: "bg-primary" },
+  M: { color: "text-rose-700 dark:text-rose-700", bg: "bg-rose-500/10", border: "border-rose-500/20 hover:border-rose-500/40", badgeBg: "bg-rose-600" },
+  O: { color: "text-amber-700 dark:text-amber-700", bg: "bg-amber-500/10", border: "border-amber-500/20 hover:border-amber-500/40", badgeBg: "bg-amber-600" },
+  F: { color: "text-green-700 dark:text-green-700", bg: "bg-green-500/10", border: "border-green-500/20 hover:border-green-500/40", badgeBg: "bg-green-600" },
+  H: { color: "text-stone-700 dark:text-stone-700", bg: "bg-stone-500/10", border: "border-stone-500/20 hover:border-stone-500/40", badgeBg: "bg-stone-600" },
+  I: { color: "text-cyan-700 dark:text-cyan-700", bg: "bg-cyan-500/10", border: "border-cyan-500/20 hover:border-cyan-500/40", badgeBg: "bg-cyan-600" },
+  T: { color: "text-slate-700 dark:text-slate-700", bg: "bg-slate-500/10", border: "border-slate-500/20 hover:border-slate-500/40", badgeBg: "bg-slate-600" },
 };
 
 // ---------------------------------------------------------------------------
@@ -629,10 +629,10 @@ function useReveal() {
 
 // Default (unselected) pill colors — gradient from red to green
 const PILL_DEFAULTS: Record<1 | 2 | 3 | 4, { bg: string; border: string; text: string; numberColor: string }> = {
-  1: { bg: "transparent",  border: "#E8AAAA", text: "#9B4444", numberColor: "#C14444" },
-  2: { bg: "transparent",  border: "#E4C583", text: "#7A5A1F", numberColor: "#B07A22" },
+  1: { bg: "transparent",  border: "#b3261e", text: "#9B4444", numberColor: "#C14444" },
+  2: { bg: "transparent",  border: "#a16207", text: "#7A5A1F", numberColor: "#B07A22" },
   3: { bg: "transparent",  border: "#ACC57E", text: "#4A6B22", numberColor: "#5E8A25" },
-  4: { bg: "transparent",  border: "#7ECDB0", text: "#1A7A56", numberColor: "#34d399" },
+  4: { bg: "transparent",  border: "#7ECDB0", text: "#1A7A56", numberColor: "#1e7f4f" },
 };
 
 function RatingPill({
@@ -716,12 +716,12 @@ function SuggestionPanel({
       }}
     >
       <div className="flex items-start gap-3">
-        <div className="flex size-8 items-center justify-center rounded-full shrink-0" style={{ backgroundColor: "#a78bfa" }}>
+        <div className="flex size-8 items-center justify-center rounded-full shrink-0" style={{ backgroundColor: "#8B1510" }}>
           <Sparkles className="size-4 text-white" />
         </div>
         <div className="flex-1 min-w-0 space-y-2">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[12px] font-semibold uppercase tracking-wide" style={{ color: "#a78bfa" }}>
+            <span className="text-[12px] font-semibold uppercase tracking-wide" style={{ color: "#8B1510" }}>
               Sugerencia basada en tus indicadores
             </span>
             <span
@@ -738,7 +738,7 @@ function SuggestionPanel({
                 <li key={i} className="flex items-baseline gap-1.5">
                   <span
                     className="inline-block size-1.5 rounded-full shrink-0"
-                    style={{ backgroundColor: d.passes ? "#4ade80" : "#f87171" }}
+                    style={{ backgroundColor: d.passes ? "#1e7f4f" : "#b3261e" }}
                   />
                   <span>
                     {d.name}: <strong>{formatNum(d.value)}{d.unit === "%" ? "%" : ""}</strong> vs sector {formatNum(d.sector)}{d.unit === "%" ? "%" : ""} ({sign}{d.deltaPct.toFixed(1)}%)
@@ -750,7 +750,7 @@ function SuggestionPanel({
           <div className="flex items-center gap-2 pt-1">
             {applied ? (
               <>
-                <span className="inline-flex items-center gap-1 text-[12px] font-medium text-emerald-300">
+                <span className="inline-flex items-center gap-1 text-[12px] font-medium text-emerald-700">
                   <Check className="size-3.5" /> Sugerencia aplicada
                 </span>
                 <button
@@ -795,9 +795,9 @@ function EvidenceChip({
       onClick={onClick}
       className="inline-flex items-center gap-1 rounded-full border px-3 py-1 text-[13px] transition-all duration-150 cursor-pointer"
       style={{
-        borderColor: active ? "#a78bfa" : "var(--color-border-tertiary)",
+        borderColor: active ? "#8B1510" : "var(--color-border-tertiary)",
         backgroundColor: "transparent",
-        color: active ? "#9ec2ec" : "var(--color-text-secondary)",
+        color: active ? "#185fa5" : "var(--color-text-secondary)",
       }}
     >
       {active && <Check className="size-3" />}
@@ -1076,7 +1076,7 @@ function VariableRow({
           {linkedRatioItems.length > 0 && (
             <div className="rounded-xl border bg-muted/20 p-4 space-y-3">
               <div className="flex items-start gap-2 flex-wrap">
-                <DollarSign className="size-4 text-green-400 dark:text-green-400 mt-0.5" />
+                <DollarSign className="size-4 text-green-700 dark:text-green-700 mt-0.5" />
                 <span className="text-[13px] font-medium">
                   Indicadores cuantitativos que respaldan esta evaluacion
                 </span>
@@ -1161,7 +1161,7 @@ function VariableRow({
                 {getHallazgoDisplay()}
               </p>
               {hasNoEvidence && pendingScore >= 3 && (
-                <p className="mt-2 text-[11px] font-medium" style={{ color: "#f0c283" }}>
+                <p className="mt-2 text-[11px] font-medium" style={{ color: "#b45309" }}>
                   Calificacion efectiva ajustada a {getEffectiveScore()} por falta de evidencia
                 </p>
               )}
@@ -1173,9 +1173,9 @@ function VariableRow({
             <div className="flex items-center gap-2 rounded-lg border px-4 py-2.5"
               style={{ borderColor: "var(--color-border-tertiary)" }}
             >
-              <TrendingUp className="size-4" style={{ color: "#a78bfa" }} />
+              <TrendingUp className="size-4" style={{ color: "#8B1510" }} />
               {pendingScore === 1 || pendingScore === 4 ? (
-                <span className="text-[12px] font-medium" style={{ color: "#a78bfa" }}>
+                <span className="text-[12px] font-medium" style={{ color: "#8B1510" }}>
                   Se incluye automaticamente en la MEFI
                 </span>
               ) : (
@@ -1190,7 +1190,7 @@ function VariableRow({
                     onClick={() => setPendingIncludeInMefi(!pendingIncludeInMefi)}
                     className="relative inline-flex h-5 w-9 items-center rounded-full transition-colors cursor-pointer"
                     style={{
-                      backgroundColor: pendingIncludeInMefi ? "#a78bfa" : "var(--color-border-tertiary, rgba(167,139,250,0.14))",
+                      backgroundColor: pendingIncludeInMefi ? "#8B1510" : "var(--color-border-tertiary, rgba(139, 21, 16,0.14))",
                     }}
                   >
                     <span
@@ -1300,7 +1300,7 @@ function VariableRow({
               onClick={handleConfirm}
               className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-medium text-white transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               style={{
-                backgroundColor: pendingScore ? "#a78bfa" : "#a78bfa",
+                backgroundColor: pendingScore ? "#8B1510" : "#8B1510",
               }}
             >
               <Check className="size-3.5" />
@@ -1581,8 +1581,8 @@ function AreaEvaluationPanel({ areaKey }: { areaKey: string }) {
             Progreso de evaluacion
           </span>
           {progressPct === 100 ? (
-            <span className="inline-flex items-center gap-1.5 text-[13px] font-medium" style={{ color: "#34d399" }}>
-              <Check className="size-4" style={{ color: "#34d399" }} />
+            <span className="inline-flex items-center gap-1.5 text-[13px] font-medium" style={{ color: "#1e7f4f" }}>
+              <Check className="size-4" style={{ color: "#1e7f4f" }} />
               Area completada
             </span>
           ) : (
@@ -1592,13 +1592,13 @@ function AreaEvaluationPanel({ areaKey }: { areaKey: string }) {
           )}
         </div>
         <div className="h-2 w-full overflow-hidden rounded-full"
-          style={{ backgroundColor: "var(--color-border-tertiary, rgba(167,139,250,0.14))" }}
+          style={{ backgroundColor: "var(--color-border-tertiary, rgba(139, 21, 16,0.14))" }}
         >
           <div
             className="h-full rounded-full transition-all duration-500"
             style={{
               width: `${progressPct}%`,
-              backgroundColor: progressPct === 100 ? "#34d399" : "#a78bfa",
+              backgroundColor: progressPct === 100 ? "#1e7f4f" : "#8B1510",
             }}
           />
         </div>
@@ -1606,13 +1606,13 @@ function AreaEvaluationPanel({ areaKey }: { areaKey: string }) {
         {confirmedCount > 0 && (
           <div className="flex items-center gap-3 pt-1">
             <span className="inline-flex items-center gap-1 text-[12px] font-medium"
-              style={{ color: "#a8cc8d" }}
+              style={{ color: "#4d7c0f" }}
             >
-              <span className="size-2 rounded-full" style={{ backgroundColor: "#a3e635" }} />
+              <span className="size-2 rounded-full" style={{ backgroundColor: "#4d7c0f" }} />
               {fortalezas} fortaleza{fortalezas !== 1 ? "s" : ""}
             </span>
             <span className="inline-flex items-center gap-1 text-[12px] font-medium"
-              style={{ color: "#ee9c9c" }}
+              style={{ color: "#b3261e" }}
             >
               <span className="size-2 rounded-full" style={{ backgroundColor: "transparent" }} />
               {debilidades} debilidad{debilidades !== 1 ? "es" : ""}
@@ -1712,8 +1712,8 @@ function AreaFindingsPanel({
             {/* Fortalezas */}
             <div className="space-y-2">
               <div className="flex items-center gap-1.5 mb-2">
-                <span className="size-2 rounded-full" style={{ backgroundColor: "#a3e635" }} />
-                <span className="text-[13px] font-medium" style={{ color: "#a8cc8d" }}>
+                <span className="size-2 rounded-full" style={{ backgroundColor: "#4d7c0f" }} />
+                <span className="text-[13px] font-medium" style={{ color: "#4d7c0f" }}>
                   Fortalezas ({fortalezas.length})
                 </span>
               </div>
@@ -1740,7 +1740,7 @@ function AreaFindingsPanel({
                         {hallazgoCorto}
                       </span>
                       <span className="flex items-center gap-1 shrink-0">
-                        {inMefi && <TrendingUp className="size-3" style={{ color: "#a78bfa" }} />}
+                        {inMefi && <TrendingUp className="size-3" style={{ color: "#8B1510" }} />}
                         {hasEvidence && <Paperclip className="size-3" style={{ color: "var(--color-text-tertiary)" }} />}
                       </span>
                     </div>
@@ -1753,7 +1753,7 @@ function AreaFindingsPanel({
             <div className="space-y-2">
               <div className="flex items-center gap-1.5 mb-2">
                 <span className="size-2 rounded-full" style={{ backgroundColor: "transparent" }} />
-                <span className="text-[13px] font-medium" style={{ color: "#ee9c9c" }}>
+                <span className="text-[13px] font-medium" style={{ color: "#b3261e" }}>
                   Debilidades ({debilidades.length})
                 </span>
               </div>
@@ -1780,7 +1780,7 @@ function AreaFindingsPanel({
                         {hallazgoCorto}
                       </span>
                       <span className="flex items-center gap-1 shrink-0">
-                        {inMefi && <TrendingUp className="size-3" style={{ color: "#a78bfa" }} />}
+                        {inMefi && <TrendingUp className="size-3" style={{ color: "#8B1510" }} />}
                         {hasEvidence && <Paperclip className="size-3" style={{ color: "var(--color-text-tertiary)" }} />}
                       </span>
                     </div>
@@ -1857,7 +1857,7 @@ function AreaCard({
               {evaluatedCount}/{totalCount} evaluadas
             </span>
             {progressPct === 100 && (
-              <span className="text-[11px] font-medium text-green-400 dark:text-green-400">
+              <span className="text-[11px] font-medium text-green-700 dark:text-green-700">
                 Completado
               </span>
             )}
@@ -1902,7 +1902,7 @@ function SectorContext({
   if (!sector) {
     return (
       <div className="rounded-md border border-amber-500/30 bg-transparent p-3 text-xs">
-        <AlertTriangle className="inline size-3.5 mr-1 text-amber-400" />
+        <AlertTriangle className="inline size-3.5 mr-1 text-amber-700" />
         No has definido el sector de tu empresa. Sin sector, no podemos
         precargar promedios de la industria. Configuralo en Ajustes &gt; Organizacion.
       </div>
@@ -1956,11 +1956,11 @@ function RatioRow({
     const pctAbs = Math.abs(deltaPct);
     const supera = item.higherIsBetter ? deltaPct > 0 : deltaPct < 0;
     if (supera && pctAbs >= 3) {
-      deltaColor = "text-emerald-400 dark:text-emerald-400";
+      deltaColor = "text-emerald-700 dark:text-emerald-700";
     } else if (!supera && pctAbs >= 15) {
-      deltaColor = "text-rose-400 dark:text-rose-400";
+      deltaColor = "text-rose-700 dark:text-rose-700";
     } else {
-      deltaColor = "text-amber-400 dark:text-amber-400";
+      deltaColor = "text-amber-700 dark:text-amber-700";
     }
     deltaLabel = `${deltaPct > 0 ? "+" : ""}${deltaPct.toFixed(1)}%`;
     autoScore = rateRatio(deltaPct, item.higherIsBetter);
@@ -2067,13 +2067,13 @@ function RatioRow({
             const cfg = RATING_CONFIG[s];
             const active = autoScore === s;
             const desc = getRatioDescription(item.key, s, item.higherIsBetter);
-            const baseTextColor = "var(--color-text-tertiary, #9a91b8)";
+            const baseTextColor = "var(--color-text-tertiary, #6b6b6b)";
             return (
               <div
                 key={s}
                 className="rounded-md border p-2.5 transition-all flex flex-col gap-1"
                 style={{
-                  borderColor: active ? cfg.border : "var(--color-border-tertiary, rgba(167,139,250,0.14))",
+                  borderColor: active ? cfg.border : "var(--color-border-tertiary, rgba(139, 21, 16,0.14))",
                   backgroundColor: active ? cfg.bg : "transparent",
                   borderWidth: active ? 2 : 1,
                   opacity: autoScore === null ? 0.55 : active ? 1 : 0.45,
@@ -2207,7 +2207,7 @@ function OtrosIndicadoresSection({
   return (
     <div className="rounded-lg border bg-card p-4 space-y-4">
       <div className="flex items-center gap-2 flex-wrap">
-        <DollarSign className="size-4 text-green-400 dark:text-green-400" />
+        <DollarSign className="size-4 text-green-700 dark:text-green-700" />
         <h3 className="text-[14px] font-medium">Otros indicadores cuantitativos</h3>
         <span className="text-[11px] text-muted-foreground italic">
           opcional — no estan ligados a una pregunta especifica
@@ -2429,8 +2429,8 @@ export default function AmofhitPage() {
       {/* Hero */}
       <div className="space-y-2">
         <div className="flex items-center gap-3">
-          <div className="flex size-12 items-center justify-center rounded-2xl bg-transparent0/10">
-            <Factory className="size-6 text-teal-400 dark:text-teal-400" />
+          <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/10">
+            <Factory className="size-6 text-teal-700 dark:text-teal-700" />
           </div>
           <div>
             <h1 className="text-2xl font-medium tracking-tight">Evaluación AMOFHIT</h1>

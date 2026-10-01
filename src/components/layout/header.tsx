@@ -64,7 +64,7 @@ export function Header() {
         {user && (
           <>
             <span
-              className="flex size-7 items-center justify-center rounded-full text-[11px] font-semibold text-[#0a0814]"
+              className="flex size-7 items-center justify-center rounded-full text-[11px] font-semibold text-white"
               style={{ background: avatarColor(user.id) }}
               aria-hidden
             >

@@ -1,0 +1,6 @@
+.env*
+.wrangler
+.next
+node_modules
+prisma/dev.db
+src/generated

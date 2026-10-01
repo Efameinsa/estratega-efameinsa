@@ -47,14 +47,14 @@ export function getAtractividad(avg: number): string {
 }
 
 export function getIntensidadColor(avg: number): { bg: string; border: string; text: string } {
-  if (avg <= 2.5) return { bg: "transparent", border: "#1D9E75", text: "#2dd4bf" };
-  if (avg <= 3.5) return { bg: "transparent", border: "#EF9F27", text: "#fbbf24" };
-  return { bg: "transparent", border: "#E24B4A", text: "#f87171" };
+  if (avg <= 2.5) return { bg: "transparent", border: "#1D9E75", text: "#0f766e" };
+  if (avg <= 3.5) return { bg: "transparent", border: "#EF9F27", text: "#b45309" };
+  return { bg: "transparent", border: "#E24B4A", text: "#b3261e" };
 }
 
 export function getValueColor(val: number): { text: string; bg: string } {
-  if (val <= 2) return { text: "#34d399", bg: "transparent" };
-  if (val === 3) return { text: "#fbbf24", bg: "transparent" };
+  if (val <= 2) return { text: "#1e7f4f", bg: "transparent" };
+  if (val === 3) return { text: "#b45309", bg: "transparent" };
   return { text: "#E24B4A", bg: "transparent" };
 }
 

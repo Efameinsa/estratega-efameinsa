@@ -12,7 +12,7 @@ import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { BSC_PERSPECTIVES, PROJECT_COLORS, toBscCode, projectInitials, plural } from "@/lib/pm";
+import { BSC_PERSPECTIVES, PROJECT_COLORS, toBscCode, projectInitials, plural, colorDeMarca } from "@/lib/pm";
 import type { RouterOutputs } from "./types";
 import { HealthBadge, ProgressBar, UserAvatar, dayToDate, friendlyDate } from "./primitives";
 
@@ -63,8 +63,8 @@ export function PortfolioPage() {
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           <Kpi icon={FolderKanban} label="Proyectos" value={data.totals.projects} />
           <Kpi icon={CheckCircle2} label="Avance global" value={`${data.totals.progress}%`} bar={data.totals.progress} />
-          <Kpi icon={AlertTriangle} label="Proyectos en riesgo" value={data.totals.atRisk} tone={data.totals.atRisk ? "#f87171" : undefined} />
-          <Kpi icon={ListChecks} label="Tareas vencidas" value={data.totals.overdue} tone={data.totals.overdue ? "#fbbf24" : undefined} />
+          <Kpi icon={AlertTriangle} label="Proyectos en riesgo" value={data.totals.atRisk} tone={data.totals.atRisk ? "#b3261e" : undefined} />
+          <Kpi icon={ListChecks} label="Tareas vencidas" value={data.totals.overdue} tone={data.totals.overdue ? "#b45309" : undefined} />
         </div>
       )}
 
@@ -146,7 +146,7 @@ function EmptyPortfolio({ onGenerate, onNew }: { onGenerate: () => void; onNew: 
 function PortfolioCard({ pf }: { pf: TreeData["tree"][number] }) {
   const [open, setOpen] = useState(true);
   const persp = pf.bscPerspective ? BSC_PERSPECTIVES[toBscCode(pf.bscPerspective)] : null;
-  const color = persp?.color ?? pf.axis?.color ?? "#a78bfa";
+  const color = persp?.color ?? colorDeMarca(pf.axis?.color) ?? "#8B1510";
   return (
     <section className="overflow-hidden rounded-xl border bg-card">
       <button type="button" onClick={() => setOpen((o) => !o)} className="flex w-full items-center gap-3 px-5 py-4 text-left hover:bg-accent/20">
@@ -164,7 +164,7 @@ function PortfolioCard({ pf }: { pf: TreeData["tree"][number] }) {
           </div>
           <ProgressBar value={pf.stats.progress} color={color} />
         </div>
-        {pf.stats.atRisk > 0 && <span className="rounded-full bg-red-500/15 px-2 py-0.5 text-xs text-red-400">{pf.stats.atRisk} en riesgo</span>}
+        {pf.stats.atRisk > 0 && <span className="rounded-full bg-red-500/15 px-2 py-0.5 text-xs text-red-700">{pf.stats.atRisk} en riesgo</span>}
         {open ? <ChevronDown className="size-4 text-muted-foreground" /> : <ChevronRight className="size-4 text-muted-foreground" />}
       </button>
       {open && (
@@ -220,14 +220,14 @@ function ProjectLine({ p, indent = false }: { p: ProjectRow; indent?: boolean })
       )}
     >
       <span className="flex min-w-0 items-center gap-2.5">
-        <span className="flex size-7 shrink-0 items-center justify-center rounded-md text-[10px] font-bold text-[#0a0814]" style={{ background: p.color ?? "#a78bfa" }}>
+        <span className="flex size-7 shrink-0 items-center justify-center rounded-md text-[10px] font-bold text-white" style={{ background: colorDeMarca(p.color) ?? "#8B1510" }}>
           {projectInitials(p)}
         </span>
         <span className="min-w-0">
           <span className="block truncate font-medium">{p.name}</span>
           <span className="block text-xs text-muted-foreground">
             {p.stats.done}/{p.stats.total} tareas
-            {p.stats.overdue > 0 && <span className="text-red-400"> · {p.stats.overdue} vencidas</span>}
+            {p.stats.overdue > 0 && <span className="text-red-700"> · {p.stats.overdue} vencidas</span>}
             {(p.startDate || p.endDate) && <> · {friendlyDate(p.startDate)} → {friendlyDate(p.endDate)}</>}
           </span>
         </span>
@@ -236,7 +236,7 @@ function ProjectLine({ p, indent = false }: { p: ProjectRow; indent?: boolean })
         <HealthBadge health={p.health} />
       </span>
       <span className="hidden items-center gap-2 md:flex">
-        <ProgressBar value={p.stats.progress} color={p.color ?? undefined} />
+        <ProgressBar value={p.stats.progress} color={colorDeMarca(p.color) ?? undefined} />
         <span className="w-9 text-right text-xs tabular-nums">{p.stats.progress}%</span>
       </span>
       <span className="hidden items-center gap-1.5 truncate text-xs text-muted-foreground md:flex">

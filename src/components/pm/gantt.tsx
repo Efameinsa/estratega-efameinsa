@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { colorDeMarca } from "@/lib/pm";
 import { ChevronDown, ChevronRight, Diamond, Crosshair } from "lucide-react";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
@@ -309,7 +310,7 @@ export function Gantt() {
         <p className="ml-auto hidden truncate text-xs text-muted-foreground xl:block">
           Arrastra para mover · jala los bordes para cambiar la duración · punto derecho → dependencia
         </p>
-        {unscheduled > 0 && <span className="shrink-0 text-xs text-amber-300">{unscheduled} sin fechas: clic en su fila para programar</span>}
+        {unscheduled > 0 && <span className="shrink-0 text-xs text-amber-700">{unscheduled} sin fechas: clic en su fila para programar</span>}
       </div>
 
       <div ref={scrollRef} className={cn("relative flex-1 overflow-auto border-t", drag && "select-none")}>
@@ -368,7 +369,7 @@ export function Gantt() {
                     >
                       {collapsed.has(r.task.id) ? <ChevronRight className="size-3.5" /> : <ChevronDown className="size-3.5" />}
                     </button>
-                    {r.task.type === "MILESTONE" && <Diamond className="size-3.5 shrink-0 text-amber-300" fill="currentColor" />}
+                    {r.task.type === "MILESTONE" && <Diamond className="size-3.5 shrink-0 text-amber-700" fill="currentColor" />}
                     <button
                       type="button"
                       onClick={() => openTask(r.task.id)}
@@ -410,7 +411,7 @@ export function Gantt() {
                 const b = barOf(t);
                 const done = isDone(t);
                 const overdue = !done && dayNum(t.dueDate) != null && dayNum(t.dueDate)! < today;
-                const color = done ? "#4ade80" : overdue ? "#f87171" : (ws.project.color ?? "#a78bfa");
+                const color = done ? "#1e7f4f" : overdue ? "#b3261e" : (colorDeMarca(ws.project.color) ?? "#8B1510");
                 const milestone = t.type === "MILESTONE";
                 const prog = progressOf(t);
                 return (
@@ -435,7 +436,7 @@ export function Gantt() {
                         style={{ left: b.x + px / 2 - 9 }}
                         title={t.summary}
                       >
-                        <Diamond className="size-[18px] drop-shadow" style={{ color: done ? "#4ade80" : "#fbbf24" }} fill="currentColor" />
+                        <Diamond className="size-[18px] drop-shadow" style={{ color: done ? "#1e7f4f" : "#b45309" }} fill="currentColor" />
                         <span className="pointer-events-none whitespace-nowrap text-xs font-medium">{t.summary}</span>
                       </div>
                     )}
@@ -482,7 +483,7 @@ export function Gantt() {
               <svg className="pointer-events-none absolute inset-0 z-[15] overflow-visible" width={width} height={rows.length * ROW}>
                 <defs>
                   <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                    <path d="M0,0 L8,4 L0,8 z" fill="#a78bfa" />
+                    <path d="M0,0 L8,4 L0,8 z" fill="#8B1510" />
                   </marker>
                 </defs>
                 {deps.map((d) => {
@@ -501,10 +502,10 @@ export function Gantt() {
                     x2 - 16 > x1
                       ? `M${x1},${y1} H${midX} V${y2} H${x2 - 2}`
                       : `M${x1},${y1} H${midX} V${y1 + (y2 > y1 ? ROW / 2 : -ROW / 2)} H${x2 - 12} V${y2} H${x2 - 2}`;
-                  return <path key={d.id} d={path} fill="none" stroke={late ? "#f87171" : "#a78bfa"} strokeWidth={1.5} markerEnd="url(#arrow)" opacity={0.85} />;
+                  return <path key={d.id} d={path} fill="none" stroke={late ? "#b3261e" : "#8B1510"} strokeWidth={1.5} markerEnd="url(#arrow)" opacity={0.85} />;
                 })}
                 {drag?.kind === "link" && (
-                  <path d={`M${drag.x0},${drag.y0} L${drag.x},${drag.y}`} stroke="#a78bfa" strokeWidth={2} strokeDasharray="4 3" fill="none" markerEnd="url(#arrow)" />
+                  <path d={`M${drag.x0},${drag.y0} L${drag.x},${drag.y}`} stroke="#8B1510" strokeWidth={2} strokeDasharray="4 3" fill="none" markerEnd="url(#arrow)" />
                 )}
               </svg>
             </div>

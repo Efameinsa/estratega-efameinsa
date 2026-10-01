@@ -29,7 +29,7 @@ export const BSC_DIMENSIONS: BscDimensionDef[] = [
     description: "Indicadores financieros: ingresos, márgenes, rentabilidad, capital.",
     classicLabel: "Perspectiva Financiera (Kaplan-Norton)",
     icon: "Coins",
-    color: "#4ade80",
+    color: "#1e7f4f",
     bg: "rgba(74, 222, 128, 0.08)",
   },
   {
@@ -40,7 +40,7 @@ export const BSC_DIMENSIONS: BscDimensionDef[] = [
     description: "Indicadores de cliente: participación, satisfacción, marca, fidelización.",
     classicLabel: "Perspectiva Cliente (Kaplan-Norton)",
     icon: "Target",
-    color: "#60a5fa",
+    color: "#185fa5",
     bg: "rgba(96, 165, 250, 0.08)",
   },
   {
@@ -51,7 +51,7 @@ export const BSC_DIMENSIONS: BscDimensionDef[] = [
     description: "Indicadores de procesos: eficiencia, calidad, certificaciones, productividad.",
     classicLabel: "Perspectiva Procesos Internos (Kaplan-Norton)",
     icon: "Settings2",
-    color: "#fbbf24",
+    color: "#b45309",
     bg: "rgba(251, 191, 36, 0.08)",
   },
   {
@@ -62,8 +62,8 @@ export const BSC_DIMENSIONS: BscDimensionDef[] = [
     description: "Indicadores de talento: clima, rotación, capacitación, aprendizaje.",
     classicLabel: "Perspectiva Aprendizaje y Crecimiento (Kaplan-Norton)",
     icon: "Users",
-    color: "#a78bfa",
-    bg: "rgba(167, 139, 250, 0.08)",
+    color: "#8B1510",
+    bg: "rgba(139, 21, 16, 0.08)",
   },
 ];
 

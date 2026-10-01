@@ -57,11 +57,11 @@ function parseRango(rango: string, globalMin: number, globalMax: number): [numbe
 }
 
 export function getNivelColor(nivel: "high" | "med" | "low"): { text: string; bg: string; border: string } {
-  // Paleta alineada con la marca morado/negro:
-  //   low = rojo suave, med = lavanda (color primario), high = verde menta
-  if (nivel === "high") return { text: "#34d399", bg: "transparent", border: "#34d399" };
-  if (nivel === "med") return { text: "#b8a4f0", bg: "transparent", border: "#a78bfa" };
-  return { text: "#fca5a5", bg: "transparent", border: "#fca5a5" };
+  // Paleta alineada con la marca Efameinsa (granate sobre claro):
+  //   low = rojo, med = ámbar, high = verde (legibles sobre blanco)
+  if (nivel === "high") return { text: "#1e7f4f", bg: "transparent", border: "#1e7f4f" };
+  if (nivel === "med") return { text: "#b45309", bg: "transparent", border: "#b45309" };
+  return { text: "#b3261e", bg: "transparent", border: "#b3261e" };
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

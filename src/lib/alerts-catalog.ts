@@ -35,7 +35,7 @@ export const ALERT_TYPES: AlertTypeDef[] = [
     description:
       "Un KPI entra en estado rojo al recibir un valor por debajo del umbral crítico.",
     icon: "AlertCircle",
-    color: "#f87171",
+    color: "#b3261e",
     bg: "transparent",
     defaultPriority: "alta",
     defaultRuleName: "Alertar cuando un KPI entre en estado rojo",
@@ -47,7 +47,7 @@ export const ALERT_TYPES: AlertTypeDef[] = [
     description:
       "Un KPI empeora durante N períodos consecutivos antes de llegar a rojo.",
     icon: "TrendingDown",
-    color: "#fbbf24",
+    color: "#b45309",
     bg: "transparent",
     defaultPriority: "media",
     defaultRuleName: "Alertar cuando un KPI empeore 3 períodos consecutivos",
@@ -71,7 +71,7 @@ export const ALERT_TYPES: AlertTypeDef[] = [
     description:
       "La proyección lineal del KPI principal no alcanzará la meta del OLP en su fecha objetivo.",
     icon: "TargetX",
-    color: "#f87171",
+    color: "#b3261e",
     bg: "transparent",
     defaultPriority: "alta",
     defaultRuleName: "Alertar cuando la proyección de un OLP no alcance su meta",
@@ -83,7 +83,7 @@ export const ALERT_TYPES: AlertTypeDef[] = [
     description:
       "Un OCP no alcanzó su meta en el período en que debía cumplirse.",
     icon: "XCircle",
-    color: "#fbbf24",
+    color: "#b45309",
     bg: "transparent",
     defaultPriority: "media",
     defaultRuleName: "Alertar cuando un OCP no se cumpla en su período",

@@ -59,7 +59,7 @@ export function EvidenceView() {
                 ))}
             </select>
             {withoutEvidence.length > 0 && (
-              <p className="text-xs text-amber-300">{withoutEvidence.length} tareas aún no tienen evidencia.</p>
+              <p className="text-xs text-amber-700">{withoutEvidence.length} tareas aún no tienen evidencia.</p>
             )}
           </div>
           {target ? (

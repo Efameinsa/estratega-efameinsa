@@ -73,7 +73,7 @@ export function CalendarView() {
   const Chip = ({ t }: { t: Task }) => {
     const done = isDone(t);
     const st = ws.project.workflows.find((s) => s.id === t.statusId);
-    const c = done ? "#4ade80" : statusColor(st);
+    const c = done ? "#1e7f4f" : statusColor(st);
     const u = t.assigneeId ? userById.get(t.assigneeId) : null;
     return (
       <button
@@ -88,7 +88,7 @@ export function CalendarView() {
         style={{ background: `${c}26`, borderLeft: `3px solid ${c}` }}
         title={t.summary}
       >
-        {t.type === "MILESTONE" && <Diamond className="size-3 shrink-0 text-amber-300" fill="currentColor" />}
+        {t.type === "MILESTONE" && <Diamond className="size-3 shrink-0 text-amber-700" fill="currentColor" />}
         <span className="min-w-0 flex-1 truncate">{t.summary}</span>
         {u && <UserAvatar user={u} size={14} className="ring-0" />}
       </button>

@@ -55,7 +55,7 @@ export default function IePage() {
         </div>
         <div className="rounded-xl border border-amber-200/60 bg-transparent dark:border-amber-900/40 dark:bg-transparent p-5">
           <div className="flex gap-3">
-            <AlertTriangle className="size-5 shrink-0 text-amber-400 mt-0.5" />
+            <AlertTriangle className="size-5 shrink-0 text-amber-700 mt-0.5" />
             <div>
               <p className="font-medium mb-1">MEFI o MEFE incompletas</p>
               <p className="text-sm text-muted-foreground mb-3">
@@ -188,7 +188,7 @@ function Paso1({
 }) {
   return (
     <div className="space-y-5">
-      <div className="rounded-xl border border-primary/25/60 bg-primary/10/60 dark:border-primary/40 dark:bg-primary/10 p-4">
+      <div className="rounded-xl border border-primary/15 bg-primary/5 dark:border-primary/40 dark:bg-primary/10 p-4">
         <div className="flex gap-3">
           <Info className="size-5 shrink-0 text-primary mt-0.5" />
           <div className="text-sm">
@@ -206,7 +206,7 @@ function Paso1({
           title="MEFI · Factores Internos"
           score={mefi.score}
           interpretation={interpretMefi(mefi.score)}
-          color="#4ade80"
+          color="#1e7f4f"
           desglose={`${mefi.fortalezas} fortalezas · ${mefi.debilidades} debilidades · ${mefi.count} factores`}
           link={`/cycles/${cycleId}/m2-diagnosis/mefi`}
         />
@@ -214,7 +214,7 @@ function Paso1({
           title="MEFE · Factores Externos"
           score={mefe.score}
           interpretation={interpretMefe(mefe.score)}
-          color="#60a5fa"
+          color="#185fa5"
           desglose={`${mefe.oportunidades} oportunidades · ${mefe.amenazas} amenazas · ${mefe.count} factores`}
           link={`/cycles/${cycleId}/m2-diagnosis/mefe`}
         />
@@ -359,7 +359,7 @@ function Paso2({
 
         {nearBorder && (
           <div className="rounded-md border border-amber-200/60 bg-transparent dark:border-amber-900/30 dark:bg-transparent p-3 text-xs flex gap-2">
-            <AlertTriangle className="size-4 shrink-0 text-amber-400 mt-0.5" />
+            <AlertTriangle className="size-4 shrink-0 text-amber-700 mt-0.5" />
             <span>Tu puntaje esta cerca de la frontera entre tramos. Considera revisar las calificaciones para confirmar la celda.</span>
           </div>
         )}
@@ -411,16 +411,16 @@ function IeChart({ mefiScore, mefeScore, cell }: { mefiScore: number; mefeScore:
             type="number" dataKey="x" domain={[1, 4]}
             ticks={[1, 2, 3, 4]}
             tickFormatter={(v) => v === 1 ? "1.0 Debil" : v === 2 ? "2.0" : v === 3 ? "3.0" : "4.0 Fuerte"}
-            tick={{ fontSize: 11, fill: "#9a91b8" }} tickLine={false} axisLine={{ stroke: "rgba(167,139,250,0.14)" }}
+            tick={{ fontSize: 11, fill: "#6b6b6b" }} tickLine={false} axisLine={{ stroke: "rgba(139, 21, 16,0.14)" }}
             reversed
-            label={{ value: "MEFI (interno)", position: "insideBottom", offset: -14, style: { fontSize: 11, fill: "#9a91b8", textAnchor: "middle" } }}
+            label={{ value: "MEFI (interno)", position: "insideBottom", offset: -14, style: { fontSize: 11, fill: "#6b6b6b", textAnchor: "middle" } }}
           />
           <YAxis
             type="number" dataKey="y" domain={[1, 4]}
             ticks={[1, 2, 3, 4]}
             tickFormatter={(v) => v === 1 ? "1.0 Bajo" : v === 2 ? "2.0" : v === 3 ? "3.0" : "4.0 Alto"}
-            tick={{ fontSize: 11, fill: "#9a91b8" }} tickLine={false} axisLine={{ stroke: "rgba(167,139,250,0.14)" }}
-            label={{ value: "MEFE (externo)", angle: -90, position: "insideLeft", offset: 0, style: { fontSize: 11, fill: "#9a91b8", textAnchor: "middle" } }}
+            tick={{ fontSize: 11, fill: "#6b6b6b" }} tickLine={false} axisLine={{ stroke: "rgba(139, 21, 16,0.14)" }}
+            label={{ value: "MEFE (externo)", angle: -90, position: "insideLeft", offset: 0, style: { fontSize: 11, fill: "#6b6b6b", textAnchor: "middle" } }}
           />
           <ZAxis range={[400, 400]} />
 
@@ -441,10 +441,10 @@ function IeChart({ mefiScore, mefeScore, cell }: { mefiScore: number; mefeScore:
           <ReferenceArea x1={1} x2={2} y1={1} y2={2} fill={REGION_INFO.cosechar.color} fillOpacity={0.10} stroke="none" label={{ value: "IX", position: "center", fill: REGION_INFO.cosechar.color, fontSize: 28, fontWeight: 700, opacity: 0.4 }} />
 
           {/* Lineas divisorias */}
-          <ReferenceLine x={2} stroke="#94a3b8" strokeWidth={1.5} />
-          <ReferenceLine x={3} stroke="#94a3b8" strokeWidth={1.5} />
-          <ReferenceLine y={2} stroke="#94a3b8" strokeWidth={1.5} />
-          <ReferenceLine y={3} stroke="#94a3b8" strokeWidth={1.5} />
+          <ReferenceLine x={2} stroke="#64748b" strokeWidth={1.5} />
+          <ReferenceLine x={3} stroke="#64748b" strokeWidth={1.5} />
+          <ReferenceLine y={2} stroke="#64748b" strokeWidth={1.5} />
+          <ReferenceLine y={3} stroke="#64748b" strokeWidth={1.5} />
 
           <RTooltip
             cursor={false}
@@ -460,10 +460,10 @@ function IeChart({ mefiScore, mefeScore, cell }: { mefiScore: number; mefeScore:
             }
           />
 
-          <Scatter data={[{ x: mefiScore, y: mefeScore, label: `Tu posición (MEFI ${mefiScore.toFixed(2)} · MEFE ${mefeScore.toFixed(2)})` }]} fill={userInfo.color} stroke="#07060d" strokeWidth={2} shape="circle">
+          <Scatter data={[{ x: mefiScore, y: mefeScore, label: `Tu posición (MEFI ${mefiScore.toFixed(2)} · MEFE ${mefeScore.toFixed(2)})` }]} fill={userInfo.color} stroke="#ffffff" strokeWidth={2} shape="circle">
             <Cell key="0" />
             <LabelList dataKey="label" content={(p: { x?: number | string; y?: number | string; width?: number | string; value?: unknown }) => (
-              <text x={Number(p.x) + Number(p.width ?? 0) / 2} y={Number(p.y) - 10} textAnchor="middle" fill="#f4f1fb" fontSize={12} fontWeight={600}>
+              <text x={Number(p.x) + Number(p.width ?? 0) / 2} y={Number(p.y) - 10} textAnchor="middle" fill="#2c2e35" fontSize={12} fontWeight={600}>
                 {String(p.value ?? "")}
               </text>
             )} />
@@ -543,7 +543,7 @@ function Paso3({
       {/* Alertas */}
       {alertas.map((a, i) => (
         <div key={i} className="rounded-md border border-amber-200/60 bg-transparent dark:border-amber-900/30 dark:bg-transparent p-3 text-sm flex gap-2">
-          <Info className="size-4 shrink-0 text-amber-400 mt-0.5" />
+          <Info className="size-4 shrink-0 text-amber-700 mt-0.5" />
           <span className="leading-relaxed">{a}</span>
         </div>
       ))}
@@ -562,9 +562,9 @@ function Paso3({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {strategies.map((s) => {
               const isRetained = retained.has(s.code);
-              const priColor = s.priority === "alta" ? "#f87171" : s.priority === "media" ? "#F59E0B" : "#4ade80";
+              const priColor = s.priority === "alta" ? "#b3261e" : s.priority === "media" ? "#b45309" : "#1e7f4f";
               return (
-                <label key={s.code} className={`rounded-lg border p-3 cursor-pointer transition-all ${isRetained ? "border-primary/40 bg-primary/10/40 dark:bg-primary/10" : "hover:border-foreground/30"}`}>
+                <label key={s.code} className={`rounded-lg border p-3 cursor-pointer transition-all ${isRetained ? "border-primary/40 bg-primary/5 dark:bg-primary/10" : "hover:border-foreground/30"}`}>
                   <div className="flex items-start gap-2">
                     <input type="checkbox" checked={isRetained} onChange={() => toggle(s.code)} className="mt-1 accent-blue-600 size-4 cursor-pointer" />
                     <div className="flex-1 min-w-0">

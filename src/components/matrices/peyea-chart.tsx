@@ -9,10 +9,10 @@ type Vector = ReturnType<typeof computeVector>;
 
 // Ejes de la matriz PEYEA (D'Alessio): cada eje suma dos dimensiones.
 const AXES = {
-  top: { code: "FF", label: "Fortaleza financiera", color: "#4ade80" },
-  bottom: { code: "EE", label: "Estabilidad del entorno", color: "#fb923c" },
-  right: { code: "FI", label: "Fortaleza de la industria", color: "#60a5fa" },
-  left: { code: "VC", label: "Ventaja competitiva", color: "#f472b6" },
+  top: { code: "FF", label: "Fortaleza financiera", color: "#1e7f4f" },
+  bottom: { code: "EE", label: "Estabilidad del entorno", color: "#c2410c" },
+  right: { code: "FI", label: "Fortaleza de la industria", color: "#185fa5" },
+  left: { code: "VC", label: "Ventaja competitiva", color: "#be185d" },
 } as const;
 
 const QUAD_HINT: Record<Vector["quadrant"], string> = {
@@ -140,26 +140,26 @@ export function PeyeaChart({ vector, compact = false }: { vector: Vector; compac
           {/* Rejilla + coordenadas */}
           {ticks.map((t) => (
             <g key={`g${t}`}>
-              <line x1={sx(t)} y1={PAD} x2={sx(t)} y2={PAD + W} stroke="rgba(167,139,250,0.10)" strokeWidth={t === 0 ? 0 : 1} />
-              <line x1={PAD} y1={sy(t)} x2={PAD + W} y2={sy(t)} stroke="rgba(167,139,250,0.10)" strokeWidth={t === 0 ? 0 : 1} />
+              <line x1={sx(t)} y1={PAD} x2={sx(t)} y2={PAD + W} stroke="rgba(139, 21, 16,0.10)" strokeWidth={t === 0 ? 0 : 1} />
+              <line x1={PAD} y1={sy(t)} x2={PAD + W} y2={sy(t)} stroke="rgba(139, 21, 16,0.10)" strokeWidth={t === 0 ? 0 : 1} />
               {!compact && t !== 0 && (
                 <>
-                  <text x={sx(t)} y={oy + 16} textAnchor="middle" fontSize={11} fill="#9a91b8">
+                  <text x={sx(t)} y={oy + 16} textAnchor="middle" fontSize={11} fill="#6b6b6b">
                     {t > 0 ? `+${t}` : t}
                   </text>
-                  <text x={ox - 8} y={sy(t) + 4} textAnchor="end" fontSize={11} fill="#9a91b8">
+                  <text x={ox - 8} y={sy(t) + 4} textAnchor="end" fontSize={11} fill="#6b6b6b">
                     {t > 0 ? `+${t}` : t}
                   </text>
                 </>
               )}
             </g>
           ))}
-          <rect x={PAD} y={PAD} width={W} height={W} fill="none" stroke="rgba(167,139,250,0.22)" rx={compact ? 6 : 10} />
+          <rect x={PAD} y={PAD} width={W} height={W} fill="none" stroke="rgba(139, 21, 16,0.22)" rx={compact ? 6 : 10} />
 
           {/* Ejes principales */}
-          <line x1={PAD} y1={oy} x2={PAD + W} y2={oy} stroke="#b4abd0" strokeWidth={1.5} />
-          <line x1={ox} y1={PAD} x2={ox} y2={PAD + W} stroke="#b4abd0" strokeWidth={1.5} />
-          {!compact && <text x={ox + 6} y={oy + 16} fontSize={11} fill="#9a91b8">0</text>}
+          <line x1={PAD} y1={oy} x2={PAD + W} y2={oy} stroke="#8a8a8a" strokeWidth={1.5} />
+          <line x1={ox} y1={PAD} x2={ox} y2={PAD + W} stroke="#8a8a8a" strokeWidth={1.5} />
+          {!compact && <text x={ox + 6} y={oy + 16} fontSize={11} fill="#6b6b6b">0</text>}
 
           {/* Nombres de los cuadrantes */}
           {quads.map((q) => {
@@ -171,7 +171,7 @@ export function PeyeaChart({ vector, compact = false }: { vector: Vector; compac
                   {qi.label.toUpperCase()}
                 </text>
                 {!compact && (
-                  <text x={q.x} y={q.y + 16} textAnchor={q.anchor} fontSize={11} fill="#9a91b8">
+                  <text x={q.x} y={q.y + 16} textAnchor={q.anchor} fontSize={11} fill="#6b6b6b">
                     {QUAD_HINT[q.q]}
                   </text>
                 )}
@@ -185,13 +185,13 @@ export function PeyeaChart({ vector, compact = false }: { vector: Vector; compac
               <>
                 <polygon
                   points={dims.map((d) => `${sx(d.x)},${sy(d.y)}`).join(" ")}
-                  fill="rgba(167,139,250,0.10)"
-                  stroke="rgba(167,139,250,0.45)"
+                  fill="rgba(139, 21, 16,0.10)"
+                  stroke="rgba(139, 21, 16,0.45)"
                   strokeDasharray="4 3"
                 />
                 {dims.map((d) => (
                   <g key={d.key} onMouseEnter={() => setHover(d.key)} onMouseLeave={() => setHover(null)}>
-                    <circle cx={sx(d.x)} cy={sy(d.y)} r={6} fill={d.color} stroke="#07060d" strokeWidth={2} />
+                    <circle cx={sx(d.x)} cy={sy(d.y)} r={6} fill={d.color} stroke="#ffffff" strokeWidth={2} />
                     <text
                       x={sx(d.x) + (d.x > 0 ? 10 : d.x < 0 ? -10 : 10)}
                       y={sy(d.y) + (d.y !== 0 ? 4 : -10)}
@@ -222,7 +222,7 @@ export function PeyeaChart({ vector, compact = false }: { vector: Vector; compac
               cy={py}
               r={compact ? 5 : 8}
               fill={info.color}
-              stroke="#07060d"
+              stroke="#ffffff"
               strokeWidth={2}
               onMouseEnter={() => setHover("vector")}
               onMouseLeave={() => setHover(null)}
@@ -235,13 +235,13 @@ export function PeyeaChart({ vector, compact = false }: { vector: Vector; compac
             <>
               <g>
                 <rect x={px - 26} y={oy + 22} width={52} height={20} rx={5} fill={info.color} />
-                <text x={px} y={oy + 36} textAnchor="middle" fontSize={11} fontWeight={700} fill="#0a0814">
+                <text x={px} y={oy + 36} textAnchor="middle" fontSize={11} fontWeight={700} fill="#ffffff">
                   X {fmt(vector.x)}
                 </text>
               </g>
               <g>
                 <rect x={ox - 62} y={py - 10} width={52} height={20} rx={5} fill={info.color} />
-                <text x={ox - 36} y={py + 4} textAnchor="middle" fontSize={11} fontWeight={700} fill="#0a0814">
+                <text x={ox - 36} y={py + 4} textAnchor="middle" fontSize={11} fontWeight={700} fill="#ffffff">
                   Y {fmt(vector.y)}
                 </text>
               </g>
@@ -257,13 +257,13 @@ export function PeyeaChart({ vector, compact = false }: { vector: Vector; compac
                 width={140}
                 height={34}
                 rx={8}
-                fill="#14111f"
+                fill="#ffffff"
                 stroke={info.color}
               />
-              <text x={Math.min(px + 12, PAD + W - 150) + 10} y={Math.max(py - 44, PAD + 4) + 14} fontSize={10} fill="#9a91b8">
+              <text x={Math.min(px + 12, PAD + W - 150) + 10} y={Math.max(py - 44, PAD + 4) + 14} fontSize={10} fill="#6b6b6b">
                 Tu posición
               </text>
-              <text x={Math.min(px + 12, PAD + W - 150) + 10} y={Math.max(py - 44, PAD + 4) + 28} fontSize={12} fontWeight={700} fill="#f4f1fb">
+              <text x={Math.min(px + 12, PAD + W - 150) + 10} y={Math.max(py - 44, PAD + 4) + 28} fontSize={12} fontWeight={700} fill="#2c2e35">
                 ({fmt(vector.x)}, {fmt(vector.y)})
               </text>
             </g>
@@ -315,7 +315,7 @@ export function PeyeaChart({ vector, compact = false }: { vector: Vector; compac
           </div>
         )}
         {outOfView && !compact && (
-          <p className="absolute right-3 bottom-3 rounded-md bg-popover px-2 py-1 text-xs text-amber-300">El vector sale de la vista: aleja el zoom.</p>
+          <p className="absolute right-3 bottom-3 rounded-md bg-popover px-2 py-1 text-xs text-amber-700">El vector sale de la vista: aleja el zoom.</p>
         )}
       </div>
 

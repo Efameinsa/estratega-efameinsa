@@ -135,7 +135,7 @@ export function exportReviewPdf(r: ExportReviewData) {
   }
 
   // PORTADA
-  const rgb = hexToRgb(def?.color ?? "#60a5fa");
+  const rgb = hexToRgb(def?.color ?? "#185fa5");
   doc.setFillColor(rgb[0], rgb[1], rgb[2]);
   doc.rect(0, 0, pageW, pageH, "F");
   doc.setTextColor(255, 255, 255);

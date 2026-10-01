@@ -2,23 +2,23 @@
 // consistencia entre catálogos (alerts, reviews, kpis, etc).
 
 export const SEMAFORO = {
-  verde: { color: "#4ade80", bg: "transparent", label: "Verde" },
-  ambar: { color: "#fbbf24", bg: "transparent", label: "Ámbar" },
-  rojo: { color: "#f87171", bg: "transparent", label: "Rojo" },
-  sin_dato: { color: "#8d83a8", bg: "transparent", label: "Sin dato" },
+  verde: { color: "#1e7f4f", bg: "transparent", label: "Verde" },
+  ambar: { color: "#b45309", bg: "transparent", label: "Ámbar" },
+  rojo: { color: "#b3261e", bg: "transparent", label: "Rojo" },
+  sin_dato: { color: "#6b6b6b", bg: "transparent", label: "Sin dato" },
 } as const;
 
 export const URGENCY = {
-  alta: { color: "#f87171", bg: "transparent", label: "Alta" },
-  media: { color: "#fbbf24", bg: "transparent", label: "Media" },
-  baja: { color: "#38bdf8", bg: "transparent", label: "Baja" },
+  alta: { color: "#b3261e", bg: "transparent", label: "Alta" },
+  media: { color: "#b45309", bg: "transparent", label: "Media" },
+  baja: { color: "#0369a1", bg: "transparent", label: "Baja" },
 } as const;
 
 export const NEUTRAL_COLORS = {
   gray: { color: "#a8a29e", bg: "transparent" },
-  blue: { color: "#38bdf8", bg: "transparent" },
-  emerald: { color: "#4ade80", bg: "transparent" },
-  amber: { color: "#fbbf24", bg: "transparent" },
-  red: { color: "#f87171", bg: "transparent" },
-  purple: { color: "#c084fc", bg: "transparent" },
+  blue: { color: "#0369a1", bg: "transparent" },
+  emerald: { color: "#1e7f4f", bg: "transparent" },
+  amber: { color: "#b45309", bg: "transparent" },
+  red: { color: "#b3261e", bg: "transparent" },
+  purple: { color: "#a14a3f", bg: "transparent" },
 } as const;

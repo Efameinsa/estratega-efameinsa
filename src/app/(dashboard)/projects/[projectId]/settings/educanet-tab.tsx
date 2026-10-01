@@ -146,12 +146,12 @@ export function EducanetTab({ projectId }: { projectId: string }) {
         {yaSincronizado && (
           <div className="rounded-md border bg-transparent dark:bg-transparent p-3">
             <div className="flex items-start gap-2">
-              <CheckCircle2 className="size-4 text-green-400 mt-0.5" />
+              <CheckCircle2 className="size-4 text-green-700 mt-0.5" />
               <div className="flex-1 text-sm">
-                <p className="font-medium text-green-300 dark:text-green-100">
+                <p className="font-medium text-green-700 dark:text-green-700">
                   Sincronizado con Educanet
                 </p>
-                <p className="text-xs text-green-300 dark:text-green-300 mt-1">
+                <p className="text-xs text-green-700 dark:text-green-700 mt-1">
                   Última sincronización:{" "}
                   {syncedAt ? syncedAt.toLocaleString() : "—"}
                 </p>
@@ -241,8 +241,8 @@ export function EducanetTab({ projectId }: { projectId: string }) {
           <div
             className={`rounded-md border p-3 text-sm ${
               result.ok
-                ? "border-green-500/30 bg-transparent text-green-300 dark:border-green-900 dark:bg-transparent dark:text-green-100"
-                : "border-red-500/30 bg-transparent text-red-300 dark:border-red-900 dark:bg-transparent dark:text-red-100"
+                ? "border-green-500/30 bg-transparent text-green-700 dark:border-green-900 dark:bg-transparent dark:text-green-700"
+                : "border-red-500/30 bg-transparent text-red-700 dark:border-red-900 dark:bg-transparent dark:text-red-700"
             }`}
           >
             {result.message}

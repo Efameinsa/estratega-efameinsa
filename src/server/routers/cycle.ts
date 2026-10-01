@@ -7,7 +7,7 @@ import { getSectionStates, moduleStatuses, type ModuleId } from "@/server/cycle-
 import { buildKpiSnapshot, computeGlobalCompliance, getDefaultPeriod } from "@/lib/bsc-dashboard";
 
 const MODULE_NAMES: Record<ModuleId, string> = { M1: "Identidad", M2: "Diagnóstico", M3: "Formulación", M4: "Implementación", M5: "Control" };
-const MODULE_COLORS: Record<ModuleId, string> = { M1: "#60a5fa", M2: "#fbbf24", M3: "#a78bfa", M4: "#f472b6", M5: "#4ade80" };
+const MODULE_COLORS: Record<ModuleId, string> = { M1: "#185fa5", M2: "#b45309", M3: "#8B1510", M4: "#be185d", M5: "#1e7f4f" };
 
 // ---------------------------------------------------------------------------
 // Helpers

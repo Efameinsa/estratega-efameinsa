@@ -208,7 +208,7 @@ function IntegrationsSection() {
 
           {revealedToken && (
             <div className="space-y-2 rounded-md border border-amber-400 bg-transparent p-3">
-              <div className="flex items-center gap-2 text-xs font-semibold text-amber-300">
+              <div className="flex items-center gap-2 text-xs font-semibold text-amber-700">
                 <KeyRound className="size-4" /> Token recién creado · Cópialo ahora
               </div>
               <div className="flex flex-wrap items-center gap-2">
@@ -233,7 +233,7 @@ function IntegrationsSection() {
                   Listo
                 </Button>
               </div>
-              <p className="text-[10px] text-amber-300">
+              <p className="text-[10px] text-amber-700">
                 ⚠️ Este token no volverá a mostrarse. Si lo pierdes, deberás revocarlo y generar
                 uno nuevo.
               </p>
